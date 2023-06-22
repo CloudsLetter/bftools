@@ -7,6 +7,8 @@ using BF1ServerTools.Data;
 using BF1ServerTools.Utils;
 using BF1ServerTools.Helper;
 using BF1ServerTools.Windows;
+using static BF1ServerTools.API.RespJson.GetWeapons.ResultItem.WeaponsItem;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace BF1ServerTools.Views;
 
@@ -854,7 +856,6 @@ public partial class MonitView : UserControl
             PlayerDatas_Team2 = CopyPlayerDataList(PlayerList_Team2);
             return;
         }
-
         // 变量保存的队伍1玩家列表
         foreach (var item in PlayerDatas_Team1)
         {
@@ -862,30 +863,7 @@ public partial class MonitView : UserControl
             var index = PlayerList_Team2.FindIndex(var => var.PersonaId == item.PersonaId);
             if (index != -1)
             {
-                LogView.ActionAddChangeTeamInfoLog(new ChangeTeamInfo()
-                {
-                    Rank = item.Rank,
-                    Name = item.Name,
-                    PersonaId = item.PersonaId,
-                    GameMode = _serverData.GameMode,
-                    MapName = _serverData.MapName,
-                    Team1Name = _serverData.Team1Name,
-                    Team2Name = _serverData.Team2Name,
-                    State = $"{_serverData.Team1Name} >>> {_serverData.Team2Name}",
-                    Time = DateTime.Now
-                });
-                break;
-            }
-        }
-
-        // 变量保存的队伍2玩家列表
-        foreach (var item in PlayerDatas_Team2)
-        {
-            // 查询这个玩家是否在目前的队伍1中
-            var index = PlayerList_Team1.FindIndex(var => var.PersonaId == item.PersonaId);
-            if (index != -1)
-            {
-                LogView.ActionAddChangeTeamInfoLog(new ChangeTeamInfo()
+                ChangeTeamInfo tempChangeTeamInfo = new()
                 {
                     Rank = item.Rank,
                     Name = item.Name,
@@ -895,15 +873,51 @@ public partial class MonitView : UserControl
                     Team1Name = _serverData.Team1Name,
                     Team2Name = _serverData.Team2Name,
                     State = $"{_serverData.Team1Name} <<< {_serverData.Team2Name}",
-                    Time = DateTime.Now
-                });
+                    Time = DateTime.Now,
+                    To = 2
+                };
+                LogView.ActionAddChangeTeamInfoLog(tempChangeTeamInfo);
+                CloudUtil.AutTogglTeame(tempChangeTeamInfo);
+
                 break;
+
+            }
+
+        }
+
+        // 变量保存的队伍2玩家列表
+        foreach (var item in PlayerDatas_Team2)
+        {
+            // 查询这个玩家是否在目前的队伍1中
+            var index = PlayerList_Team1.FindIndex(var => var.PersonaId == item.PersonaId);
+                if (index != -1)
+            {
+                ChangeTeamInfo tempChangeTeamInfo = new()
+                {
+                    Rank = item.Rank,
+                    Name = item.Name,
+                    PersonaId = item.PersonaId,
+                    GameMode = _serverData.GameMode,
+                    MapName = _serverData.MapName,
+                    Team1Name = _serverData.Team1Name,
+                    Team2Name = _serverData.Team2Name,
+                    State = $"{_serverData.Team1Name} <<< {_serverData.Team2Name}",
+                    Time = DateTime.Now,
+                    To = 1
+                };
+                LogView.ActionAddChangeTeamInfoLog(tempChangeTeamInfo);
+                CloudUtil.AutTogglTeame(tempChangeTeamInfo);
+
+                break;
+
             }
         }
 
         // 更新保存的数据
         PlayerDatas_Team1 = CopyPlayerDataList(PlayerList_Team1);
         PlayerDatas_Team2 = CopyPlayerDataList(PlayerList_Team2);
+
+
     }
 
     /// <summary>
@@ -1213,6 +1227,16 @@ public partial class MonitView : UserControl
     private void CheckBox_IsEnableKickNoWhites_Click(object sender, RoutedEventArgs e)
     {
         Globals.IsEnableKickNoWhites = CheckBox_IsEnableKickNoWhites.IsChecked == true;
+    }
+
+    /// <summary>
+    /// 禁止玩家换边
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void CheckBox_Not_Allow_Toggle_Click(object sender, RoutedEventArgs e)
+    {
+        Globals.IsAllowToggle = CheckBox_Not_Allow_Toggle.IsChecked == true;
     }
 
     /// <summary>

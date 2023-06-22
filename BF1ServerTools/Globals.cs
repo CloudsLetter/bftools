@@ -218,6 +218,41 @@ public static class Globals
     /// 是否启用踢出非白名单玩家
     /// </summary>
     public static bool IsEnableKickNoWhites = false;
+    /// <summary>
+    /// 云端服务器是否存活
+    /// </summary>
+    public static bool IsCloudAlive = false;
+
+    /// <summary>
+    /// 是否允许换边
+    /// </summary>
+    public static bool IsAllowToggle = false;
+
+
+    /// <summary>
+    /// 允许队伍1临时换边玩家列表
+    /// </summary>
+    public static List<long> AllowTempAloowToggleTeamList1 = new();
+
+    /// <summary>
+    /// 允许队伍2临时换边玩家列表
+    /// </summary>
+    public static List<long> AllowTempAloowToggleTeamList2 = new();
+
+    /// <summary>
+    /// 队伍1已经临时换边玩家列表
+    /// </summary>
+    public static List<long> TempToggleTeamList = new();
+
+    /// <summary>
+    /// 队伍2已换边临时玩家列表
+    /// </summary>
+
+    /// <summary>
+    /// 允许白名单换边
+    /// </summary>
+    public static bool IsAllowWhlistToggleTeam = false;
+
 
     ///////////////////////////////////////////////////////
 

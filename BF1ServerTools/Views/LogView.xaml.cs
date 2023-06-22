@@ -1,5 +1,7 @@
-﻿using BF1ServerTools.Data;
+﻿using BF1ServerTools.API;
+using BF1ServerTools.Data;
 using BF1ServerTools.Helper;
+using BF1ServerTools.Utils;
 
 namespace BF1ServerTools.Views;
 
@@ -209,10 +211,10 @@ public partial class LogView : UserControl
                     Message3 = ""
                 });
             });
-
             ChatView.ActionChangeTeamNotice(info);
             RobotView.ActionSendChangeTeamLogToQQ(info);
         }
+
     }
 
     /////////////////////////////////////////////////////

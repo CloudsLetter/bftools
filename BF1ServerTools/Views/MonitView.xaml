@@ -116,6 +116,10 @@
                     Click="Button_CheckAutoKickEnv_Click"
                     Content="检查自动踢人环境" />
                 <CheckBox
+                    x:Name="CheckBox_Not_Allow_Toggle"
+                    Click="CheckBox_Not_Allow_Toggle_Click"
+                    Content="禁止玩家更换队伍(管理员可更换玩家队伍)" />
+                <CheckBox
                     x:Name="CheckBox_IsAutoKickSpectator"
                     Click="CheckBox_IsAutoKickSpectator_Click"
                     Content="限制非管理员观战玩家" />
@@ -127,6 +131,7 @@
                     x:Name="CheckBox_IsEnableKickNoWhites"
                     Click="CheckBox_IsEnableKickNoWhites_Click"
                     Content="启用踢出非白名单玩家" />
+
                 <ui:UiTextBoxHint
                     x:Name="TextBox_KickNoWhitesReason"
                     Hint="自定义踢出非白名单玩家理由"

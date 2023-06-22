@@ -8,14 +8,18 @@ namespace BF1ServerTools.API;
 public static class BF1API
 {
     private const string host = "https://sparta-gw.battlelog.com/jsonrpc/pc/api";
-    private const string hostwl = "https://bf1.cloudyun.xyz/api/bf1/whitelist/query";
-    private const string hostla = "https://bf1.cloudyun.xyz/api/bf1/whitelist/add";
-    private const string hostwlr = "https://bf1.cloudyun.xyz/api/bf1/whitelist/remove";
+    private const string hostwl = "http://127.0.0.1:8080/api/bf1/whitelist/query";
+    private const string hostla = "http://127.0.0.1:8080/api/bf1/whitelist/add";
+    private const string hostwlr = "http://127.0.0.1:8080/api/bf1/whitelist/remove";
+    private const string hostrule = "http://127.0.0.1:8080/api/bf1/rule";
+    private const string hostmessages = "http://127.0.0.1:8080/api/bf1/messages";
 
     private static readonly RestClient client;
     private static readonly RestClient clientcl;
     private static readonly RestClient clientcla;
     private static readonly RestClient clientclr;
+    private static readonly RestClient clientrule;
+    private static readonly RestClient clientmessages;
 
     static BF1API()
     {
@@ -55,6 +59,17 @@ public static class BF1API
             };
             clientcla = new RestClient(optionssss);
         }
+
+        if (clientmessages == null)
+        {
+            var optionsssss = new RestClientOptions(hostmessages)
+            {
+                MaxTimeout = 5000,
+                ThrowOnAnyError = true
+            };
+            clientmessages = new RestClient(optionsssss);
+        }
+
     }
 
     /// <summary>
@@ -544,7 +559,7 @@ public static class BF1API
     /// </summary>
     /// <param name="serverToken"></param>
     /// <returns></returns>
-    public static async Task<RespContent> AddWhiteList(string ServerId, string PlayerName)
+    public static async Task<RespContent> AddWhiteList(string ServerId, string Gameid,string Guid, string PlayerName)
     {
         var sw = new Stopwatch();
         sw.Start();
@@ -556,7 +571,9 @@ public static class BF1API
             {
                 Token = "chaoshilisaohuo",
                 ServerId = ServerId,
-                PlayerName = PlayerName
+                PlayerName = PlayerName,
+                Guid = Guid,
+                Gameid = Gameid
             };
 
             var request = new RestRequest()
@@ -610,6 +627,57 @@ public static class BF1API
                 .AddJsonBody(reqBody);
 
             var response = await clientclr.ExecutePostAsync(request);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                respContent.IsSuccess = true;
+                respContent.Content = response.Content;
+            }
+            else
+            {
+                var respError = JsonHelper.JsonDese<RespError>(response.Content);
+                respContent.Content = $"{respError.error.code} {respError.error.message}";
+            }
+        }
+        catch (Exception ex)
+        {
+            respContent.Content = ex.Message;
+        }
+
+        sw.Stop();
+        respContent.ExecTime = sw.Elapsed.TotalSeconds;
+
+        return respContent;
+
+    }
+
+    /// <summary>
+    /// 联网推送聊天内容
+    /// </summary>
+    /// <param name="serverToken"></param>
+    /// <returns></returns>
+    public static async Task<RespContent> PushMessages(string ServerId,string Guid,string GameId, string PlayerName, string Content)
+    {
+        var sw = new Stopwatch();
+        sw.Start();
+        var respContent = new RespContent();
+
+        try
+        {
+            var reqBody = new
+            {
+                method = "Push",
+                Token = "chaoshilisaohuo",
+                ServerId = ServerId,
+                Guid = Guid,
+                GameId = GameId,
+                PlayerName = PlayerName,
+                Content = Content
+            };
+
+            var request = new RestRequest()
+                .AddJsonBody(reqBody);
+
+            var response = await clientmessages.ExecutePostAsync(request);
             if (response.StatusCode == HttpStatusCode.OK)
             {
                 respContent.IsSuccess = true;

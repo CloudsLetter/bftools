@@ -581,6 +581,7 @@
             <CheckBox x:Name="CheckBox_WhiteKPM" Content="免疫KPM限制" />
             <CheckBox x:Name="CheckBox_WhiteRank" Content="免疫等级限制" />
             <CheckBox x:Name="CheckBox_WhiteWeapon" Content="免疫武器限制" />
+            <CheckBox x:Name="CheckBox_ToggleTeamLimt" Click="CheckBox_ToggleTeamLimt_Click" Content="免疫更换队伍限制" />
             <!--  *************  -->
             <ui:UiLabelIcon Content="应用规则" />
             <Button

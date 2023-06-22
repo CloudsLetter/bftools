@@ -21,7 +21,7 @@ public static class Chat
     /// 最后聊天发送内容偏移
     /// </summary>
     public const int OFFSET_CHAT_LAST_CONTENT = 0x140;
-
+   
     /// <summary>
     /// 申请的内存地址
     /// </summary>

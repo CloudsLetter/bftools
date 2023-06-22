@@ -182,6 +182,17 @@ public static class PlayerUtil
     }
 
     /// <summary>
+    /// 判断玩家是否在临时换边玩家列表中
+    /// </summary>
+    /// <param name="personaId"></param>
+    /// <param name="list"></param>
+    /// <returns></returns>
+    public static bool IsAtTempTempAloowToggleTeamList(long name, List<long> list)
+    {
+        return list.IndexOf(name) != -1;
+    }
+
+    /// <summary>
     /// 获取生涯KD
     /// </summary>
     /// <param name="personaId"></param>

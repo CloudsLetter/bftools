@@ -38,4 +38,5 @@ public class ChangeTeamInfo
     /// 更换队伍的时间
     /// </summary>
     public DateTime Time { get; set; }
+    public int To { get; set; }
 }

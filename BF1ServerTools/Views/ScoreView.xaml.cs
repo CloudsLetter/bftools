@@ -8,6 +8,8 @@ using BF1ServerTools.Models;
 using BF1ServerTools.Helper;
 using BF1ServerTools.Windows;
 using BF1ServerTools.Extensions;
+using static BF1ServerTools.API.RespJson.GetWeapons.ResultItem.WeaponsItem;
+using Newtonsoft.Json;
 
 namespace BF1ServerTools.Views;
 
@@ -810,10 +812,41 @@ public partial class ScoreView : UserControl
 
             var result = await BF1API.RSPMovePlayer(Globals.SessionId, Globals.GameId, item.PersonaId, 1);
             if (result.IsSuccess)
+            {
+                Globals.AllowTempAloowToggleTeamList2.Add(item.PersonaId);
+
+
+                var result2 = await CloudApi.AddAutoToggleTeamList(item.PersonaId.ToString());
+                if (result2.IsSuccess)
+                {
+
+                }
+                else
+                {
+                    try
+                    {
+                        var data = result2.Content.Replace("\r", "");
+                        RepsoneData dataObj = JsonConvert.DeserializeObject<RepsoneData>(data);
+                        if (dataObj.Id != "0003")
+                        {
+                            Globals.TempToggleTeamList.Add(item.PersonaId);
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        Globals.TempToggleTeamList.Add(item.PersonaId);
+                    }
+                }
+
+
+
+
+
                 NotifierHelper.Show(NotifierType.Success, $"[{result.ExecTime:0.00} 秒]  更换玩家 {item.Name} 队伍成功");
+            }
             else
                 NotifierHelper.Show(NotifierType.Error, $"[{result.ExecTime:0.00} 秒]  更换玩家 {item.Name} 队伍失败\n{result.Content}");
-        }
+            }
         else
         {
             NotifierHelper.Show(NotifierType.Warning, "T1 当前未选中任何玩家，操作取消");
@@ -953,7 +986,34 @@ public partial class ScoreView : UserControl
 
             var result = await BF1API.RSPMovePlayer(Globals.SessionId, Globals.GameId, item.PersonaId, 2);
             if (result.IsSuccess)
+            {
+                Globals.AllowTempAloowToggleTeamList1.Add(item.PersonaId);
+
+                var result2 = await CloudApi.AddAutoToggleTeamList(item.PersonaId.ToString());
+                if (result2.IsSuccess)
+                {
+
+                }
+                else
+                {
+                    try
+                    {
+                        var data = result2.Content.Replace("\r", "");
+                        RepsoneData dataObj = JsonConvert.DeserializeObject<RepsoneData>(data);
+                        if (dataObj.Id != "0003")
+                        {
+                            Globals.TempToggleTeamList.Add(item.PersonaId);
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        Globals.TempToggleTeamList.Add(item.PersonaId);
+                    }
+                }
+
+
                 NotifierHelper.Show(NotifierType.Success, $"[{result.ExecTime:0.00} 秒]  更换玩家 {item.Name} 队伍成功");
+            }
             else
                 NotifierHelper.Show(NotifierType.Error, $"[{result.ExecTime:0.00} 秒]  更换玩家 {item.Name} 队伍失败\n{result.Content}");
         }

@@ -750,7 +750,7 @@ public partial class RuleView : UserControl
             NotifierHelper.Show(NotifierType.Error, $"您不是当前服务器管理员");
             return;
         }
-        var result = await BF1API.AddWhiteList(ServerId: Globals.ServerId.ToString(), PlayerName: name);
+        var result = await BF1API.AddWhiteList( ServerId: Globals.ServerId.ToString(),Gameid: Globals.GameId.ToString(),Guid: Globals.PersistedGameId, PlayerName: name);
         if (result.IsSuccess)
         {
             NotifierHelper.Show(NotifierType.Success, $"联网白名单添加成功");
@@ -1026,4 +1026,10 @@ public partial class RuleView : UserControl
         ListBox_CustomBlacks.Items.Clear();
         NotifierHelper.Show(NotifierType.Success, "清空黑名单列表成功");
     }
+
+    private void CheckBox_ToggleTeamLimt_Click(object sender, RoutedEventArgs e)
+    {
+        Globals.IsAllowWhlistToggleTeam = CheckBox_ToggleTeamLimt.IsChecked == true;
+    }
+
 }

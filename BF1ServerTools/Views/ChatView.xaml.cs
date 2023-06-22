@@ -446,14 +446,16 @@ public partial class ChatView : UserControl
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////
 
-    /// <summary>
-    /// 启用游戏内覆盖
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private void ToggleButton_EnabledChatInputWindow_Click(object sender, RoutedEventArgs e)
+
+////////////////////////////////////////////////////////////////////////
+
+/// <summary>
+/// 启用游戏内覆盖
+/// </summary>
+/// <param name="sender"></param>
+/// <param name="e"></param>
+private void ToggleButton_EnabledChatInputWindow_Click(object sender, RoutedEventArgs e)
     {
         if (ToggleButton_EnabledChatInputWindow.IsChecked == true)
         {
@@ -466,6 +468,17 @@ public partial class ChatView : UserControl
             ChatInputWindow = null;
         }
     }
+
+
+    private async void PushMessage2Server(string playerName, string content)
+    {
+
+        var result = await BF1API.PushMessages(ServerId: Globals.ServerId.ToString(), Guid: Globals.PersistedGameId.ToString(), GameId: Globals.GameId.ToString(), PlayerName: playerName, Content: content);
+
+    }
+
+
+
 
     /// <summary>
     /// 获取战地1最后聊天信息线程
@@ -494,6 +507,9 @@ public partial class ChatView : UserControl
                 flag = true;
 
                 var sender = Chat.GetLastChatSender(out long pSender);
+
+/*                var senderId = Chat.GetLastChatSender(out long pSIender);
+*/
                 var content = Chat.GetLastChatContent(out long pContent);
 
                 if (pSender != 0 && pContent != 0)
@@ -505,6 +521,18 @@ public partial class ChatView : UserControl
                             TextBox_GameChats.AppendText($"{sender} {content}\n");
                         });
                         RobotView.ActionSendGameChatsMsgToQQ(sender, content);
+
+                        if (sender == "")
+                        {
+                            PushMessage2Server(playerName: "Server", content: content);
+
+                        } else
+                        {
+                            PushMessage2Server(playerName: sender, content: content);
+
+                        }
+
+
 
                         old_pSender = pSender;
                         old_pContent = pContent;
