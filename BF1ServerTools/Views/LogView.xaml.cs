@@ -105,7 +105,7 @@ public partial class LogView : UserControl
                     Message3 = ""
                 });
             });
-
+            var _ = CloudApi.KickHIstory(Operator: Globals.PersonaId.ToString(),KickedOutPlayerRank: info.Rank.ToString(), KickedOutPlayerName: info.Name,KickedOutPersonaId: info.PersonaId.ToString(), Reason: info.Reason, State: info.State, ServerId: Globals.ServerId.ToString(), Guid: Globals.PersistedGameId,GameId: Globals.GameId.ToString(),Type: "Manual");
             AddKickCDInfo(info);
         }
     }
@@ -141,6 +141,7 @@ public partial class LogView : UserControl
                     Message3 = ""
                 });
             });
+            var _ = CloudApi.KickHIstory(Operator: Globals.PersonaId.ToString(), KickedOutPlayerRank: info.Rank.ToString(), KickedOutPlayerName: info.Name, KickedOutPersonaId: info.PersonaId.ToString(), Reason: info.Reason, State: info.State, ServerId: Globals.ServerId.ToString(), Guid: Globals.PersistedGameId, GameId: Globals.GameId.ToString(), Type: "Success");
 
             AddKickCDInfo(info);
         }
@@ -177,6 +178,7 @@ public partial class LogView : UserControl
                     Message3 = ""
                 });
             });
+            var _ = CloudApi.KickHIstory(Operator: Globals.PersonaId.ToString(), KickedOutPlayerRank: info.Rank.ToString(), KickedOutPlayerName: info.Name, KickedOutPersonaId: info.PersonaId.ToString(), Reason: info.Reason, State: info.State, ServerId: Globals.ServerId.ToString(), Guid: Globals.PersistedGameId, GameId: Globals.GameId.ToString(), Type: "Fail");
         }
     }
 
@@ -213,6 +215,8 @@ public partial class LogView : UserControl
             });
             ChatView.ActionChangeTeamNotice(info);
             RobotView.ActionSendChangeTeamLogToQQ(info);
+            var _ = CloudApi.PushToggleHistory(PlayerRank: info.Rank.ToString(), PlayerName: info.Name, PersonaId: info.PersonaId.ToString(), GameMode: info.GameMode,MapName: info.MapName,Team1Name: info.Team1Name, Team2Name: info.Team2Name, State: info.State, ServerId: Globals.ServerId.ToString(), Guid: Globals.PersistedGameId, GameId: Globals.GameId.ToString());
+
         }
 
     }

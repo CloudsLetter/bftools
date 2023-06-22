@@ -65,7 +65,7 @@ public partial class LoadWindow
 
                 LoadModel.LoadState = "正在检测战地1是否运行...";
                 //检测战地1是否运行
-                if (!ProcessUtil.IsBf1Run())
+/*                if (!ProcessUtil.IsBf1Run())
                 {
                     LoadModel.LoadState = "未发现《战地1》游戏进程！程序即将关闭";
                     LoggerHelper.Error("未发现战地1进程");
@@ -76,11 +76,11 @@ public partial class LoadWindow
                         Application.Current.Shutdown();
                     });
                     return;
-                }
+                }*/
 
                 LoadModel.LoadState = "正在初始化战地1内存模块...";
                 //初始化战地1内存模块
-                if (!Memory.Initialize())
+/*                if (!Memory.Initialize())
                 {
                     LoadModel.LoadState = $"战地1内存模块初始化失败！程序即将关闭";
                     LoggerHelper.Error("战地1内存模块初始化失败");
@@ -91,7 +91,7 @@ public partial class LoadWindow
                         Application.Current.Shutdown();
                     });
                     return;
-                }
+                }*/
 
                 LoadModel.LoadState = "正在初始化SQLite数据库...";
                 // 初始化SQLite数据库

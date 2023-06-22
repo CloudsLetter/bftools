@@ -142,51 +142,6 @@ public static class CloudUtil
                 Globals.AllowTempAloowToggleTeamList1.Remove(info.PersonaId);
 
             }
-            /*bool Kick = false;
-
-
-            //&& !IsAdmin
-            if (!Kick && !WhitelistKick && Globals.IsSetRuleOK)
-            {
-                var result = await BF1API.RSPMovePlayer(Globals.SessionId, Globals.GameId, info.PersonaId, info.To);
-                if (result.IsSuccess)
-                {
-    *//*                lock (this)
-                    {
-                        AppendChangeTeamLog($"操作时间: {DateTime.Now}");
-                        AppendChangeTeamLog($"等级: {info.Rank}");
-                        AppendChangeTeamLog($"玩家ID: {info.Name}");
-                        AppendChangeTeamLog($"数字ID: {info.PersonaId}");
-                        AppendChangeTeamLog($"当前地图: {info.GameMode} - {info.MapName}");
-                        AppendChangeTeamLog($"状态: {info.State}");
-                        AppendChangeTeamLog($"自动更换至原队伍成功\n");
-                    }
-    *//*
-                    info.State = $"将 等级:{info.Rank} 名称: {info.Rank}切换回原有队伍成功";
-
-
-                }
-                else
-                {
-    *//*                lock (this)
-                    {
-                        AppendChangeTeamLog($"操作时间: {DateTime.Now}");
-                        AppendChangeTeamLog($"等级: {info.Rank}");
-                        AppendChangeTeamLog($"玩家ID: {info.Name}");
-                        AppendChangeTeamLog($"数字ID: {info.PersonaId}");
-                        AppendChangeTeamLog($"当前地图: {info.GameMode} - {info.MapName}");
-                        AppendChangeTeamLog($"状态: {info.State}");
-                        AppendChangeTeamLog($"自动更换至原队伍失败\n");
-                    }*
-                    info.State = $"将 等级:{info.Rank} 名称: {info.Rank}切换回原有队伍失败";
-                }
-                ChatView.ActionSendTextToBf1Game(info.State);
-                RobotView.ActionSendChangeTeamLogToQQ(info);
-
-
-            }
-
-*/
         }
 
     }

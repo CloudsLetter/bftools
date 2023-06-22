@@ -7,7 +7,7 @@
     xmlns:ui="http://battlefield.vip/ui/2022/xaml"
     Title="自定义踢人理由"
     Width="400"
-    Height="220"
+    Height="250"
     ResizeMode="NoResize"
     Style="{StaticResource UiWindowStyle}"
     mc:Ignorable="d">
@@ -38,7 +38,7 @@
             Margin="5"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            FontSize="24"
+            FontSize="27"
             FontWeight="Bold"
             Text="{Binding PlayerName, FallbackValue='你要踢出的玩家名字'}"
             TextTrimming="WordEllipsis"
@@ -55,6 +55,11 @@
                 <RadioButton x:Name="RadioButton_Reson4" Content="连线中断" />
                 <RadioButton x:Name="RadioButton_Reson5" Content="游戏不存在" />
                 <RadioButton x:Name="RadioButton_Reson6" Content="被管理挤出" />
+				<RadioButton x:Name="RadioButton_Reson7" Content="禁止偷家" />
+				<RadioButton x:Name="RadioButton_Reson8" Content="禁止蜘蛛人行为" />
+				<RadioButton x:Name="RadioButton_Reson9" Content="加群领取VIP" />
+				<RadioButton x:Name="RadioButton_Reson10" Content="禁止狗叫" />
+				<RadioButton x:Name="RadioButton_Resonl1" Content="禁止蹲家坦克或孤儿车" />
             </WrapPanel>
             <ui:UiTextBoxHint
                 x:Name="TextBox_CustomReason"

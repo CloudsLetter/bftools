@@ -813,34 +813,34 @@ public partial class ScoreView : UserControl
             var result = await BF1API.RSPMovePlayer(Globals.SessionId, Globals.GameId, item.PersonaId, 1);
             if (result.IsSuccess)
             {
-                Globals.AllowTempAloowToggleTeamList2.Add(item.PersonaId);
 
-
-                var result2 = await CloudApi.AddAutoToggleTeamList(item.PersonaId.ToString());
-                if (result2.IsSuccess)
+                if (Globals.LoginPlayerIsAdmin && Globals.IsAllowToggle && Globals.IsSetRuleOK)
                 {
 
-                }
-                else
-                {
-                    try
+                    Globals.AllowTempAloowToggleTeamList2.Add(item.PersonaId);
+
+                    var result2 = await CloudApi.AddAutoToggleTeamList(item.PersonaId.ToString());
+                    if (result2.IsSuccess)
                     {
-                        var data = result2.Content.Replace("\r", "");
-                        RepsoneData dataObj = JsonConvert.DeserializeObject<RepsoneData>(data);
-                        if (dataObj.Id != "0003")
+
+                    }
+                    else
+                    {
+                        try
+                        {
+                            var data = result2.Content.Replace("\r", "");
+                            RepsoneData dataObj = JsonConvert.DeserializeObject<RepsoneData>(data);
+                            if (dataObj.Id != "0003")
+                            {
+                                Globals.TempToggleTeamList.Add(item.PersonaId);
+                            }
+                        }
+                        catch (Exception)
                         {
                             Globals.TempToggleTeamList.Add(item.PersonaId);
                         }
                     }
-                    catch (Exception)
-                    {
-                        Globals.TempToggleTeamList.Add(item.PersonaId);
-                    }
                 }
-
-
-
-
 
                 NotifierHelper.Show(NotifierType.Success, $"[{result.ExecTime:0.00} 秒]  更换玩家 {item.Name} 队伍成功");
             }
@@ -987,8 +987,9 @@ public partial class ScoreView : UserControl
             var result = await BF1API.RSPMovePlayer(Globals.SessionId, Globals.GameId, item.PersonaId, 2);
             if (result.IsSuccess)
             {
-                Globals.AllowTempAloowToggleTeamList1.Add(item.PersonaId);
-
+                if (Globals.LoginPlayerIsAdmin && Globals.IsAllowToggle && Globals.IsSetRuleOK)
+                {
+                    Globals.AllowTempAloowToggleTeamList1.Add(item.PersonaId);
                 var result2 = await CloudApi.AddAutoToggleTeamList(item.PersonaId.ToString());
                 if (result2.IsSuccess)
                 {
@@ -1010,7 +1011,7 @@ public partial class ScoreView : UserControl
                         Globals.TempToggleTeamList.Add(item.PersonaId);
                     }
                 }
-
+                }
 
                 NotifierHelper.Show(NotifierType.Success, $"[{result.ExecTime:0.00} 秒]  更换玩家 {item.Name} 队伍成功");
             }

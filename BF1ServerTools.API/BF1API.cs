@@ -12,7 +12,7 @@ public static class BF1API
     private const string hostla = "http://127.0.0.1:8080/api/bf1/whitelist/add";
     private const string hostwlr = "http://127.0.0.1:8080/api/bf1/whitelist/remove";
     private const string hostrule = "http://127.0.0.1:8080/api/bf1/rule";
-    private const string hostmessages = "http://127.0.0.1:8080/api/bf1/messages";
+    private const string hostmessages = "http://127.0.0.1:8080/api/bf1/messages/add";
 
     private static readonly RestClient client;
     private static readonly RestClient clientcl;

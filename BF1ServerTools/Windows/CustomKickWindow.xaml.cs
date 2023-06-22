@@ -60,7 +60,26 @@ public partial class CustomKickWindow
         {
             reason = "ADMINPRIORITY";
         }
-
+        else if (RadioButton_Reson7.IsChecked == true)
+        {
+            reason = "禁止偷家";
+        }
+        else if (RadioButton_Reson8.IsChecked == true)
+        {
+            reason = "禁止蜘蛛人行為";
+        }
+        else if (RadioButton_Reson9.IsChecked == true)
+        {
+            reason = "加群領取VIP";
+        }
+        else if (RadioButton_Reson10.IsChecked == true)
+        {
+            reason = "禁止狗叫";
+        }
+        else if (RadioButton_Resonl1.IsChecked == true)
+        {
+            reason = "禁止蹲家坦克或孤兒車";
+        }
         NotifierHelper.Show(NotifierType.Information, $"正在踢出玩家 {PlayerName} 中...");
 
         var result = await BF1API.RSPKickPlayer(Globals.SessionId, Globals.GameId, PersonaId, reason);

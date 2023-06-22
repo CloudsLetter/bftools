@@ -1,6 +1,7 @@
 ﻿using BF1ServerTools.API.Resp;
 using BF1ServerTools.API;
 using RestSharp;
+using Newtonsoft.Json.Linq;
 
 
 public class CloudRespError
@@ -20,6 +21,10 @@ public static class CloudApi
     private const string hostba = "http://127.0.0.1:8080/api/bf1/blacklist/add";
     private const string hostbr = "http://127.0.0.1:8080/api/bf1/blacklist/remove";
 
+    private const string kickhistoryad = "http://127.0.0.1:8080/api/bf1/kickhistory/add";
+
+    private const string toggglehistoryad = "http://127.0.0.1:8080/api/bf1/togglehistory/add";
+
     private static readonly RestClient clientaq;
     private static readonly RestClient clientad;
     private static readonly RestClient clientar;
@@ -27,6 +32,10 @@ public static class CloudApi
     private static readonly RestClient clientbq;
     private static readonly RestClient clientba;
     private static readonly RestClient clientbr;
+
+    private static readonly RestClient clientkickhistoryad;
+
+    private static readonly RestClient clienttoggglehistoryad;
 
     static CloudApi()
     {
@@ -90,6 +99,26 @@ public static class CloudApi
             };
             clientbr = new RestClient(optionsss);
         }
+
+        if (clientkickhistoryad == null)
+        {
+            var optionsss = new RestClientOptions(kickhistoryad)
+            {
+                MaxTimeout = 5000,
+                ThrowOnAnyError = true
+            };
+            clientkickhistoryad = new RestClient(optionsss);
+        }
+        if (clienttoggglehistoryad == null)
+        {
+            var optionsss = new RestClientOptions(toggglehistoryad)
+            {
+                MaxTimeout = 5000,
+                ThrowOnAnyError = true
+            };
+            clienttoggglehistoryad = new RestClient(optionsss);
+        }
+
 
     }
 
@@ -413,7 +442,118 @@ public static class CloudApi
 
 
 
+    /// <summary>
+    /// 上传踢出记录到服务器
+    /// </summary>
+    /// <param name="serverToken"></param>
+    /// <returns></returns>
+    public static async Task<RespContent> KickHIstory(string Operator, string KickedOutPlayerRank, string KickedOutPlayerName, string KickedOutPersonaId, string Reason, string State, string ServerId, string Guid, string GameId, string Type)
+    {
+        var sw = new Stopwatch();
+        sw.Start();
+        var respContent = new RespContent();
 
+        try
+        {
+            var reqBody = new
+            {
+                Token = "chaoshilisaohuo",
+                Operator = Operator,
+                KickedOutPlayerRank = KickedOutPlayerRank,
+                KickedOutPlayerName = KickedOutPlayerName,
+                KickedOutPersonaId = KickedOutPersonaId,
+                Reason = Reason,
+                State = State,
+                ServerId = ServerId,
+                Guid = Guid,
+                GameId = GameId,
+                Type = Type,
+
+            };
+
+            var request = new RestRequest()
+                .AddJsonBody(reqBody);
+
+            var response = await clientbr.ExecutePostAsync(request);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                respContent.IsSuccess = true;
+                respContent.Content = response.Content;
+            }
+            else
+            {
+                var respError = JsonHelper.JsonDese<RespError>(response.Content);
+                respContent.Content = $"{respError.error.code} {respError.error.message}";
+            }
+        }
+        catch (Exception ex)
+        {
+            respContent.Content = ex.Message;
+        }
+
+        sw.Stop();
+        respContent.ExecTime = sw.Elapsed.TotalSeconds;
+
+        return respContent;
+
+    }
+
+
+    /// <summary>
+    /// 联网推送换边日志
+    /// </summary>
+    /// <param name="serverToken"></param>
+    /// <returns></returns>
+    public static async Task<RespContent> PushToggleHistory(string PlayerRank,string PlayerName, string PersonaId,string GameMode, string MapName, string Team1Name,string Team2Name,string State, string ServerId, string Guid, string GameId)
+    {
+        var sw = new Stopwatch();
+        sw.Start();
+        var respContent = new RespContent();
+
+        try
+        {
+            var reqBody = new
+            {
+                Token = "chaoshilisaohuo",
+                PlayerRank = PlayerRank,
+                PlayerName = PlayerName,
+                PersonaId = PersonaId,
+                GameMode = GameMode,
+                MapName = MapName,
+                Team1Name = Team1Name,
+                Team2Name = Team2Name,
+                State = State,
+                ServerId = ServerId,
+                Guid = Guid,
+                GameId = GameId
+            };
+
+            var request = new RestRequest()
+                .AddJsonBody(reqBody);
+
+            var response = await clienttoggglehistoryad.ExecutePostAsync(request);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                respContent.IsSuccess = true;
+                respContent.Content = response.Content;
+            }
+            else
+            {
+                var respError = JsonHelper.JsonDese<RespError>(response.Content);
+                respContent.Content = $"{respError.error.code} {respError.error.message}";
+            }
+        }
+        catch (Exception ex)
+        {
+            respContent.Content = ex.Message;
+        }
+
+        sw.Stop();
+        respContent.ExecTime = sw.Elapsed.TotalSeconds;
+
+        return respContent;
+
+    }
 
 
 
