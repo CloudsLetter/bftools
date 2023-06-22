@@ -208,7 +208,7 @@ public partial class DetailView : UserControl
             DetailModel.ServerDescription = fullServerDetails.result.serverInfo.description;
 
             DetailModel.ServerGameId = Globals.GameId.ToString();
-            DetailModel.ServerGuid = Globals.PersistedGameId;
+            DetailModel.ServerGuid = Globals.PersistedGameId.ToString();
             DetailModel.ServerId = Globals.ServerId.ToString();
 
             int index = 0;
