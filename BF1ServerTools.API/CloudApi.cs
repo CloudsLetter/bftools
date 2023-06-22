@@ -16,9 +16,17 @@ public static class CloudApi
     private const string hostaq = "http://127.0.0.1:8080/api/bf1/autotoggleteam/query";
     private const string hostad = "http://127.0.0.1:8080/api/bf1/autotoggleteam/add";
     private const string hostar = "http://127.0.0.1:8080/api/bf1/autotoggleteam/remove";
+    private const string hostbq = "http://127.0.0.1:8080/api/bf1/blacklist/query";
+    private const string hostba = "http://127.0.0.1:8080/api/bf1/blacklist/add";
+    private const string hostbr = "http://127.0.0.1:8080/api/bf1/blacklist/remove";
+
     private static readonly RestClient clientaq;
     private static readonly RestClient clientad;
     private static readonly RestClient clientar;
+
+    private static readonly RestClient clientbq;
+    private static readonly RestClient clientba;
+    private static readonly RestClient clientbr;
 
     static CloudApi()
     {
@@ -50,6 +58,37 @@ public static class CloudApi
                 ThrowOnAnyError = false
             };
             clientar = new RestClient(optionsss);
+        }
+
+
+        if (clientbq == null)
+        {
+            var options = new RestClientOptions(hostbq)
+            {
+                MaxTimeout = 5000,
+                ThrowOnAnyError = true
+            };
+            clientbq = new RestClient(options);
+        }
+
+        if (clientba == null)
+        {
+            var optionss = new RestClientOptions(hostba)
+            {
+                MaxTimeout = 5000,
+                ThrowOnAnyError = true
+            };
+            clientba = new RestClient(optionss);
+        }
+
+        if (clientbr == null)
+        {
+            var optionsss = new RestClientOptions(hostbr)
+            {
+                MaxTimeout = 5000,
+                ThrowOnAnyError = true
+            };
+            clientbr = new RestClient(optionsss);
         }
 
     }
@@ -96,7 +135,7 @@ public static class CloudApi
             {
                 // 处理其他状态码
                 respContent.IsSuccess = false;
-                respContent.Content = response.Content; ;
+                respContent.Content = response.Content; 
             }
         }
         catch (Exception ex)
@@ -111,14 +150,6 @@ public static class CloudApi
         return respContent;
 
     }
-
-
-
-
-
-
-
-
 
 
     public static async Task<RespContent> AddAutoToggleTeamList(string PersonaId)
@@ -160,7 +191,7 @@ public static class CloudApi
             {
                 // 处理其他状态码
                 respContent.IsSuccess = false;
-                respContent.Content = response.Content; ;
+                respContent.Content = response.Content; 
             }
         }
         catch (Exception ex)
@@ -219,7 +250,7 @@ public static class CloudApi
             {
                 // 处理其他状态码
                 respContent.IsSuccess = false;
-                respContent.Content = response.Content; ;
+                respContent.Content = response.Content; 
             }
         }
         catch (Exception ex)
@@ -236,7 +267,148 @@ public static class CloudApi
     }
 
 
+    /// <summary>
+    /// 联网获取黑名单
+    /// </summary>
+    /// <param name="serverToken"></param>
+    /// <param name="queryUri"></param>
+    /// <returns></returns>
+    public static async Task<RespContent> RefreshBlackList(string ServerId)
+    {
+        var sw = new Stopwatch();
+        sw.Start();
+        var respContent = new RespContent();
 
+        try
+        {
+            var reqBody = new
+            {
+                Token = "chaoshilisaohuo",
+                ServerId = ServerId
+            };
+
+            var request = new RestRequest()
+                .AddJsonBody(reqBody);
+
+            var response = await clientbq.ExecutePostAsync(request);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                respContent.IsSuccess = true;
+                respContent.Content = response.Content;
+            }
+            else
+            {
+                var respError = JsonHelper.JsonDese<RespError>(response.Content);
+                respContent.Content = $"{respError.error.code} {respError.error.message}";
+            }
+        }
+        catch (Exception ex)
+        {
+            respContent.Content = ex.Message;
+        }
+
+        sw.Stop();
+        respContent.ExecTime = sw.Elapsed.TotalSeconds;
+
+        return respContent;
+
+    }
+
+    /// <summary>
+    /// 联网增加黑名单
+    /// </summary>
+    /// <param name="serverToken"></param>
+    /// <returns></returns>
+    public static async Task<RespContent> AddBlackList(string ServerId, string Gameid, string Guid, string PlayerName)
+    {
+        var sw = new Stopwatch();
+        sw.Start();
+        var respContent = new RespContent();
+
+        try
+        {
+            var reqBody = new
+            {
+                Token = "chaoshilisaohuo",
+                ServerId = ServerId,
+                PlayerName = PlayerName,
+                Guid = Guid,
+                Gameid = Gameid
+            };
+
+            var request = new RestRequest()
+                .AddJsonBody(reqBody);
+
+            var response = await clientba.ExecutePostAsync(request);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                respContent.IsSuccess = true;
+                respContent.Content = response.Content;
+            }
+            else
+            {
+                var respError = JsonHelper.JsonDese<RespError>(response.Content);
+                respContent.Content = $"{respError.error.code} {respError.error.message}";
+            }
+        }
+        catch (Exception ex)
+        {
+            respContent.Content = ex.Message;
+        }
+
+        sw.Stop();
+        respContent.ExecTime = sw.Elapsed.TotalSeconds;
+
+        return respContent;
+
+    }
+
+    /// <summary>
+    /// 联网删除黑名单
+    /// </summary>
+    /// <param name="serverToken"></param>
+    /// <returns></returns>
+    public static async Task<RespContent> RemoveBlackList(string ServerId, string PlayerName)
+    {
+        var sw = new Stopwatch();
+        sw.Start();
+        var respContent = new RespContent();
+
+        try
+        {
+            var reqBody = new
+            {
+                Token = "chaoshilisaohuo",
+                ServerId = ServerId,
+                PlayerName = PlayerName
+            };
+
+            var request = new RestRequest()
+                .AddJsonBody(reqBody);
+
+            var response = await clientbr.ExecutePostAsync(request);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                respContent.IsSuccess = true;
+                respContent.Content = response.Content;
+            }
+            else
+            {
+                var respError = JsonHelper.JsonDese<RespError>(response.Content);
+                respContent.Content = $"{respError.error.code} {respError.error.message}";
+            }
+        }
+        catch (Exception ex)
+        {
+            respContent.Content = ex.Message;
+        }
+
+        sw.Stop();
+        respContent.ExecTime = sw.Elapsed.TotalSeconds;
+
+        return respContent;
+
+    }
 
 
 

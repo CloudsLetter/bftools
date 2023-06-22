@@ -158,6 +158,8 @@ public partial class RuleView : UserControl
                             new Action(
                                 delegate {
                                     ListBox_CustomWhites.Items.Clear();
+                                    ListBox_CustomBlacks.Items.Clear();
+
                                 }
                                  )
                     );
@@ -170,9 +172,12 @@ public partial class RuleView : UserControl
                 else { 
                 if (isShow2) {
                         isShow2 = false;
-                        var result = await BF1API.RefreshWhiteList(ServerId: Globals.ServerId.ToString());
+                        bool w = false;
+                        bool b = false;
+
+                var result = await BF1API.RefreshWhiteList(ServerId: Globals.ServerId.ToString());
                 if (result.IsSuccess)
-                    {
+                {
                     isShow = true;
                     var test = result.Content.Replace("\r", "");
 
@@ -198,12 +203,50 @@ public partial class RuleView : UserControl
                     );
                     }
                 }
-
                 else
                 {
-                    isClear = false;
+                    w = true;
                 }
-                }
+
+                        var result2 = await CloudApi.RefreshBlackList(ServerId: Globals.ServerId.ToString());
+                        if (result2.IsSuccess)
+                        {
+                            isShow = true;
+                            var test = result2.Content.Replace("\r", "");
+
+                            List<Players> players = JsonConvert.DeserializeObject<List<Players>>(test);
+
+                            Dispatcher.Invoke(
+                                new Action(
+                                    delegate {
+                                        ListBox_CustomBlacks.Items.Clear();
+                                    }
+                                )
+                            );
+
+                            foreach (Players player in players)
+                            {
+
+                                Dispatcher.Invoke(
+                                    new Action(
+                                        delegate {
+                                            ListBox_CustomBlacks.Items.Add(player.PlayerName);
+                                        }
+                                    )
+                                );
+                            }
+                        }
+                        else
+                        {
+                            b = true;
+                        }
+
+                        if (w && b)
+                        {
+                            isClear = false;
+                        }
+
+                    }
                 }
             }
             else
@@ -215,7 +258,9 @@ public partial class RuleView : UserControl
                         new Action(
                           delegate {
                         ListBox_CustomWhites.Items.Clear();
-                    }
+                        ListBox_CustomBlacks.Items.Clear();
+
+                          }
                         )
                     );
 
@@ -361,10 +406,10 @@ public partial class RuleView : UserControl
 
         // 读取黑名单列表
         ListBox_CustomBlacks.Items.Clear();
-        foreach (var item in rule.BlackList)
+/*        foreach (var item in rule.BlackList)
         {
             ListBox_CustomBlacks.Items.Add(item);
-        }
+        }*/
 
         // 读取武器限制信息
         for (int i = 0; i < DataGrid_RuleWeaponModels.Count; i++)
@@ -782,27 +827,112 @@ public partial class RuleView : UserControl
         TextBox_NewWhiteName.Clear();
     }
 
+
+
     /// <summary>
-    /// 从黑名单列表移除选中玩家
+    /// 刷新联网黑名单
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void Button_RemoveSelectedBlack_Click(object sender, RoutedEventArgs e)
+    private async void Button_RefreshBlack_Click(object sender, RoutedEventArgs e)
+    {
+
+        NotifierHelper.Show(NotifierType.Information, $"正在刷新联网黑名单中");
+        if (Globals.ServerId == 0)
+        {
+            NotifierHelper.Show(NotifierType.Error, $"请进入任意服务器");
+            return;
+        }
+        if (!Globals.LoginPlayerIsAdmin)
+        {
+            NotifierHelper.Show(NotifierType.Error, $"您不是当前服务器管理员");
+            return;
+        }
+        var result = await CloudApi.RefreshBlackList(ServerId: Globals.ServerId.ToString());
+        if (result.IsSuccess)
+        {
+            var test = result.Content.Replace("\r", "");
+
+            List<Players> players = JsonConvert.DeserializeObject<List<Players>>(test);
+
+            ListBox_CustomBlacks.Items.Clear();
+
+            foreach (Players player in players)
+            {
+                ListBox_CustomBlacks.Items.Add(player.PlayerName);
+            }
+
+            NotifierHelper.Show(NotifierType.Success, $"联网黑名单刷新成功");
+        }
+        else
+        {
+            NotifierHelper.Show(NotifierType.Error, $"联网黑名单刷新失败");
+        }
+
+    }
+        /// <summary>
+        /// 从云黑名单列表移除选中玩家
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void Button_RemoveSelectedBlack_Click(object sender, RoutedEventArgs e)
     {
         if (ListBox_CustomBlacks.SelectedItem is string name)
         {
             ListBox_CustomBlacks.Items.Remove(name);
 
-            NotifierHelper.Show(NotifierType.Success, $"从黑名单列表移除玩家 {name} 成功");
+            if (Globals.ServerId == 0)
+            {
+                NotifierHelper.Show(NotifierType.Error, $"请进入任意服务器");
+                return;
+            }
+            if (!Globals.LoginPlayerIsAdmin)
+            {
+                NotifierHelper.Show(NotifierType.Error, $"您不是当前服务器管理员");
+                return;
+            }
+            var result = await CloudApi.RemoveBlackList(ServerId: Globals.ServerId.ToString(), PlayerName: name);
+            if (result.IsSuccess)
+            {
+                NotifierHelper.Show(NotifierType.Success, $"联网黑名单删除成功");
+                var results = await CloudApi.RefreshBlackList(ServerId: Globals.ServerId.ToString());
+                if (results.IsSuccess)
+                {
+                    var test = results.Content.Replace("\r", "");
+
+                    List<Players> players = JsonConvert.DeserializeObject<List<Players>>(test);
+
+                    ListBox_CustomBlacks.Items.Clear();
+
+                    foreach (Players player in players)
+                    {
+                        ListBox_CustomBlacks.Items.Add(player.PlayerName);
+                    }
+
+                    NotifierHelper.Show(NotifierType.Success, $"联网黑名单刷新成功");
+                }
+                else
+                {
+                    NotifierHelper.Show(NotifierType.Error, $"联网黑名单刷新失败");
+                }
+            }
+            else
+            {
+                NotifierHelper.Show(NotifierType.Error, $"联网黑名单删除失败");
+            }
+            TextBox_NewBlackName.Clear();
+
+
         }
     }
 
+
     /// <summary>
-    /// 添加玩家到黑名单列表
+    /// 添加玩家到云黑名单列表
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void Button_AddNewBlack_Click(object sender, RoutedEventArgs e)
+    private async void Button_AddNewBlack_Click(object sender, RoutedEventArgs e)
     {
         var name = TextBox_NewBlackName.Text.Trim();
         if (string.IsNullOrWhiteSpace(name))
@@ -810,12 +940,85 @@ public partial class RuleView : UserControl
             NotifierHelper.Show(NotifierType.Warning, "请输入正确的玩家名称");
             return;
         }
+        if (Globals.ServerId == 0)
+        {
+            NotifierHelper.Show(NotifierType.Error, $"请进入任意服务器");
+            return;
+        }
+        if (!Globals.LoginPlayerIsAdmin)
+        {
+            NotifierHelper.Show(NotifierType.Error, $"您不是当前服务器管理员");
+            return;
+        }
+        var result = await CloudApi.AddBlackList(ServerId: Globals.ServerId.ToString(), Gameid: Globals.GameId.ToString(), Guid: Globals.PersistedGameId, PlayerName: name);
+        if (result.IsSuccess)
+        {
+            NotifierHelper.Show(NotifierType.Success, $"联网黑名单添加成功");
+            var results = await CloudApi.RefreshBlackList(ServerId: Globals.ServerId.ToString());
+            if (results.IsSuccess)
+            {
+                var test = results.Content.Replace("\r", "");
 
-        ListBox_CustomBlacks.Items.Add(name);
+                List<Players> players = JsonConvert.DeserializeObject<List<Players>>(test);
+
+                ListBox_CustomBlacks.Items.Clear();
+
+                foreach (Players player in players)
+                {
+                    ListBox_CustomBlacks.Items.Add(player.PlayerName);
+                }
+
+                NotifierHelper.Show(NotifierType.Success, $"联网黑名单刷新成功");
+            }
+            else
+            {
+                NotifierHelper.Show(NotifierType.Error, $"联网黑名单刷新失败");
+            }
+        }
+        else
+        {
+            NotifierHelper.Show(NotifierType.Error, $"联网黑名单添加失败");
+        }
         TextBox_NewBlackName.Clear();
-
-        NotifierHelper.Show(NotifierType.Success, $"添加玩家 {name} 到黑名单列表成功");
     }
+
+
+
+    /*
+        /// <summary>
+        /// 从黑名单列表移除选中玩家
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Button_RemoveSelectedBlack_Click(object sender, RoutedEventArgs e)
+        {
+            if (ListBox_CustomBlacks.SelectedItem is string name)
+            {
+                ListBox_CustomBlacks.Items.Remove(name);
+
+                NotifierHelper.Show(NotifierType.Success, $"从黑名单列表移除玩家 {name} 成功");
+            }
+        }
+
+        /// <summary>
+        /// 添加玩家到黑名单列表
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Button_AddNewBlack_Click(object sender, RoutedEventArgs e)
+        {
+            var name = TextBox_NewBlackName.Text.Trim();
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                NotifierHelper.Show(NotifierType.Warning, "请输入正确的玩家名称");
+                return;
+            }
+
+            ListBox_CustomBlacks.Items.Add(name);
+            TextBox_NewBlackName.Clear();
+
+            NotifierHelper.Show(NotifierType.Success, $"添加玩家 {name} 到黑名单列表成功");
+        }*/
 
     ///////////////////////////////////////////////////////////////////////////////
 

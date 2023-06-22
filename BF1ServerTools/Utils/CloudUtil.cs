@@ -23,74 +23,6 @@ public class RepsoneData
 
 public static class CloudUtil
 {
-
-/*    private static async void AutTogglTeame1(ChangeTeamInfo info)
-    {
-        ChangeTeamInfo changeTeamInfo = new ();
-        foreach (ChangeTeamInfo item in Globals.TempToggleTeamList1)
-        {
-            bool Kick = false;
-            if (Globals.AllowTempAloowToggleTeamList1.Count != 0)
-            {
-                    Kick = PlayerUtil.IsAtTempTempAloowToggleTeamList(item.PersonaId, Globals.AllowTempAloowToggleTeamList1);
-            }
-            bool WhitelistKick = false;
-            if (Globals.IsAllowWhlistToggleTeam)
-            {
-                if (PlayerUtil.IsWhite(item.Name, Globals.CustomWhites_Name))
-                {
-                    WhitelistKick = true;
-                }
-            }
-            if (!Kick && !WhitelistKick)
-            {
-                var result = await BF1API.RSPMovePlayer(Globals.SessionId, Globals.GameId, item.PersonaId, item.To);
-                Globals.AllowTempAloowToggleTeamList1.Remove(item.PersonaId);
-
-            }
-            else
-            {
-                Globals.AllowTempAloowToggleTeamList2.Remove(item.PersonaId);
-
-            }
-        }
-        Globals.TempToggleTeamList1.Clear();
-
-    }
-    private static async void AutTogglTeame2()
-    {
-        ChangeTeamInfo changeTeamInfo = new();
-        foreach (ChangeTeamInfo item in Globals.TempToggleTeamList2)
-        {
-            bool Kick = false;
-            if (Globals.AllowTempAloowToggleTeamList2.Count != 0)
-            {
-                Kick = PlayerUtil.IsAtTempTempAloowToggleTeamList(item.PersonaId, Globals.AllowTempAloowToggleTeamList2);
-            }
-            bool WhitelistKick = false;
-            if (Globals.IsAllowWhlistToggleTeam)
-            {
-                if (PlayerUtil.IsWhite(item.Name, Globals.CustomWhites_Name))
-                {
-                    WhitelistKick = true;
-                }
-            }
-            if (!Kick && !WhitelistKick)
-            {
-                var result = await BF1API.RSPMovePlayer(Globals.SessionId, Globals.GameId, item.PersonaId, item.To);
-
-            } 
-            else
-            {
-                Globals.AllowTempAloowToggleTeamList2.Remove(item.PersonaId);
-
-            }
-        }
-        Globals.TempToggleTeamList2.Clear();
-
-    }
-*/
-
     public static async void AutTogglTeame(ChangeTeamInfo info)
     {
 
@@ -197,8 +129,8 @@ public static class CloudUtil
                     }
                 }
 
-                ChatView.ActionSendTextToBf1Game(info.State);
-                RobotView.ActionSendChangeTeamLogToQQ(info);
+                LogView.ActionAddChangeTeamInfoLog(info);
+
             }
             if (info.To == 2 && Globals.AllowTempAloowToggleTeamList2.Count != 0 && toggleTeam)
             {

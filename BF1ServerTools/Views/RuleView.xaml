@@ -447,7 +447,7 @@
                         x:Name="ListBox_CustomBlacks"
                         Margin="5"
                         Style="{StaticResource ListBoxStyle_CustomWhites}">
-                        <ListBox.ContextMenu>
+ <!--                       <ListBox.ContextMenu>
                             <ContextMenu>
                                 <MenuItem
                                     Name="MenuItem_ImportCustomBlacks"
@@ -467,7 +467,7 @@
                                     Click="MenuItem_ClearCustomBlacks_Click"
                                     Header="清空黑名单列表" />
                             </ContextMenu>
-                        </ListBox.ContextMenu>
+                        </ListBox.ContextMenu> -->
                     </ListBox>
                     <!--  ****************  -->
                     <StackPanel>
@@ -482,7 +482,12 @@
                             FontWeight="Bold"
                             Text="玩家索引" />
                         <TextBlock Margin="20,5,5,5" Text="{Binding ElementName=ListBox_CustomBlacks, Path=SelectedIndex}" />
-                        <Button
+                            <Button
+                            x:Name="Button_RefreshBlackList"
+                            Click="Button_RefreshBlack_Click"
+                            Content="刷新黑名单">
+                            </Button>
+                            <Button
                             x:Name="Button_RemoveSelectedBlack"
                             Click="Button_RemoveSelectedBlack_Click"
                             Content="从黑名单列表移除选中玩家">
