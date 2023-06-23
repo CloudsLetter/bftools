@@ -76,7 +76,15 @@ public partial class ScoreView : UserControl
             Name = "UpdatePlayerListThread",
             IsBackground = true
         }.Start();
+
+        new Thread(PushPlayerGaming2Cloud)
+        {
+            Name = "PushPlayerGaming2Cloud",
+            IsBackground = true
+        }.Start();
     }
+
+
 
     private void MainWindow_WindowClosingEvent()
     {
@@ -193,6 +201,33 @@ public partial class ScoreView : UserControl
     }
 
     /// <summary>
+    /// 上传玩家数据到云端
+    /// </summary>
+
+    private async void PushPlayerGaming2Cloud()
+    {
+        while (MainWindow.IsAppRunning)
+        {
+            if (Globals.GameId != 0)
+            {
+
+                foreach (var data in PlayerList_Team1)
+                {
+                    data.ServerId = Globals.ServerId;
+                    data.GameId = Globals.GameId;
+                    data.Guid = Globals.PersistedGameId;
+                }
+
+                var _ = await CloudApi.PushPlayGamingData(PlayerList_Team1);
+                var _r = await CloudApi.PushPlayGamingData(PlayerList_Team2);
+            }
+
+            Thread.Sleep(60000);
+
+        }
+    }
+
+    /// <summary>
     /// 更新服务器玩家列表线程
     /// </summary>
     private void UpdatePlayerListThread()
@@ -234,7 +269,7 @@ public partial class ScoreView : UserControl
                 item.LifeKd = PlayerUtil.GetLifeKD(item.PersonaId);
                 item.LifeKpm = PlayerUtil.GetLifeKPM(item.PersonaId);
                 item.LifeTime = PlayerUtil.GetLifeTime(item.PersonaId);
-                item.WR = PlayerUtil.GetWR(item.PersonaId);
+                item.LifeWR = PlayerUtil.GetWR(item.PersonaId);
                 item.Admin = PlayerUtil.IsAdminVIP(item.PersonaId, Globals.ServerAdmins_PID);
                 item.Vip = PlayerUtil.IsAdminVIP(item.PersonaId, Globals.ServerVIPs_PID);
                 item.White = PlayerUtil.IsWhite(item.Name, Globals.CustomWhites_Name);
@@ -372,13 +407,9 @@ public partial class ScoreView : UserControl
             Thread.Sleep(1000);
         }
     }
-    static void Main()
-    {
 
-        // 等待60秒
-        Thread.Sleep(60000);
 
-    }
+
     /// <summary>
     /// 动态更新 ListView 队伍1
     /// </summary>
@@ -409,7 +440,7 @@ public partial class ScoreView : UserControl
                     ListView_PlayerList_Team1[i].LifeKd = PlayerList_Team1[index].LifeKd;
                     ListView_PlayerList_Team1[i].LifeKpm = PlayerList_Team1[index].LifeKpm;
                     ListView_PlayerList_Team1[i].LifeTime = PlayerList_Team1[index].LifeTime;
-                    ListView_PlayerList_Team1[i].WR = PlayerList_Team1[index].WR;
+                    ListView_PlayerList_Team1[i].WR = PlayerList_Team1[index].LifeWR;
                     ListView_PlayerList_Team1[i].Score = PlayerList_Team1[index].Score;
                     ListView_PlayerList_Team1[i].Kit = PlayerList_Team1[index].Kit;
                     ListView_PlayerList_Team1[i].Kit2 = PlayerList_Team1[index].Kit2;
@@ -453,7 +484,7 @@ public partial class ScoreView : UserControl
                         LifeKd = PlayerList_Team1[i].LifeKd,
                         LifeKpm = PlayerList_Team1[i].LifeKpm,
                         LifeTime = PlayerList_Team1[i].LifeTime,
-                        WR = PlayerList_Team1[i].WR,
+                        WR = PlayerList_Team1[i].LifeWR,
                         Score = PlayerList_Team1[i].Score,
                         Kit = PlayerList_Team1[i].Kit,
                         Kit2 = PlayerList_Team1[i].Kit2,
@@ -510,7 +541,7 @@ public partial class ScoreView : UserControl
                     ListView_PlayerList_Team2[i].LifeKd = PlayerList_Team2[index].LifeKd;
                     ListView_PlayerList_Team2[i].LifeKpm = PlayerList_Team2[index].LifeKpm;
                     ListView_PlayerList_Team2[i].LifeTime = PlayerList_Team2[index].LifeTime;
-                    ListView_PlayerList_Team2[i].WR = PlayerList_Team2[index].WR;
+                    ListView_PlayerList_Team2[i].WR = PlayerList_Team2[index].LifeWR;
                     ListView_PlayerList_Team2[i].Score = PlayerList_Team2[index].Score;
                     ListView_PlayerList_Team2[i].Kit = PlayerList_Team2[index].Kit;
                     ListView_PlayerList_Team2[i].Kit2 = PlayerList_Team2[index].Kit2;
@@ -554,7 +585,7 @@ public partial class ScoreView : UserControl
                         LifeKd = PlayerList_Team2[i].LifeKd,
                         LifeKpm = PlayerList_Team2[i].LifeKpm,
                         LifeTime = PlayerList_Team2[i].LifeTime,
-                        WR = PlayerList_Team2[i].WR,
+                        WR = PlayerList_Team2[i].LifeWR,
                         Score = PlayerList_Team2[i].Score,
                         Kit = PlayerList_Team2[i].Kit,
                         Kit2 = PlayerList_Team2[i].Kit2,
@@ -884,7 +915,6 @@ public partial class ScoreView : UserControl
         if (ListView_Team1.SelectedItem is PlayerDataModel item)
         {
             var builder = new StringBuilder();
-
             builder.Append($"序号：{item.Index}，");
             builder.Append($"等级：{item.Rank}，");
             builder.Append($"战队：{item.Clan}，");

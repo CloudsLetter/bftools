@@ -27,7 +27,7 @@ public class PlayerData
     public float LifeKd { get; set; }
     public float LifeKpm { get; set; }
     public int LifeTime { get; set; }
-    public string WR { get; set; }
+    public string LifeWR { get; set; }
     public string Kit { get; set; }
     public string Kit2 { get; set; }
     public string Kit3 { get; set; }
@@ -40,4 +40,8 @@ public class PlayerData
     public string WeaponS5 { get; set; }
     public string WeaponS6 { get; set; }
     public string WeaponS7 { get; set; }
+    public long ServerId { get; set; }
+    public long GameId { get; set; }
+    public string Guid { get; set; }
+
 }

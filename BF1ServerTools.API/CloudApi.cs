@@ -3,6 +3,8 @@ using BF1ServerTools.API;
 using RestSharp;
 using Newtonsoft.Json.Linq;
 using BF1ServerTools.SDK.Data;
+using Newtonsoft.Json;
+using System.Text;
 
 public class CloudRespError
 {
@@ -25,7 +27,7 @@ public static class CloudApi
 
     private const string toggglehistoryad = "http://127.0.0.1:8080/api/bf1/togglehistory/add";
 
-    private const string playgamingdatad = "http://127.0.0.1:8080/api/bf1/togglehistory/add";
+    private const string playgamingdatad = "http://127.0.0.1:8080/api/bf1/playergamingdata/add";
 
     private static readonly RestClient clientaq;
     private static readonly RestClient clientad;
@@ -568,7 +570,7 @@ public static class CloudApi
 
     }
 
-    public static async Task<RespContent> PushPlayGamingData(PlayerData info)
+    public static async Task<RespContent> PushPlayGamingData(List<PlayerData> Data)
     {
         var sw = new Stopwatch();
         sw.Start();
@@ -576,16 +578,17 @@ public static class CloudApi
 
         try
         {
+
             var reqBody = new
             {
-                Token = "chaoshilisaohuo",
-
+                Data
             };
 
             var request = new RestRequest()
-                .AddJsonBody(reqBody);
+                .AddJsonBody(reqBody)
+                .AddHeader("Token", "chaoshilisaohuo");
 
-            var response = await clienttoggglehistoryad.ExecutePostAsync(request);
+            var response = await clientplaygamingdatad.ExecutePostAsync(request);
             if (response.StatusCode == HttpStatusCode.OK)
             {
                 respContent.IsSuccess = true;

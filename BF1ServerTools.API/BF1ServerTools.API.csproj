@@ -21,4 +21,8 @@
     <PackageReference Include="RestSharp" Version="108.0.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BF1ServerTools.SDK\BF1ServerTools.SDK.csproj" />
+  </ItemGroup>
+
 </Project>

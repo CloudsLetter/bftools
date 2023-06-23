@@ -130,6 +130,8 @@ public static class CloudUtil
                 }
 
                 LogView.ActionAddChangeTeamInfoLog(info);
+                var _ = CloudApi.PushToggleHistory(PlayerRank: info.Rank.ToString(), PlayerName: info.Name, PersonaId: info.PersonaId.ToString(), GameMode: info.GameMode, MapName: info.MapName, Team1Name: info.Team1Name, Team2Name: info.Team2Name, State: info.State, ServerId: Globals.ServerId.ToString(), Guid: Globals.PersistedGameId, GameId: Globals.GameId.ToString());
+
 
             }
             if (info.To == 2 && Globals.AllowTempAloowToggleTeamList2.Count != 0 && toggleTeam)
