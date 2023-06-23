@@ -118,6 +118,11 @@ public partial class PlayerDataModel : ObservableObject, IComparable<PlayerDataM
     [ObservableProperty]
     private int lifeTime;
 
+    /// <summary>
+    /// 胜率
+    /// </summary>
+    [ObservableProperty]
+    private string wR;
     ///////////////////////////////////////////////////////////////////////
 
     /// <summary>

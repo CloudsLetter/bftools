@@ -531,6 +531,7 @@ public partial class RuleView : UserControl
 
         Globals.ServerRule_Team1.LifeMaxKD = RuleTeam1Model.LifeMaxKD;
         Globals.ServerRule_Team1.LifeMaxKPM = RuleTeam1Model.LifeMaxKPM;
+        Globals.ServerRule_Team1.LifeMaxWR = RuleTeam1Model.LifeMaxWR;
         Globals.ServerRule_Team1.LifeMaxWeaponStar = RuleTeam1Model.LifeMaxWeaponStar;
         Globals.ServerRule_Team1.LifeMaxVehicleStar = RuleTeam1Model.LifeMaxVehicleStar;
 
@@ -544,6 +545,7 @@ public partial class RuleView : UserControl
 
         Globals.ServerRule_Team2.LifeMaxKD = RuleTeam2Model.LifeMaxKD;
         Globals.ServerRule_Team2.LifeMaxKPM = RuleTeam2Model.LifeMaxKPM;
+        Globals.ServerRule_Team2.LifeMaxWR = RuleTeam2Model.LifeMaxWR;
         Globals.ServerRule_Team2.LifeMaxWeaponStar = RuleTeam2Model.LifeMaxWeaponStar;
         Globals.ServerRule_Team2.LifeMaxVehicleStar = RuleTeam2Model.LifeMaxVehicleStar;
 
@@ -615,6 +617,8 @@ public partial class RuleView : UserControl
         AddRuleLog("【生涯规则】");
         AddRuleLog("生涯KD", $"{Globals.ServerRule_Team1.LifeMaxKD}", $"{Globals.ServerRule_Team2.LifeMaxKD}");
         AddRuleLog("生涯KPM", $"{Globals.ServerRule_Team1.LifeMaxKPM}", $"{Globals.ServerRule_Team2.LifeMaxKPM}");
+        AddRuleLog("生涯胜率", $"{Globals.ServerRule_Team1.LifeMaxWR}", $"{Globals.ServerRule_Team2.LifeMaxWR}");
+
 
         AddRuleLog("武器星数", $"{Globals.ServerRule_Team1.LifeMaxWeaponStar}", $"{Globals.ServerRule_Team2.LifeMaxWeaponStar}");
         AddRuleLog("载具星数", $"{Globals.ServerRule_Team1.LifeMaxVehicleStar}", $"{Globals.ServerRule_Team2.LifeMaxVehicleStar}");

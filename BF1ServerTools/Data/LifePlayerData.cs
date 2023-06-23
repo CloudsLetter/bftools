@@ -9,7 +9,10 @@ public class LifePlayerData
     public float KD { get; set; }
     public float KPM { get; set; }
     public int Time { get; set; }
-
+    public int Wins { get; set; }
+    public int Losses { get; set; }
+    public int roundsPlayed { get; set; }
+    public float WR { get; set; }
     public bool IsWeaponOK { get; set; }
     public bool IsVehicleOK { get; set; }
 

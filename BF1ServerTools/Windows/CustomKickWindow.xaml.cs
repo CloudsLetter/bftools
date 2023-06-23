@@ -80,6 +80,10 @@ public partial class CustomKickWindow
         {
             reason = "禁止蹲家坦克或孤兒車";
         }
+        else if (RadioButton_Resonl2.IsChecked == true)
+        {
+            reason = "換大號來";
+        }
         NotifierHelper.Show(NotifierType.Information, $"正在踢出玩家 {PlayerName} 中...");
 
         var result = await BF1API.RSPKickPlayer(Globals.SessionId, Globals.GameId, PersonaId, reason);

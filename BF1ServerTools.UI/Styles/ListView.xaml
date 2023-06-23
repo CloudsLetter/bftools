@@ -151,6 +151,10 @@
                     <TextBlock Text="时长：" />
                     <TextBlock Text="{Binding LifeTime}" />
                 </StackPanel>
+                <StackPanel Margin="5">
+                    <TextBlock Text="胜率：" />
+                    <TextBlock Text="{Binding WR}" />
+                </StackPanel>
             </StackPanel>
             <Border
                 Margin="5"

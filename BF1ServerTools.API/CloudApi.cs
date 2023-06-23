@@ -2,7 +2,7 @@
 using BF1ServerTools.API;
 using RestSharp;
 using Newtonsoft.Json.Linq;
-
+using BF1ServerTools.SDK.Data;
 
 public class CloudRespError
 {
@@ -25,6 +25,8 @@ public static class CloudApi
 
     private const string toggglehistoryad = "http://127.0.0.1:8080/api/bf1/togglehistory/add";
 
+    private const string playgamingdatad = "http://127.0.0.1:8080/api/bf1/togglehistory/add";
+
     private static readonly RestClient clientaq;
     private static readonly RestClient clientad;
     private static readonly RestClient clientar;
@@ -36,6 +38,8 @@ public static class CloudApi
     private static readonly RestClient clientkickhistoryad;
 
     private static readonly RestClient clienttoggglehistoryad;
+
+    private static readonly RestClient clientplaygamingdatad;
 
     static CloudApi()
     {
@@ -119,6 +123,15 @@ public static class CloudApi
             clienttoggglehistoryad = new RestClient(optionsss);
         }
 
+        if (clientplaygamingdatad == null)
+        {
+            var optionsss = new RestClientOptions(playgamingdatad)
+            {
+                MaxTimeout = 5000,
+                ThrowOnAnyError = true
+            };
+            clientplaygamingdatad = new RestClient(optionsss);
+        }
 
     }
 
@@ -555,6 +568,45 @@ public static class CloudApi
 
     }
 
+    public static async Task<RespContent> PushPlayGamingData(PlayerData info)
+    {
+        var sw = new Stopwatch();
+        sw.Start();
+        var respContent = new RespContent();
 
+        try
+        {
+            var reqBody = new
+            {
+                Token = "chaoshilisaohuo",
+
+            };
+
+            var request = new RestRequest()
+                .AddJsonBody(reqBody);
+
+            var response = await clienttoggglehistoryad.ExecutePostAsync(request);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                respContent.IsSuccess = true;
+                respContent.Content = response.Content;
+            }
+            else
+            {
+                var respError = JsonHelper.JsonDese<RespError>(response.Content);
+                respContent.Content = $"{respError.error.code} {respError.error.message}";
+            }
+        }
+        catch (Exception ex)
+        {
+            respContent.Content = ex.Message;
+        }
+
+        sw.Stop();
+        respContent.ExecTime = sw.Elapsed.TotalSeconds;
+
+        return respContent;
+
+    }
 
 }

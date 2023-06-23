@@ -69,4 +69,12 @@ public partial class RuleTeamModel : ObservableObject
     /// </summary>
     [ObservableProperty]
     private int lifeMaxVehicleStar;
+
+    /// <summary>
+    /// 最大生涯胜率
+    /// </summary>
+    [ObservableProperty]
+    private float lifeMaxWR;
+
+
 }

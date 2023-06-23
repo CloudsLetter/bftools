@@ -99,7 +99,19 @@ public static class PlayerUtil
         else
             return "0%";
     }
-
+    /// <summary>
+    /// 计算百分比返回浮点数
+    /// </summary>
+    /// <param name="num1"></param>
+    /// <param name="num2"></param>
+    /// <returns></returns>
+    public static float GetPlayerPercentageF(float num1, float num2)
+    {
+        if (num2 != 0)
+            return (float)Math.Round(num1 / num2 * 100, 2);
+        else
+            return 0.00f;
+    }
     /// <summary>
     /// 获取击杀星数
     /// </summary>
@@ -231,6 +243,30 @@ public static class PlayerUtil
             return 0;
         }
     }
+
+    /// <summary>
+    /// 获取胜率
+    /// </summary>
+    /// <param name="personaId"></param>
+    /// <returns></returns>
+    public static string GetWR(long personaId)
+    {
+        lock (Obj)
+        {
+            if (Globals.LifePlayerCacheDatas != null)
+            {
+                var index = Globals.LifePlayerCacheDatas.FindIndex(item => item.PersonaId == personaId);
+                if (index != -1)
+                {
+                    float wr = Globals.LifePlayerCacheDatas[index].WR;
+                    return $"{wr.ToString("0.00")}%";
+                }
+            }
+
+            return "0.00%";
+        }
+    }
+
 
     /// <summary>
     /// 获取游玩时长

@@ -234,7 +234,7 @@ public partial class ScoreView : UserControl
                 item.LifeKd = PlayerUtil.GetLifeKD(item.PersonaId);
                 item.LifeKpm = PlayerUtil.GetLifeKPM(item.PersonaId);
                 item.LifeTime = PlayerUtil.GetLifeTime(item.PersonaId);
-
+                item.WR = PlayerUtil.GetWR(item.PersonaId);
                 item.Admin = PlayerUtil.IsAdminVIP(item.PersonaId, Globals.ServerAdmins_PID);
                 item.Vip = PlayerUtil.IsAdminVIP(item.PersonaId, Globals.ServerVIPs_PID);
                 item.White = PlayerUtil.IsWhite(item.Name, Globals.CustomWhites_Name);
@@ -372,7 +372,13 @@ public partial class ScoreView : UserControl
             Thread.Sleep(1000);
         }
     }
+    static void Main()
+    {
 
+        // 等待60秒
+        Thread.Sleep(60000);
+
+    }
     /// <summary>
     /// 动态更新 ListView 队伍1
     /// </summary>
@@ -403,6 +409,7 @@ public partial class ScoreView : UserControl
                     ListView_PlayerList_Team1[i].LifeKd = PlayerList_Team1[index].LifeKd;
                     ListView_PlayerList_Team1[i].LifeKpm = PlayerList_Team1[index].LifeKpm;
                     ListView_PlayerList_Team1[i].LifeTime = PlayerList_Team1[index].LifeTime;
+                    ListView_PlayerList_Team1[i].WR = PlayerList_Team1[index].WR;
                     ListView_PlayerList_Team1[i].Score = PlayerList_Team1[index].Score;
                     ListView_PlayerList_Team1[i].Kit = PlayerList_Team1[index].Kit;
                     ListView_PlayerList_Team1[i].Kit2 = PlayerList_Team1[index].Kit2;
@@ -446,6 +453,7 @@ public partial class ScoreView : UserControl
                         LifeKd = PlayerList_Team1[i].LifeKd,
                         LifeKpm = PlayerList_Team1[i].LifeKpm,
                         LifeTime = PlayerList_Team1[i].LifeTime,
+                        WR = PlayerList_Team1[i].WR,
                         Score = PlayerList_Team1[i].Score,
                         Kit = PlayerList_Team1[i].Kit,
                         Kit2 = PlayerList_Team1[i].Kit2,
@@ -502,6 +510,7 @@ public partial class ScoreView : UserControl
                     ListView_PlayerList_Team2[i].LifeKd = PlayerList_Team2[index].LifeKd;
                     ListView_PlayerList_Team2[i].LifeKpm = PlayerList_Team2[index].LifeKpm;
                     ListView_PlayerList_Team2[i].LifeTime = PlayerList_Team2[index].LifeTime;
+                    ListView_PlayerList_Team2[i].WR = PlayerList_Team2[index].WR;
                     ListView_PlayerList_Team2[i].Score = PlayerList_Team2[index].Score;
                     ListView_PlayerList_Team2[i].Kit = PlayerList_Team2[index].Kit;
                     ListView_PlayerList_Team2[i].Kit2 = PlayerList_Team2[index].Kit2;
@@ -545,6 +554,7 @@ public partial class ScoreView : UserControl
                         LifeKd = PlayerList_Team2[i].LifeKd,
                         LifeKpm = PlayerList_Team2[i].LifeKpm,
                         LifeTime = PlayerList_Team2[i].LifeTime,
+                        WR = PlayerList_Team2[i].WR,
                         Score = PlayerList_Team2[i].Score,
                         Kit = PlayerList_Team2[i].Kit,
                         Kit2 = PlayerList_Team2[i].Kit2,
@@ -889,6 +899,7 @@ public partial class ScoreView : UserControl
             builder.Append($"生涯KD：{item.LifeKd}，");
             builder.Append($"生涯KPM：{item.LifeKpm}，");
             builder.Append($"生涯时长：{item.LifeTime}，");
+            builder.Append($"胜率: {item.WR}");
             builder.Append($"兵种：{item.Kit3}，");
             builder.Append($"主武器：{item.WeaponS0}，");
             builder.Append($"配枪：{item.WeaponS1}，");
@@ -1060,6 +1071,7 @@ public partial class ScoreView : UserControl
             builder.Append($"生涯KD：{item.LifeKd}，");
             builder.Append($"生涯KPM：{item.LifeKpm}，");
             builder.Append($"生涯时长：{item.LifeTime}，");
+            builder.Append($"胜率: {item.WR}");
             builder.Append($"兵种：{item.Kit3}，");
             builder.Append($"主武器：{item.WeaponS0}，");
             builder.Append($"配枪：{item.WeaponS1}，");

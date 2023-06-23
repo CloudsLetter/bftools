@@ -9,6 +9,7 @@ using BF1ServerTools.Helper;
 using BF1ServerTools.Windows;
 using static BF1ServerTools.API.RespJson.GetWeapons.ResultItem.WeaponsItem;
 using static System.Net.Mime.MediaTypeNames;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace BF1ServerTools.Views;
 
@@ -164,7 +165,9 @@ public partial class MonitView : UserControl
                             float kd = PlayerUtil.GetPlayerKD(kills, deaths);
                             float kpm = detailedStats.result.basicStats.kpm;
                             int time = PlayerUtil.GetPlayHours(detailedStats.result.basicStats.timePlayed);
-
+                            int wins = detailedStats.result.basicStats.wins;
+                            int hins = detailedStats.result.basicStats.losses;
+                            float wr = PlayerUtil.GetPlayerPercentageF(detailedStats.result.basicStats.wins, detailedStats.result.roundsPlayed);
                             Globals.LifePlayerCacheDatas.Add(new()
                             {
                                 Date = DateTime.Now,
@@ -174,7 +177,8 @@ public partial class MonitView : UserControl
                                 KPM = kpm,
                                 Time = time,
                                 WeaponInfos = new(),
-                                VehicleInfos = new()
+                                VehicleInfos = new(),
+                                WR = wr,
                             });
 
                             // 拿到当前生涯索引
@@ -486,6 +490,13 @@ public partial class MonitView : UserControl
                 AddBreakRulePlayerInfo(playerData, BreakType.LifeKPM, $"Life KPM Limit {serverRule.LifeMaxKPM:0.00}");
             }
 
+            // 限制玩家生涯胜率 
+            if (serverRule.LifeMaxWR != 0 &&
+                Globals.LifePlayerCacheDatas[lifeIndex].WR > serverRule.LifeMaxWR)
+            {
+                AddBreakRulePlayerInfo(playerData, BreakType.LifeWR, $"Life WR Limit {serverRule.LifeMaxWR:0.00}");
+
+            }
             var tempData = new List<string>
             {
                 playerData.WeaponS0,
