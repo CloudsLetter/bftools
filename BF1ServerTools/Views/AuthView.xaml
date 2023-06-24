@@ -100,9 +100,13 @@
                     Text="等待玩家操作" />
             </Border>
             <Button
-                x:Name="Button_VerifySessionId"
+                x:Name="Button_VerifySessionIdUseOnline"
+                Click="Button_VerifySessionId_Online_Click"
+                Content="验证玩家SessionId有效性-在线模式" />
+            <Button
+                x:Name="Button_VerifySessionIdUseOffline"
                 Click="Button_VerifySessionId_Click"
-                Content="验证玩家SessionId有效性" />
+                Content="验证玩家SessionId有效性-离线模式" />
             <!--  ###############  -->
             <ui:UiLabelIcon Content="网络检测" />
             <WrapPanel Margin="0,0,5,5">

@@ -18,7 +18,6 @@ public static class BF1API
     private static readonly RestClient clientcl;
     private static readonly RestClient clientcla;
     private static readonly RestClient clientclr;
-    private static readonly RestClient clientrule;
     private static readonly RestClient clientmessages;
 
     static BF1API()

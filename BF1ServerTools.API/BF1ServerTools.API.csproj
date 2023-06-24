@@ -25,4 +25,8 @@
     <ProjectReference Include="..\BF1ServerTools.SDK\BF1ServerTools.SDK.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="新文件夹\" />
+  </ItemGroup>
+
 </Project>

@@ -35,6 +35,11 @@
             HorizontalAlignment="Center"
             FontSize="14"
             Text="Copyright© 2020-2022 DS By CrazyZhang666, Support By Coloryr, B_bili22" />
+        <TextBlock
+            Margin="10"
+            HorizontalAlignment="Center"
+            FontSize="14"
+            Text="Secondary Development By Wojiuchigua, EWF Special Version" />
         <Border
             Width="200"
             Margin="10"

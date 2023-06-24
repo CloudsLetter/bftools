@@ -114,7 +114,7 @@ public static class CloudUtil
 
                 }
                 else
-                {
+                {  
                     try
                     {
                         var data = result2.Content.Replace("\r", "");

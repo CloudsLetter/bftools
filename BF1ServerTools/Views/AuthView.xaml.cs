@@ -435,7 +435,7 @@ public partial class AuthView : UserControl
     }
 
     /// <summary>
-    /// 验证玩家SessionId有效性
+    /// 验证玩家SessionId有效性，默认离线版本
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -462,6 +462,7 @@ public partial class AuthView : UserControl
             TextBlock_SessionIdState.Text = firstMessage;
             Border_SessionIdState.Background = Brushes.Green;
             NotifierHelper.Show(NotifierType.Success, $"[{result.ExecTime:0.00} 秒]  验证成功\n{firstMessage}");
+            Globals.IsCloudMode = false;
         }
         else
         {
@@ -471,6 +472,55 @@ public partial class AuthView : UserControl
         }
     }
 
+
+    /// <summary>
+    /// 验证玩家SessionId有效性，在线版本
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private async void Button_VerifySessionId_Online_Click(object sender, RoutedEventArgs e)
+    {
+        if (string.IsNullOrEmpty(Globals.SessionId))
+        {
+            NotifierHelper.Show(NotifierType.Warning, "玩家SessionId为空，请先获取玩家SessionId");
+            return;
+        }
+
+        TextBlock_SessionIdState.Text = "正在验证中，请稍后...";
+        Border_SessionIdState.Background = Brushes.Gray;
+        NotifierHelper.Show(NotifierType.Information, "正在验证中，请稍后...");
+
+        _ = BF1API.SetAPILocale(Globals.SessionId);
+
+        var result = await BF1API.GetWelcomeMessage(Globals.SessionId);
+        if (result.IsSuccess)
+        {
+            var welcomeMsg = JsonHelper.JsonDese<WelcomeMsg>(result.Content);
+            var firstMessage = ChsUtil.ToSimplified(welcomeMsg.result.firstMessage);
+
+            TextBlock_SessionIdState.Text = firstMessage;
+            Border_SessionIdState.Background = Brushes.Green;
+
+            var result1 = CloudApi.CheckAlive();
+            if (result.IsSuccess)
+            {
+                Globals.IsCloudMode = true;
+                NotifierHelper.Show(NotifierType.Success, $"[{result.ExecTime:0.00} 秒]  验证成功\n{firstMessage}-在线模式");
+
+            }
+            else
+            {
+                Globals.IsCloudMode = false;
+                NotifierHelper.Show(NotifierType.Success, $"[{result.ExecTime:0.00} 秒]  验证成功\n{firstMessage}-服务器无响应回退到离线模式");
+            }
+        }
+        else
+        {
+            TextBlock_SessionIdState.Text = "验证失败";
+            Border_SessionIdState.Background = Brushes.OrangeRed;
+            NotifierHelper.Show(NotifierType.Error, $"[{result.ExecTime:0.00} 秒]  验证失败\n{result.Content}");
+        }
+    }
     /// <summary>
     /// 网络检测
     /// </summary>

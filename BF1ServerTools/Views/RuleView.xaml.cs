@@ -12,6 +12,10 @@ using System;
 using BF1ServerTools.SDK;
 using BF1ServerTools.Models;
 using System.Numerics;
+using System.Windows.Controls;
+using static System.Net.Mime.MediaTypeNames;
+using System.Windows.Markup;
+using NLog.Filters;
 
 namespace BF1ServerTools.Views;
 
@@ -154,11 +158,46 @@ public partial class RuleView : UserControl
                 {
                     if (isShow)
                     {
-                        Dispatcher.Invoke(
+                        this.Dispatcher.Invoke(
                             new Action(
                                 delegate {
                                     ListBox_CustomWhites.Items.Clear();
                                     ListBox_CustomBlacks.Items.Clear();
+                                    CheckBox_WhiteLifeKD.IsChecked = false;
+                                    CheckBox_WhiteLifeKPM.IsChecked = false;
+                                    CheckBox_WhiteLifeWeaponStar.IsChecked = false;
+                                    CheckBox_WhiteLifeVehicleStar.IsChecked = false;
+                                    CheckBox_WhiteKill.IsChecked = false;
+                                    CheckBox_WhiteKD.IsChecked = false;
+                                    CheckBox_WhiteKPM.IsChecked = false;
+                                    CheckBox_WhiteRank.IsChecked = false;
+                                    CheckBox_WhiteWeapon.IsChecked = false;
+                                    // 应用队伍1规则
+                                    RuleTeam1Model.MaxKill = 0;
+                                    RuleTeam1Model.FlagKD = 0;
+                                    RuleTeam1Model.MaxKD = 0.00f;
+                                    RuleTeam1Model.FlagKPM = 0;
+                                    RuleTeam1Model.MaxKPM = 0.00f;
+                                    RuleTeam1Model.MinRank = 0;
+                                    RuleTeam1Model.MaxRank = 0;
+                                    RuleTeam1Model.LifeMaxKD = 0;
+                                    RuleTeam1Model.LifeMaxKPM = 0;
+                                    RuleTeam1Model.LifeMaxWeaponStar = 0;
+                                    RuleTeam1Model.LifeMaxVehicleStar = 0;
+                                    RuleTeam1Model.LifeMaxWR = 0;
+                                    // 应用队伍2规则
+                                    RuleTeam2Model.MaxKill = 0;
+                                    RuleTeam2Model.FlagKD = 0;
+                                    RuleTeam2Model.MaxKD = 0.00f;
+                                    RuleTeam2Model.FlagKPM = 0;
+                                    RuleTeam2Model.MaxKPM = 0.00f;
+                                    RuleTeam2Model.MinRank = 0;
+                                    RuleTeam2Model.MaxRank = 0;
+                                    RuleTeam2Model.LifeMaxKD = 0;
+                                    RuleTeam2Model.LifeMaxKPM = 0;
+                                    RuleTeam2Model.LifeMaxWeaponStar = 0;
+                                    RuleTeam2Model.LifeMaxVehicleStar = 0;
+                                    RuleTeam2Model.LifeMaxWR = 0;
 
                                 }
                                  )
@@ -183,7 +222,7 @@ public partial class RuleView : UserControl
 
                     List<Players> players = JsonConvert.DeserializeObject<List<Players>>(test);
 
-                    Dispatcher.Invoke(
+                    this.Dispatcher.Invoke(
                         new Action(
                             delegate {
                                 ListBox_CustomWhites.Items.Clear();
@@ -194,7 +233,7 @@ public partial class RuleView : UserControl
                     foreach (Players player in players)
                     {
 
-                    Dispatcher.Invoke(
+                    this.Dispatcher.Invoke(
                         new Action(
                             delegate {
                                 ListBox_CustomWhites.Items.Add(player.PlayerName);
@@ -216,7 +255,7 @@ public partial class RuleView : UserControl
 
                             List<Players> players = JsonConvert.DeserializeObject<List<Players>>(test);
 
-                            Dispatcher.Invoke(
+                            this.Dispatcher.Invoke(
                                 new Action(
                                     delegate {
                                         ListBox_CustomBlacks.Items.Clear();
@@ -227,7 +266,7 @@ public partial class RuleView : UserControl
                             foreach (Players player in players)
                             {
 
-                                Dispatcher.Invoke(
+                                this.Dispatcher.Invoke(
                                     new Action(
                                         delegate {
                                             ListBox_CustomBlacks.Items.Add(player.PlayerName);
@@ -240,6 +279,63 @@ public partial class RuleView : UserControl
                         {
                             b = true;
                         }
+
+
+                        var result3 = await CloudApi.QueryRule(ServerId: Globals.ServerId);
+
+                        if (result3.IsSuccess)
+                        {
+                            var tmp = result3.Content.Replace("\r", "");
+                            CloudRule data = JsonConvert.DeserializeObject<CloudRule>(tmp);
+                              this.Dispatcher.Invoke(
+                                    new Action(
+                                        delegate {
+                                            CheckBox_WhiteLifeKD.IsChecked = data.WhiteLifeKD;
+                                            CheckBox_WhiteLifeKPM.IsChecked = data.WhiteLifeKPM;
+                                            CheckBox_WhiteLifeWeaponStar.IsChecked = data.WhiteLifeWeaponStar;
+                                            CheckBox_WhiteLifeVehicleStar.IsChecked = data.WhiteLifeVehicleStar;
+                                            CheckBox_WhiteKill.IsChecked = data.WhiteKill;
+                                            CheckBox_WhiteKD.IsChecked = data.WhiteKD;
+                                            CheckBox_WhiteKPM.IsChecked = data.WhiteKPM;
+                                            CheckBox_WhiteRank.IsChecked = data.WhiteRank;
+                                            CheckBox_WhiteWeapon.IsChecked = data.WhiteWeapon;
+                                            // 应用队伍1规则
+                                            RuleTeam1Model.MaxKill = data.Team1MaxKill;
+                                            RuleTeam1Model.FlagKD = data.Team1FlagKD;
+                                            RuleTeam1Model.MaxKD = data.Team1MaxKD;
+                                            RuleTeam1Model.FlagKPM = data.Team1FlagKPM;
+                                            RuleTeam1Model.MaxKPM = data.Team1MaxKPM;
+                                            RuleTeam1Model.MinRank = data.Team1MinRank;
+                                            RuleTeam1Model.MaxRank = data.Team1MaxRank;
+                                            RuleTeam1Model.LifeMaxKD = data.Team1LifeMaxKD;
+                                            RuleTeam1Model.LifeMaxKPM = data.Team1LifeMaxKPM;
+                                            RuleTeam1Model.LifeMaxWeaponStar = data.Team1LifeMaxWeaponStar;
+                                            RuleTeam1Model.LifeMaxVehicleStar = data.Team1LifeMaxVehicleStar;
+                                            RuleTeam1Model.LifeMaxWR = data.Team1LifeMaxWR;
+                                            // 应用队伍2规则
+                                            RuleTeam2Model.MaxKill = data.Team2MaxKill;
+                                            RuleTeam2Model.FlagKD = data.Team2FlagKD;
+                                            RuleTeam2Model.MaxKD = data.Team2MaxKD;
+                                            RuleTeam2Model.FlagKPM = data.Team2FlagKPM;
+                                            RuleTeam2Model.MaxKPM = data.Team2MaxKPM;
+                                            RuleTeam2Model.MinRank = data.Team2MinRank;
+                                            RuleTeam2Model.MaxRank = data.Team2MaxRank;
+                                            RuleTeam2Model.LifeMaxKD = data.Team2LifeMaxKD;
+                                            RuleTeam2Model.LifeMaxKPM = data.Team2LifeMaxKPM;
+                                            RuleTeam2Model.LifeMaxWeaponStar = data.Team2LifeMaxWeaponStar;
+                                            RuleTeam2Model.LifeMaxVehicleStar = data.Team2LifeMaxVehicleStar;
+                                            RuleTeam2Model.LifeMaxWR = data.Team2LifeMaxWR;
+                                        }
+                                    )
+                                );
+
+
+                        }
+                        else
+                        {
+
+                        }
+
 
                         if (w && b)
                         {
@@ -363,7 +459,7 @@ public partial class RuleView : UserControl
 
         var rule = RuleConfig.RuleInfos[index];
         // 白名单特权
-        CheckBox_WhiteLifeKD.IsChecked = rule.WhiteLifeKD;
+/*        CheckBox_WhiteLifeKD.IsChecked = rule.WhiteLifeKD;
         CheckBox_WhiteLifeKPM.IsChecked = rule.WhiteLifeKPM;
         CheckBox_WhiteLifeWeaponStar.IsChecked = rule.WhiteLifeWeaponStar;
         CheckBox_WhiteLifeVehicleStar.IsChecked = rule.WhiteLifeVehicleStar;
@@ -396,7 +492,7 @@ public partial class RuleView : UserControl
         RuleTeam2Model.LifeMaxKPM = rule.Team2Rule.LifeMaxKPM;
         RuleTeam2Model.LifeMaxWeaponStar = rule.Team2Rule.LifeMaxWeaponStar;
         RuleTeam2Model.LifeMaxVehicleStar = rule.Team2Rule.LifeMaxVehicleStar;
-
+*/
         // 读取白名单列表
         ListBox_CustomWhites.Items.Clear();
         //foreach (var item in rule.WhiteList)
@@ -497,6 +593,55 @@ public partial class RuleView : UserControl
         DataGrid_RuleLogs.Clear();
     }
 
+
+    /// <summary>
+    /// 推送规则到云端
+    /// </summary>
+    private async void PushRule2Cloud()
+    {
+       var _ = await CloudApi.PushRule(
+         whiteLifeKD: Globals.WhiteLifeKD,
+         whiteLifeKPM: Globals.WhiteLifeKPM,
+         whiteLifeWeaponStar: Globals.WhiteLifeWeaponStar,
+         whiteLifeVehicleStar: Globals.WhiteLifeVehicleStar,
+         whiteKill: Globals.WhiteKill,
+         whiteKD: Globals.WhiteKD,
+         whiteKPM: Globals.WhiteKPM,
+         whiteRank: Globals.WhiteRank,
+         whiteWeapon: Globals.WhiteWeapon,
+         whiteToggleTeam: Globals.IsAllowToggle,
+         whiteWR: Globals.IsAllowWhlistToggleTeam,
+         team1MaxKill: Globals.ServerRule_Team1.MaxKill,
+         team1FlagKD: Globals.ServerRule_Team1.FlagKD,
+         team1MaxKD: Globals.ServerRule_Team1.MaxKD,
+         team1FlagKPM: Globals.ServerRule_Team1.FlagKPM,
+         team1MaxKPM: Globals.ServerRule_Team1.MaxKPM,
+         team1MinRank: Globals.ServerRule_Team1.MinRank,
+         team1MaxRank: Globals.ServerRule_Team1.MaxRank,
+         team1LifeMaxKD: Globals.ServerRule_Team1.LifeMaxKD,
+         team1LifeMaxKPM: Globals.ServerRule_Team1.LifeMaxKPM,
+         team1LifeMaxWR: Globals.ServerRule_Team1.LifeMaxWR,
+         team1LifeMaxWeaponStar: Globals.ServerRule_Team1.LifeMaxWeaponStar,
+         team1LifeMaxVehicleStar: Globals.ServerRule_Team1.LifeMaxVehicleStar,
+         team2MaxKill: Globals.ServerRule_Team2.MaxKill,
+         team2FlagKD: Globals.ServerRule_Team2.FlagKD,
+         team2MaxKD: Globals.ServerRule_Team2.MaxKD,
+         team2FlagKPM: Globals.ServerRule_Team2.FlagKPM,
+         team2MaxKPM: Globals.ServerRule_Team2.MaxKPM,
+         team2MinRank: Globals.ServerRule_Team2.MinRank,
+         team2MaxRank: Globals.ServerRule_Team2.MaxRank,
+         team2LifeMaxKD: Globals.ServerRule_Team2.LifeMaxKD,
+         team2LifeMaxKPM: Globals.ServerRule_Team2.LifeMaxKPM,
+         team2LifeMaxWR: Globals.ServerRule_Team2.LifeMaxWR,
+         team2LifeMaxWeaponStar: Globals.ServerRule_Team2.LifeMaxWeaponStar,
+         team2LifeMaxVehicleStar: Globals.ServerRule_Team2.LifeMaxVehicleStar,
+         serverId: Globals.ServerId,
+         gameId: Globals.GameId,
+         guid: Globals.PersistedGameId,
+         operatorPersonaId: Globals.PersonaId
+            );
+    }
+
     /// <summary>
     /// 应用并查询当前规则
     /// </summary>
@@ -548,6 +693,7 @@ public partial class RuleView : UserControl
         Globals.ServerRule_Team2.LifeMaxWR = RuleTeam2Model.LifeMaxWR;
         Globals.ServerRule_Team2.LifeMaxWeaponStar = RuleTeam2Model.LifeMaxWeaponStar;
         Globals.ServerRule_Team2.LifeMaxVehicleStar = RuleTeam2Model.LifeMaxVehicleStar;
+
 
         /////////////////////////////////////////////////////////////////////////////
 
@@ -677,6 +823,9 @@ public partial class RuleView : UserControl
         }
 
         NotifierHelper.Show(NotifierType.Success, "查询当前规则成功");
+
+        PushRule2Cloud();
+
     }
 
     /// <summary>

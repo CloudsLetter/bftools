@@ -253,7 +253,18 @@ public static class Globals
     /// </summary>
     public static bool IsAllowWhlistToggleTeam = false;
 
+    /// <summary>
+    /// 倒序输出日志
+    /// </summary>
+    public static bool ReverseOrder= false;
 
+    /// <summary>
+    /// 使用云功能
+    /// </summary>
+    public static bool IsCloudMode = false;
+
+
+    
     ///////////////////////////////////////////////////////
 
     public static bool WhiteLifeKD = true;

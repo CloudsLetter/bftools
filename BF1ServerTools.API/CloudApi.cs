@@ -16,6 +16,9 @@ public class CloudRespError
 
 public static class CloudApi
 {
+
+    private const string hostpg = "http://127.0.0.1:8080/ping";
+
     private const string hostaq = "http://127.0.0.1:8080/api/bf1/autotoggleteam/query";
     private const string hostad = "http://127.0.0.1:8080/api/bf1/autotoggleteam/add";
     private const string hostar = "http://127.0.0.1:8080/api/bf1/autotoggleteam/remove";
@@ -28,6 +31,11 @@ public static class CloudApi
     private const string toggglehistoryad = "http://127.0.0.1:8080/api/bf1/togglehistory/add";
 
     private const string playgamingdatad = "http://127.0.0.1:8080/api/bf1/playergamingdata/add";
+
+    private const string ruleqr = "http://127.0.0.1:8080/api/bf1/rule/query";
+    private const string rulead = "http://127.0.0.1:8080/api/bf1/rule/push";
+
+    private static readonly RestClient clientpg;
 
     private static readonly RestClient clientaq;
     private static readonly RestClient clientad;
@@ -43,8 +51,23 @@ public static class CloudApi
 
     private static readonly RestClient clientplaygamingdatad;
 
+    private static readonly RestClient clientruleqr;
+    private static readonly RestClient clientrulead;
+
+
     static CloudApi()
     {
+        if (clientpg == null)
+        {
+            var options = new RestClientOptions(hostpg)
+            {
+                MaxTimeout = 5000,
+                ThrowOnAnyError = false
+            };
+            clientpg = new RestClient(options);
+        }
+
+
         if (clientaq == null)
         {
             var options = new RestClientOptions(hostaq)
@@ -133,6 +156,27 @@ public static class CloudApi
                 ThrowOnAnyError = true
             };
             clientplaygamingdatad = new RestClient(optionsss);
+        }
+
+
+        if (clientruleqr == null)
+        {
+            var optionsss = new RestClientOptions(ruleqr)
+            {
+                MaxTimeout = 5000,
+                ThrowOnAnyError = true
+            };
+            clientruleqr = new RestClient(optionsss);
+        }
+
+        if (clientrulead == null)
+        {
+            var optionsss = new RestClientOptions(rulead)
+            {
+                MaxTimeout = 5000,
+                ThrowOnAnyError = true
+            };
+            clientrulead = new RestClient(optionsss);
         }
 
     }
@@ -611,5 +655,209 @@ public static class CloudApi
         return respContent;
 
     }
+
+
+    public static async Task<RespContent> PushRule(
+        bool whiteLifeKD,
+        bool whiteLifeKPM,
+        bool whiteLifeWeaponStar,
+        bool whiteLifeVehicleStar,
+        bool whiteKill,
+        bool whiteKD,
+        bool whiteKPM,
+        bool whiteRank,
+        bool whiteWeapon,
+        bool whiteToggleTeam,
+        bool whiteWR,
+        int team1MaxKill,
+        int team1FlagKD,
+        double team1MaxKD,
+        int team1FlagKPM,
+        double team1MaxKPM,
+        int team1MinRank,
+        int team1MaxRank,
+        double team1LifeMaxKD,
+        double team1LifeMaxKPM,
+        double team1LifeMaxWR,
+        int team1LifeMaxWeaponStar,
+        int team1LifeMaxVehicleStar,
+        int team2MaxKill,
+        int team2FlagKD,
+        double team2MaxKD,
+        int team2FlagKPM,
+        double team2MaxKPM,
+        int team2MinRank,
+        int team2MaxRank,
+        double team2LifeMaxKD,
+        double team2LifeMaxKPM,
+        double team2LifeMaxWR,
+        int team2LifeMaxWeaponStar,
+        int team2LifeMaxVehicleStar,
+        long serverId,
+        long gameId,
+        string guid,
+        long operatorPersonaId
+        )
+    {
+        var sw = new Stopwatch();
+        sw.Start();
+        var respContent = new RespContent();
+
+        try
+        {
+
+            var reqBody = new
+            {
+               WhiteLifeKD = whiteLifeKD,
+               WhiteLifeKPM = whiteLifeKPM,
+               WhiteLifeWeaponStar = whiteLifeWeaponStar,
+               WhiteLifeVehicleStar = whiteLifeVehicleStar,
+               WhiteKill = whiteKill,
+               WhiteKD = whiteKD,
+               WhiteKPM = whiteKPM,
+               WhiteRank = whiteRank,
+               WhiteWeapon = whiteWeapon,
+               WhiteToggleTeam = whiteToggleTeam,
+               WhiteWR = whiteWR,
+               Team1MaxKill = team1MaxKill,
+               Team1FlagKD = team1FlagKD,
+               Team1MaxKD = team1MaxKD,
+               Team1FlagKPM = team1FlagKPM,
+               Team1MaxKPM = team1MaxKPM,
+               Team1MinRank = team1MinRank,
+               Team1MaxRank = team1MaxRank,
+               Team1LifeMaxKD = team1LifeMaxKD,
+               Team1LifeMaxKPM = team1LifeMaxKPM,
+               Team1LifeMaxWR = team1LifeMaxWR,
+               Team1LifeMaxWeaponStar = team1LifeMaxWeaponStar,
+               Team1LifeMaxVehicleStar = team1LifeMaxVehicleStar,
+               Team2MaxKill = team2MaxKill,
+               Team2FlagKD = team2FlagKD,
+               Team2MaxKD = team2MaxKD,
+               Team2FlagKPM = team2FlagKPM,
+               Team2MaxKPM = team2MaxKPM,
+               Team2MinRank = team2MinRank,
+               Team2MaxRank = team2MaxRank,
+               Team2LifeMaxKD = team2LifeMaxKD,
+               Team2LifeMaxKPM = team2LifeMaxKPM,
+               Team2LifeMaxWR = team2LifeMaxWR,
+               Team2LifeMaxWeaponStar = team2LifeMaxWeaponStar,
+               Team2LifeMaxVehicleStar = team2LifeMaxVehicleStar,
+               ServerId = serverId,
+               GameId = gameId,
+               GUID = guid,
+               OperatorPersonaId = operatorPersonaId
+            };
+
+            var request = new RestRequest()
+                .AddJsonBody(reqBody)
+                .AddHeader("Token", "chaoshilisaohuo");
+
+            var response = await clientrulead.ExecutePostAsync(request);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                respContent.IsSuccess = true;
+                respContent.Content = response.Content;
+            }
+            else
+            {
+                var respError = JsonHelper.JsonDese<RespError>(response.Content);
+                respContent.Content = $"{respError.error.code} {respError.error.message}";
+            }
+        }
+        catch (Exception ex)
+        {
+            respContent.Content = ex.Message;
+        }
+
+        sw.Stop();
+        respContent.ExecTime = sw.Elapsed.TotalSeconds;
+
+        return respContent;
+
+    }
+
+
+    public static async Task<RespContent> QueryRule(long ServerId)
+    {
+        var sw = new Stopwatch();
+        sw.Start();
+        var respContent = new RespContent();
+
+        try
+        {
+
+            var reqBody = new
+            {
+                Token = "chaoshilisaohuo",
+                ServerId = ServerId
+            };
+
+            var request = new RestRequest()
+                .AddJsonBody(reqBody)
+                .AddHeader("Token", "chaoshilisaohuo");
+
+            var response = await clientruleqr.ExecutePostAsync(request);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                respContent.IsSuccess = true;
+                respContent.Content = response.Content;
+            }
+            else
+            {
+                var respError = JsonHelper.JsonDese<RespError>(response.Content);
+                respContent.Content = $"{respError.error.code} {respError.error.message}";
+            }
+        }
+        catch (Exception ex)
+        {
+            respContent.Content = ex.Message;
+        }
+
+        sw.Stop();
+        respContent.ExecTime = sw.Elapsed.TotalSeconds;
+
+        return respContent;
+
+    }
+
+
+
+    public static async Task<RespContent> CheckAlive()
+    {
+        var sw = new Stopwatch();
+        sw.Start();
+        var respContent = new RespContent();
+
+        try
+        {
+
+
+            var request = new RestRequest();
+
+            var response = await clientpg.ExecuteGetAsync(request);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                respContent.IsSuccess = true;
+                respContent.Content = response.Content;
+            }
+            else
+            {
+                var respError = JsonHelper.JsonDese<RespError>(response.Content);
+                respContent.Content = $"{respError.error.code} {respError.error.message}";
+            }
+        }
+        catch (Exception ex)
+        {
+            respContent.Content = ex.Message;
+        }
+
+        sw.Stop();
+        respContent.ExecTime = sw.Elapsed.TotalSeconds;
+
+        return respContent;
+
+    }
+
 
 }
