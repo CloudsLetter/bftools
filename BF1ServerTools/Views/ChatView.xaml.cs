@@ -524,17 +524,18 @@ private void ToggleButton_EnabledChatInputWindow_Click(object sender, RoutedEven
                             TextBox_GameChats.AppendText($"{sender} {content}\n");
                         });
                         RobotView.ActionSendGameChatsMsgToQQ(sender, content);
-
-                        if (sender == "")
+                        if (Globals.IsCloudMode)
                         {
-                            PushMessage2Server(playerName: "Server", content: content);
+                            if (sender == "")
+                            {
+                                PushMessage2Server(playerName: "Server", content: content);
 
-                        } else
-                        {
-                            PushMessage2Server(playerName: sender, content: content);
+                            } else
+                            {
+                                PushMessage2Server(playerName: sender, content: content);
 
+                            }
                         }
-
 
 
                         old_pSender = pSender;

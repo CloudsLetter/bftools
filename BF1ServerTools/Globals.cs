@@ -263,8 +263,21 @@ public static class Globals
     /// </summary>
     public static bool IsCloudMode = false;
 
+/*    /// <summary>
+    /// 使用云功能
+    /// </summary>
+    public static bool IsCloudMode = false;*/
 
-    
+/*    /// <summary>
+    /// 使用云功能
+    /// </summary>
+    public static bool IsCloudMode = false;
+
+    /// <summary>
+    /// 使用云功能
+    /// </summary>
+    public static bool IsCloudMode = false;*/
+
     ///////////////////////////////////////////////////////
 
     public static bool WhiteLifeKD = true;

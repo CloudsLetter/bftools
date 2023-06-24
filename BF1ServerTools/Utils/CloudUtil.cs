@@ -57,41 +57,52 @@ public static class CloudUtil
 
             if (!IsAdmin && !whitelistToggle)
             {
-            var result3 = await CloudApi.QueryAutoToggleTeamList(info.PersonaId.ToString());
-            if (result3.IsSuccess)
-            {
-                isToggle = true;
-
-                if (Globals.TempToggleTeamList.Count != 0)
+                if (Globals.IsCloudMode)
                 {
+
+
+                    var result3 = await CloudApi.QueryAutoToggleTeamList(info.PersonaId.ToString());
+                    if (result3.IsSuccess)
+                    {
+                        isToggle = true;
+                    
+                        if (Globals.TempToggleTeamList.Count != 0)
+                        {
+                            Globals.TempToggleTeamList.Remove(info.PersonaId);
+                        }
+                    }
+                    else
+                    {
+                        try 
+                        {
+                            var data = result3.Content.Replace("\r", "");
+                            RepsoneData dataObj = JsonConvert.DeserializeObject<RepsoneData>(data);
+                            if (dataObj.Id != "0002")
+                            {
+                                if (Globals.TempToggleTeamList.Count != 0)
+                                {
+                                    isToggle = PlayerUtil.IsAtTempTempAloowToggleTeamList(info.PersonaId, Globals.TempToggleTeamList);
+                                    Globals.TempToggleTeamList.Remove(info.PersonaId);
+                                }
+                            }
+                            }
+                        catch (Exception)
+                        {
+                                if (Globals.TempToggleTeamList.Count != 0)
+                                {
+                                    isToggle = PlayerUtil.IsAtTempTempAloowToggleTeamList(info.PersonaId, Globals.TempToggleTeamList);
+                                    Globals.TempToggleTeamList.Remove(info.PersonaId);
+                                }
+                            }
+                    
+                        }
+                }
+                else
+                {
+                    isToggle = PlayerUtil.IsAtTempTempAloowToggleTeamList(info.PersonaId, Globals.TempToggleTeamList);
                     Globals.TempToggleTeamList.Remove(info.PersonaId);
                 }
-            }
-            else
-            {
-                try 
-                {
-                    var data = result3.Content.Replace("\r", "");
-                    RepsoneData dataObj = JsonConvert.DeserializeObject<RepsoneData>(data);
-                    if (dataObj.Id != "0002")
-                    {
-                        if (Globals.TempToggleTeamList.Count != 0)
-                        {
-                            isToggle = PlayerUtil.IsAtTempTempAloowToggleTeamList(info.PersonaId, Globals.TempToggleTeamList);
-                            Globals.TempToggleTeamList.Remove(info.PersonaId);
-                        }
-                    }
-                    }
-                catch (Exception)
-                {
-                        if (Globals.TempToggleTeamList.Count != 0)
-                        {
-                            isToggle = PlayerUtil.IsAtTempTempAloowToggleTeamList(info.PersonaId, Globals.TempToggleTeamList);
-                            Globals.TempToggleTeamList.Remove(info.PersonaId);
-                        }
-                    }
 
-                }
             }
 
 
@@ -108,26 +119,36 @@ public static class CloudUtil
                     info.State = $"将 等级:{info.Rank} 名称: {info.Rank}切换回原有队伍失败";
 
                 }
-                var result2 = await CloudApi.AddAutoToggleTeamList(info.PersonaId.ToString());
-                if (result2.IsSuccess)
+                if (Globals.IsCloudMode)
                 {
-
-                }
-                else
-                {  
-                    try
+                    var result2 = await CloudApi.AddAutoToggleTeamList(info.PersonaId.ToString());
+                    if (result2.IsSuccess)
                     {
-                        var data = result2.Content.Replace("\r", "");
-                        RepsoneData dataObj = JsonConvert.DeserializeObject<RepsoneData>(data);
-                        if (dataObj.Id != "0003")
+
+                    }
+                    else
+                    {
+                        try
+                        {
+                            var data = result2.Content.Replace("\r", "");
+                            RepsoneData dataObj = JsonConvert.DeserializeObject<RepsoneData>(data);
+                            if (dataObj.Id != "0003")
+                            {
+                                Globals.TempToggleTeamList.Add(info.PersonaId);
+                            }
+                        }
+                        catch (Exception)
                         {
                             Globals.TempToggleTeamList.Add(info.PersonaId);
                         }
                     }
-                    catch (Exception) {
-                        Globals.TempToggleTeamList.Add(info.PersonaId);
-                    }
                 }
+                else
+                {
+                    Globals.TempToggleTeamList.Add(info.PersonaId);
+
+                }
+
 
                 LogView.ActionAddChangeTeamInfoLog(info);
                 var _ = CloudApi.PushToggleHistory(PlayerRank: info.Rank.ToString(), PlayerName: info.Name, PersonaId: info.PersonaId.ToString(), GameMode: info.GameMode, MapName: info.MapName, Team1Name: info.Team1Name, Team2Name: info.Team2Name, State: info.State, ServerId: Globals.ServerId.ToString(), Guid: Globals.PersistedGameId, GameId: Globals.GameId.ToString());

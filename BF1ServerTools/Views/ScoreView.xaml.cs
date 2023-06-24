@@ -208,20 +208,22 @@ public partial class ScoreView : UserControl
     {
         while (MainWindow.IsAppRunning)
         {
-            if (Globals.GameId != 0)
+            if (Globals.IsCloudMode)
             {
-
-                foreach (var data in PlayerList_Team1)
+                if (Globals.GameId != 0)
                 {
-                    data.ServerId = Globals.ServerId;
-                    data.GameId = Globals.GameId;
-                    data.Guid = Globals.PersistedGameId;
+                
+                    foreach (var data in PlayerList_Team1)
+                    {
+                        data.ServerId = Globals.ServerId;
+                        data.GameId = Globals.GameId;
+                        data.Guid = Globals.PersistedGameId;
+                    }
+                
+                    var _ = await CloudApi.PushPlayGamingData(PlayerList_Team1);
+                    var _r = await CloudApi.PushPlayGamingData(PlayerList_Team2);
                 }
-
-                var _ = await CloudApi.PushPlayGamingData(PlayerList_Team1);
-                var _r = await CloudApi.PushPlayGamingData(PlayerList_Team2);
             }
-
             Thread.Sleep(60000);
 
         }
@@ -855,34 +857,37 @@ public partial class ScoreView : UserControl
             if (result.IsSuccess)
             {
 
-                if (Globals.LoginPlayerIsAdmin && Globals.IsAllowToggle && Globals.IsSetRuleOK)
+                if (Globals.IsCloudMode)
                 {
-
-                    Globals.AllowTempAloowToggleTeamList2.Add(item.PersonaId);
-
-                    var result2 = await CloudApi.AddAutoToggleTeamList(item.PersonaId.ToString());
-                    if (result2.IsSuccess)
+                    if (Globals.LoginPlayerIsAdmin && Globals.IsAllowToggle && Globals.IsSetRuleOK)
                     {
-
-                    }
-                    else
-                    {
-                        try
+                        Globals.AllowTempAloowToggleTeamList2.Add(item.PersonaId);
+                    
+                        var result2 = await CloudApi.AddAutoToggleTeamList(item.PersonaId.ToString());
+                        if (result2.IsSuccess)
                         {
-                            var data = result2.Content.Replace("\r", "");
-                            RepsoneData dataObj = JsonConvert.DeserializeObject<RepsoneData>(data);
-                            if (dataObj.Id != "0003")
-                            {
-                                Globals.TempToggleTeamList.Add(item.PersonaId);
-                            }
+                    
                         }
-                        catch (Exception)
+                        else
                         {
-                            Globals.TempToggleTeamList.Add(item.PersonaId);
+                            try
+                            {
+                                var data = result2.Content.Replace("\r", "");
+                                RepsoneData dataObj = JsonConvert.DeserializeObject<RepsoneData>(data);
+                                if (dataObj.Id != "0003")
+                                {
+                                }
+                            }
+                            catch (Exception)
+                            {
+                            }
                         }
                     }
                 }
-
+                else
+                {
+                    Globals.AllowTempAloowToggleTeamList2.Add(item.PersonaId);
+                }
                 NotifierHelper.Show(NotifierType.Success, $"[{result.ExecTime:0.00} 秒]  更换玩家 {item.Name} 队伍成功");
             }
             else
@@ -1028,32 +1033,37 @@ public partial class ScoreView : UserControl
             var result = await BF1API.RSPMovePlayer(Globals.SessionId, Globals.GameId, item.PersonaId, 2);
             if (result.IsSuccess)
             {
-                if (Globals.LoginPlayerIsAdmin && Globals.IsAllowToggle && Globals.IsSetRuleOK)
-                {
-                    Globals.AllowTempAloowToggleTeamList1.Add(item.PersonaId);
-                var result2 = await CloudApi.AddAutoToggleTeamList(item.PersonaId.ToString());
-                if (result2.IsSuccess)
+                if (Globals.IsCloudMode)
                 {
 
+                    if (Globals.LoginPlayerIsAdmin && Globals.IsAllowToggle && Globals.IsSetRuleOK)
+                    {
+                        Globals.AllowTempAloowToggleTeamList1.Add(item.PersonaId);
+                        var result2 = await CloudApi.AddAutoToggleTeamList(item.PersonaId.ToString());
+                        if (result2.IsSuccess)
+                        {
+                    
+                        }
+                        else
+                        {
+                            try
+                            {
+                                var data = result2.Content.Replace("\r", "");
+                                RepsoneData dataObj = JsonConvert.DeserializeObject<RepsoneData>(data);
+                                if (dataObj.Id != "0003")
+                                {
+                                }
+                            }
+                            catch (Exception)
+                            {
+                            }
+                        }
+                    }
                 }
                 else
                 {
-                    try
-                    {
-                        var data = result2.Content.Replace("\r", "");
-                        RepsoneData dataObj = JsonConvert.DeserializeObject<RepsoneData>(data);
-                        if (dataObj.Id != "0003")
-                        {
-                            Globals.TempToggleTeamList.Add(item.PersonaId);
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        Globals.TempToggleTeamList.Add(item.PersonaId);
-                    }
+                    Globals.AllowTempAloowToggleTeamList1.Add(item.PersonaId);
                 }
-                }
-
                 NotifierHelper.Show(NotifierType.Success, $"[{result.ExecTime:0.00} 秒]  更换玩家 {item.Name} 队伍成功");
             }
             else
