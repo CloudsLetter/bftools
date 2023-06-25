@@ -16,6 +16,10 @@ public class RuleConfig
         public bool WhiteKPM { get; set; }
         public bool WhiteRank { get; set; }
         public bool WhiteWeapon { get; set; }
+
+        public bool WhiteMaxWR { get; set; }
+        public bool WhiteAllowToggleTeam { get; set; }
+
         public Rule Team1Rule { get; set; }
         public Rule Team2Rule { get; set; }
         public List<string> Team1Weapon { get; set; }
@@ -33,6 +37,7 @@ public class RuleConfig
             public int MaxRank { get; set; }
             public float LifeMaxKD { get; set; }
             public float LifeMaxKPM { get; set; }
+            public float LifeMaxWR { get; set; }
             public int LifeMaxWeaponStar { get; set; }
             public int LifeMaxVehicleStar { get; set; }
         }

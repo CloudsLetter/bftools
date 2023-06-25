@@ -76,8 +76,8 @@ public partial class LoadWindow
                         Application.Current.Shutdown();
                     });
                     return;
-                }
-*/
+                }*/
+
                 LoadModel.LoadState = "正在初始化战地1内存模块...";
                 //初始化战地1内存模块
 /*                if (!Memory.Initialize())

@@ -116,9 +116,13 @@
                     Click="Button_CheckAutoKickEnv_Click"
                     Content="检查自动踢人环境" />
                 <CheckBox
-                    x:Name="CheckBox_Not_Allow_Toggle"
-                    Click="CheckBox_Not_Allow_Toggle_Click"
-                    Content="禁止玩家更换队伍(管理员可更换玩家队伍)" />
+                    x:Name="CheckBox_Not_Allow_Toggle_Back"
+                    Click="CheckBox_Not_Allow_Toggle_Back_Click"
+                    Content="禁止玩家更换队伍 换回方法" />
+                <CheckBox
+                    x:Name="CheckBox_Not_Allow_Toggle_Kick"
+                    Click="CheckBox_Not_Allow_Toggle_Kick_Click"
+                    Content="禁止玩家更换队伍 踢出方法" />
                 <CheckBox
                     x:Name="CheckBox_IsAutoKickSpectator"
                     Click="CheckBox_IsAutoKickSpectator_Click"

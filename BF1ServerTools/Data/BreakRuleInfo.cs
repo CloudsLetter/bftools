@@ -53,7 +53,7 @@ public enum BreakType
 
     LifeKD,
     LifeKPM,
-    LifeWR,
+    LifeMaxWR,
     LifeWeaponStar,
     LifeVehicleStar,
     Kill,

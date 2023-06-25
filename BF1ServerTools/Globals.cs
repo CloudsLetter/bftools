@@ -228,7 +228,14 @@ public static class Globals
     /// </summary>
     public static bool IsAllowToggle = false;
 
-
+    /// <summary>
+    /// 是否换边踢人模式
+    /// </summary>
+    public static bool ToggleKickMode = false;
+    /// <summary>
+    /// 是否允许超出胜率限制
+    /// </summary>
+    public static bool WhiteLifeMaxWR = false;
     /// <summary>
     /// 允许队伍1临时换边玩家列表
     /// </summary>
@@ -256,7 +263,7 @@ public static class Globals
     /// <summary>
     /// 倒序输出日志
     /// </summary>
-    public static bool ReverseOrder= false;
+    public static bool ReverseOrder= true;
 
     /// <summary>
     /// 使用云功能

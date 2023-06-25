@@ -87,12 +87,27 @@ public partial class LogView : UserControl
                 if (TextBox_ScoreKickLog.LineCount >= 1000)
                     TextBox_ScoreKickLog.Clear();
 
-                AppendScoreKickLog($"操作时间: {DateTime.Now}");
-                AppendScoreKickLog($"等级: {info.Rank}");
-                AppendScoreKickLog($"玩家ID: {info.Name}");
-                AppendScoreKickLog($"数字ID: {info.PersonaId}");
-                AppendScoreKickLog($"踢出理由: {info.Reason}");
-                AppendScoreKickLog($"状态: {info.State}\n");
+                if (Globals.IsCloudMode)
+                {
+                    AppendScoreKickLog($"状态: {info.State}\n");
+                    AppendScoreKickLog($"踢出理由: {info.Reason}");
+                    AppendScoreKickLog($"数字ID: {info.PersonaId}");
+                    AppendScoreKickLog($"玩家ID: {info.Name}");
+                    AppendScoreKickLog($"等级: {info.Rank}");
+                    AppendScoreKickLog($"操作时间: {DateTime.Now}");
+
+                }
+                else
+                {
+                    AppendScoreKickLog($"操作时间: {DateTime.Now}");
+                    AppendScoreKickLog($"等级: {info.Rank}");
+                    AppendScoreKickLog($"玩家ID: {info.Name}");
+                    AppendScoreKickLog($"数字ID: {info.PersonaId}");
+                    AppendScoreKickLog($"踢出理由: {info.Reason}");
+                    AppendScoreKickLog($"状态: {info.State}\n");
+                }
+
+
 
                 SQLiteHelper.AddLog("score_kick", new()
                 {
@@ -125,13 +140,26 @@ public partial class LogView : UserControl
             {
                 if (TextBox_KickOKLog.LineCount >= 1000)
                     TextBox_KickOKLog.Clear();
+                if (Globals.ReverseOrder)
+                {
+                    AppendKickOKLog($"状态: {info.State}\n");
+                    AppendKickOKLog($"踢出理由: {info.Reason}");
+                    AppendKickOKLog($"数字ID: {info.PersonaId}");
+                    AppendKickOKLog($"玩家ID: {info.Name}");
+                    AppendKickOKLog($"等级: {info.Rank}");
+                    AppendKickOKLog($"操作时间: {DateTime.Now}");
 
-                AppendKickOKLog($"操作时间: {DateTime.Now}");
-                AppendKickOKLog($"等级: {info.Rank}");
-                AppendKickOKLog($"玩家ID: {info.Name}");
-                AppendKickOKLog($"数字ID: {info.PersonaId}");
-                AppendKickOKLog($"踢出理由: {info.Reason}");
-                AppendKickOKLog($"状态: {info.State}\n");
+                }
+                else
+                {
+                    AppendKickOKLog($"操作时间: {DateTime.Now}");
+                    AppendKickOKLog($"等级: {info.Rank}");
+                    AppendKickOKLog($"玩家ID: {info.Name}");
+                    AppendKickOKLog($"数字ID: {info.PersonaId}");
+                    AppendKickOKLog($"踢出理由: {info.Reason}");
+                    AppendKickOKLog($"状态: {info.State}\n");
+                }
+
 
                 SQLiteHelper.AddLog("kick_ok", new()
                 {
@@ -164,13 +192,26 @@ public partial class LogView : UserControl
             {
                 if (TextBox_KickNOLog.LineCount >= 1000)
                     TextBox_KickNOLog.Clear();
+                if (Globals.ReverseOrder)
+                {
+                    AppendKickNOLog($"状态: {info.State}\n");
+                    AppendKickNOLog($"踢出理由: {info.Reason}");
+                    AppendKickNOLog($"数字ID: {info.PersonaId}");
+                    AppendKickNOLog($"玩家ID: {info.Name}");
+                    AppendKickNOLog($"等级: {info.Rank}");
+                    AppendKickNOLog($"操作时间: {DateTime.Now}");
 
-                AppendKickNOLog($"操作时间: {DateTime.Now}");
-                AppendKickNOLog($"等级: {info.Rank}");
-                AppendKickNOLog($"玩家ID: {info.Name}");
-                AppendKickNOLog($"数字ID: {info.PersonaId}");
-                AppendKickNOLog($"踢出理由: {info.Reason}");
-                AppendKickNOLog($"状态: {info.State}\n");
+                }
+                else
+                {
+                    AppendKickNOLog($"操作时间: {DateTime.Now}");
+                    AppendKickNOLog($"等级: {info.Rank}");
+                    AppendKickNOLog($"玩家ID: {info.Name}");
+                    AppendKickNOLog($"数字ID: {info.PersonaId}");
+                    AppendKickNOLog($"踢出理由: {info.Reason}");
+                    AppendKickNOLog($"状态: {info.State}\n");
+                }
+
 
                 SQLiteHelper.AddLog("kick_no", new()
                 {
@@ -202,13 +243,26 @@ public partial class LogView : UserControl
             {
                 if (TextBox_ChangeTeamLog.LineCount >= 1000)
                     TextBox_ChangeTeamLog.Clear();
+                if (Globals.ReverseOrder)
+                {
+                    AppendChangeTeamLog($"状态: {info.State}\n");
+                    AppendChangeTeamLog($"当前地图: {info.GameMode} - {info.MapName}");
+                    AppendChangeTeamLog($"数字ID: {info.PersonaId}");
+                    AppendChangeTeamLog($"玩家ID: {info.Name}");
+                    AppendChangeTeamLog($"等级: {info.Rank}");
+                    AppendChangeTeamLog($"操作时间: {DateTime.Now}");
 
-                AppendChangeTeamLog($"操作时间: {DateTime.Now}");
-                AppendChangeTeamLog($"等级: {info.Rank}");
-                AppendChangeTeamLog($"玩家ID: {info.Name}");
-                AppendChangeTeamLog($"数字ID: {info.PersonaId}");
-                AppendChangeTeamLog($"当前地图: {info.GameMode} - {info.MapName}");
-                AppendChangeTeamLog($"状态: {info.State}\n");
+                }
+                else
+                {
+                    AppendChangeTeamLog($"操作时间: {DateTime.Now}");
+                    AppendChangeTeamLog($"等级: {info.Rank}");
+                    AppendChangeTeamLog($"玩家ID: {info.Name}");
+                    AppendChangeTeamLog($"数字ID: {info.PersonaId}");
+                    AppendChangeTeamLog($"当前地图: {info.GameMode} - {info.MapName}");
+                    AppendChangeTeamLog($"状态: {info.State}\n");
+
+                }
 
                 SQLiteHelper.AddLog("change_team", new()
                 {
@@ -239,7 +293,17 @@ public partial class LogView : UserControl
     /// <param name="log"></param>
     private void AppendScoreKickLog(string log)
     {
-        TextBox_ScoreKickLog.AppendText($"{log}\n");
+
+        if (Globals.ReverseOrder)
+        {
+            TextBox_ScoreKickLog.Text = $"{log}\r\n{TextBox_ScoreKickLog.Text}";
+
+        }
+        else
+        {
+            TextBox_ScoreKickLog.AppendText($"{log}\n");
+
+        }
     }
 
     /// <summary>
@@ -249,6 +313,16 @@ public partial class LogView : UserControl
     private void AppendKickOKLog(string log)
     {
         TextBox_KickOKLog.AppendText($"{log}\n");
+        if (Globals.ReverseOrder)
+        {
+            TextBox_KickOKLog.Text = $"{log}\r\n{TextBox_KickOKLog.Text}";
+
+        }
+        else
+        {
+            TextBox_KickOKLog.AppendText($"{log}\n");
+
+        }
     }
 
     /// <summary>
@@ -257,7 +331,15 @@ public partial class LogView : UserControl
     /// <param name="log"></param>
     private void AppendKickNOLog(string log)
     {
-        TextBox_KickNOLog.AppendText($"{log}\n");
+        if (Globals.ReverseOrder)
+        {
+            TextBox_KickNOLog.Text = $"{log}\r\n{TextBox_KickNOLog.Text}";
+
+        }
+        else
+        {
+            TextBox_KickNOLog.AppendText($"{log}\n");
+        }
     }
 
     /// <summary>
@@ -266,7 +348,17 @@ public partial class LogView : UserControl
     /// <param name="log"></param>
     private void AppendChangeTeamLog(string log)
     {
-        TextBox_ChangeTeamLog.AppendText($"{log}\n");
+        if (Globals.ReverseOrder)
+        {
+            TextBox_ChangeTeamLog.Text = $"{log}\r\n{TextBox_ChangeTeamLog.Text}";
+
+        }
+        else
+        {
+            TextBox_ChangeTeamLog.AppendText($"{log}\n");
+
+        }
+
     }
 
     /////////////////////////////////////////////////////

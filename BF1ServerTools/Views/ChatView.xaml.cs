@@ -521,7 +521,15 @@ private void ToggleButton_EnabledChatInputWindow_Click(object sender, RoutedEven
                     {
                         this.Dispatcher.Invoke(() =>
                         {
-                            TextBox_GameChats.AppendText($"{sender} {content}\n");
+                            if (Globals.IsCloudMode)
+                            {
+                                TextBox_GameChats.Text = ($"{sender} {content}\r\n{TextBox_GameChats.Text}");
+
+                            }
+                            else
+                            {
+                                TextBox_GameChats.AppendText($"{sender} {content}\n");
+                            }
                         });
                         RobotView.ActionSendGameChatsMsgToQQ(sender, content);
                         if (Globals.IsCloudMode)

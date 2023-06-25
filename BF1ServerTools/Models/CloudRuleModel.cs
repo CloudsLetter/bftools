@@ -30,6 +30,7 @@ public class CloudRule
     public float Team1LifeMaxWR { get; set; }
     public int Team1LifeMaxWeaponStar { get; set; }
     public int Team1LifeMaxVehicleStar { get; set; }
+    public string Team1WeaponLimit { get; set; }
     public int Team2MaxKill { get; set; }
     public int Team2FlagKD { get; set; }
     public float Team2MaxKD { get; set; }
@@ -42,6 +43,7 @@ public class CloudRule
     public float Team2LifeMaxWR { get; set; }
     public int Team2LifeMaxWeaponStar { get; set; }
     public int Team2LifeMaxVehicleStar { get; set; }
+    public string Team2WeaponLimit { get; set; }
     public long ServerId { get; set; }
     public long GameId { get; set; }
     public string Guid { get; set; }

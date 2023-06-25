@@ -668,7 +668,8 @@ public static class CloudApi
         bool whiteRank,
         bool whiteWeapon,
         bool whiteToggleTeam,
-        bool whiteWR,
+        bool whiteLifeMaxWR,
+        bool whiteAllowToggleTeam,
         int team1MaxKill,
         int team1FlagKD,
         double team1MaxKD,
@@ -696,7 +697,9 @@ public static class CloudApi
         long serverId,
         long gameId,
         string guid,
-        long operatorPersonaId
+        long operatorPersonaId,
+        string team1Weapon,
+        string team2Weapon
         )
     {
         var sw = new Stopwatch();
@@ -718,7 +721,8 @@ public static class CloudApi
                WhiteRank = whiteRank,
                WhiteWeapon = whiteWeapon,
                WhiteToggleTeam = whiteToggleTeam,
-               WhiteWR = whiteWR,
+               WhiteLifeMaxWR = whiteLifeMaxWR,
+               WhiteAllowToggleTeam =  whiteAllowToggleTeam,
                Team1MaxKill = team1MaxKill,
                Team1FlagKD = team1FlagKD,
                Team1MaxKD = team1MaxKD,
@@ -731,6 +735,7 @@ public static class CloudApi
                Team1LifeMaxWR = team1LifeMaxWR,
                Team1LifeMaxWeaponStar = team1LifeMaxWeaponStar,
                Team1LifeMaxVehicleStar = team1LifeMaxVehicleStar,
+               Team1WeaponLimit = team1Weapon,
                Team2MaxKill = team2MaxKill,
                Team2FlagKD = team2FlagKD,
                Team2MaxKD = team2MaxKD,
@@ -743,6 +748,7 @@ public static class CloudApi
                Team2LifeMaxWR = team2LifeMaxWR,
                Team2LifeMaxWeaponStar = team2LifeMaxWeaponStar,
                Team2LifeMaxVehicleStar = team2LifeMaxVehicleStar,
+               Team2WeaponLimit = team2Weapon,
                ServerId = serverId,
                GameId = gameId,
                GUID = guid,

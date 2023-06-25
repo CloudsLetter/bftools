@@ -178,7 +178,7 @@ public partial class MonitView : UserControl
                                 Time = time,
                                 WeaponInfos = new(),
                                 VehicleInfos = new(),
-                                WR = wr,
+                                LifeMaxWR = wr,
                             });
 
                             // 拿到当前生涯索引
@@ -492,9 +492,9 @@ public partial class MonitView : UserControl
 
             // 限制玩家生涯胜率 
             if (serverRule.LifeMaxWR != 0 &&
-                Globals.LifePlayerCacheDatas[lifeIndex].WR > serverRule.LifeMaxWR)
+                Globals.LifePlayerCacheDatas[lifeIndex].LifeMaxWR > serverRule.LifeMaxWR)
             {
-                AddBreakRulePlayerInfo(playerData, BreakType.LifeWR, $"Life WR Limit {serverRule.LifeMaxWR:0.00}");
+                AddBreakRulePlayerInfo(playerData, BreakType.LifeMaxWR, $"Life WR Limit {serverRule.LifeMaxWR:0.00}");
 
             }
             var tempData = new List<string>
@@ -883,7 +883,7 @@ public partial class MonitView : UserControl
                     MapName = _serverData.MapName,
                     Team1Name = _serverData.Team1Name,
                     Team2Name = _serverData.Team2Name,
-                    State = $"{_serverData.Team1Name} <<< {_serverData.Team2Name}",
+                    State = $"{_serverData.Team1Name} >>> {_serverData.Team2Name}",
                     Time = DateTime.Now,
                     To = 2
                 };
@@ -1030,6 +1030,17 @@ public partial class MonitView : UserControl
             if (item.BreakType == BreakType.Weapon)
             {
                 if (Globals.WhiteWeapon)
+                    continue;
+                else
+                {
+                    breakRuleInfo.Reason = item.Reason;
+                    return false;
+                }
+            }
+
+            if (item.BreakType == BreakType.LifeMaxWR)
+            {
+                if (Globals.WhiteLifeMaxWR)
                     continue;
                 else
                 {
@@ -1241,15 +1252,31 @@ public partial class MonitView : UserControl
     }
 
     /// <summary>
-    /// 禁止玩家换边
+    /// 禁止玩家换边踢出
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void CheckBox_Not_Allow_Toggle_Click(object sender, RoutedEventArgs e)
+    private void CheckBox_Not_Allow_Toggle_Kick_Click(object sender, RoutedEventArgs e)
     {
-        Globals.IsAllowToggle = CheckBox_Not_Allow_Toggle.IsChecked == true;
+        Globals.IsAllowToggle = CheckBox_Not_Allow_Toggle_Kick.IsChecked == true;
+        CheckBox_Not_Allow_Toggle_Back.IsChecked = false;
+        Globals.ToggleKickMode = true;
     }
 
+    /// <summary>
+    /// 禁止玩家换边换回
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void CheckBox_Not_Allow_Toggle_Back_Click(object sender, RoutedEventArgs e)
+    {
+        Globals.IsAllowToggle = CheckBox_Not_Allow_Toggle_Back.IsChecked == true;
+        CheckBox_Not_Allow_Toggle_Kick.IsChecked = false;
+        if (Globals.ToggleKickMode)
+        {
+            Globals.ToggleKickMode = false;
+        }
+    }
     /// <summary>
     /// 违规列表 ListView选中变更事件
     /// </summary>

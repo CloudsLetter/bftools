@@ -1,4 +1,5 @@
 ﻿using BF1ServerTools.Helper;
+using BF1ServerTools.Views;
 
 namespace BF1ServerTools.Utils;
 
@@ -194,6 +195,17 @@ public static class PlayerUtil
     }
 
     /// <summary>
+    /// 判断玩家是不是云白名单
+    /// </summary>
+    /// <param name="personaId"></param>
+    /// <param name="list"></param>
+    /// <returns></returns>
+    public static bool IsCloudWhite(string name, List<Players> list)
+    {
+        return list.FirstOrDefault(p => p.PlayerName == name) != null;
+    }
+
+    /// <summary>
     /// 判断玩家是否在临时换边玩家列表中
     /// </summary>
     /// <param name="personaId"></param>
@@ -258,7 +270,7 @@ public static class PlayerUtil
                 var index = Globals.LifePlayerCacheDatas.FindIndex(item => item.PersonaId == personaId);
                 if (index != -1)
                 {
-                    float wr = Globals.LifePlayerCacheDatas[index].WR;
+                    float wr = Globals.LifePlayerCacheDatas[index].LifeMaxWR;
                     return $"{wr.ToString("0.00")}%";
                 }
             }

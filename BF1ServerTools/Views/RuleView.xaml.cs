@@ -16,6 +16,8 @@ using System.Windows.Controls;
 using static System.Net.Mime.MediaTypeNames;
 using System.Windows.Markup;
 using NLog.Filters;
+using System.Windows.Documents;
+using System.Collections;
 
 namespace BF1ServerTools.Views;
 
@@ -108,6 +110,8 @@ public partial class RuleView : UserControl
                     WhiteKPM = true,
                     WhiteRank = true,
                     WhiteWeapon = true,
+                    WhiteMaxWR = true,
+                    WhiteAllowToggleTeam = true,
                     Team1Rule = new(),
                     Team2Rule = new(),
                     Team1Weapon = new(),
@@ -170,6 +174,7 @@ public partial class RuleView : UserControl
                                         ListBox_CustomBlacks.Items.Clear();
                                         CheckBox_WhiteLifeKD.IsChecked = false;
                                         CheckBox_WhiteLifeKPM.IsChecked = false;
+                                        CheckBox_WhiteLifeMaxWR.IsChecked = false;
                                         CheckBox_WhiteLifeWeaponStar.IsChecked = false;
                                         CheckBox_WhiteLifeVehicleStar.IsChecked = false;
                                         CheckBox_WhiteKill.IsChecked = false;
@@ -177,6 +182,8 @@ public partial class RuleView : UserControl
                                         CheckBox_WhiteKPM.IsChecked = false;
                                         CheckBox_WhiteRank.IsChecked = false;
                                         CheckBox_WhiteWeapon.IsChecked = false;
+                                        CheckBox_ToggleTeamLimt.IsChecked = false;
+
                                         // 应用队伍1规则
                                         RuleTeam1Model.MaxKill = 0;
                                         RuleTeam1Model.FlagKD = 0;
@@ -204,6 +211,13 @@ public partial class RuleView : UserControl
                                         RuleTeam2Model.LifeMaxVehicleStar = 0;
                                         RuleTeam2Model.LifeMaxWR = 0;
 
+                                        for (int i = 0; i < DataGrid_RuleWeaponModels.Count; i++)
+                                        {
+                                            var item = DataGrid_RuleWeaponModels[i];
+
+                                                item.Team1 = false;
+                                                item.Team2 = false;
+                                        }
                                     }
                                      )
                         );
@@ -311,6 +325,8 @@ public partial class RuleView : UserControl
                                               CheckBox_WhiteKPM.IsChecked = data.WhiteKPM;
                                               CheckBox_WhiteRank.IsChecked = data.WhiteRank;
                                               CheckBox_WhiteWeapon.IsChecked = data.WhiteWeapon;
+                                              CheckBox_WhiteLifeMaxWR.IsChecked = data.WhiteWR;
+                                              CheckBox_ToggleTeamLimt.IsChecked = data.WhiteToggleTeam;
                                               // 应用队伍1规则
                                               RuleTeam1Model.MaxKill = data.Team1MaxKill;
                                               RuleTeam1Model.FlagKD = data.Team1FlagKD;
@@ -337,6 +353,26 @@ public partial class RuleView : UserControl
                                               RuleTeam2Model.LifeMaxWeaponStar = data.Team2LifeMaxWeaponStar;
                                               RuleTeam2Model.LifeMaxVehicleStar = data.Team2LifeMaxVehicleStar;
                                               RuleTeam2Model.LifeMaxWR = data.Team2LifeMaxWR;
+
+                                              List<string> list = new List<string>(data.Team1WeaponLimit.Split(','));
+                                              List<string> list2 = new List<string>(data.Team2WeaponLimit.Split(','));
+
+                                              for (int i = 0; i < DataGrid_RuleWeaponModels.Count; i++)
+                                              {
+                                                  var item = DataGrid_RuleWeaponModels[i];
+
+                                                  var v1 = list.IndexOf(item.English);
+                                                  if (v1 != -1)
+                                                      item.Team1 = true;
+                                                  else
+                                                      item.Team1 = false;
+
+                                                  var v2 = list2.IndexOf(item.English);
+                                                  if (v2 != -1)
+                                                      item.Team2 = true;
+                                                  else
+                                                      item.Team2 = false;
+                                              }
                                           }
                                       )
                                   );
@@ -407,7 +443,8 @@ public partial class RuleView : UserControl
             rule.WhiteKPM = CheckBox_WhiteKPM.IsChecked == true;
             rule.WhiteRank = CheckBox_WhiteRank.IsChecked == true;
             rule.WhiteWeapon = CheckBox_WhiteWeapon.IsChecked == true;
-
+            rule.WhiteMaxWR = CheckBox_WhiteLifeMaxWR.IsChecked == true;
+            rule.WhiteAllowToggleTeam = CheckBox_ToggleTeamLimt.IsChecked == true;
             rule.Team1Rule.MaxKill = RuleTeam1Model.MaxKill;
             rule.Team1Rule.FlagKD = RuleTeam1Model.FlagKD;
             rule.Team1Rule.MaxKD = RuleTeam1Model.MaxKD;
@@ -419,6 +456,7 @@ public partial class RuleView : UserControl
             rule.Team1Rule.LifeMaxKPM = RuleTeam1Model.LifeMaxKPM;
             rule.Team1Rule.LifeMaxWeaponStar = RuleTeam1Model.LifeMaxWeaponStar;
             rule.Team1Rule.LifeMaxVehicleStar = RuleTeam1Model.LifeMaxVehicleStar;
+            rule.Team1Rule.LifeMaxWR = RuleTeam1Model.LifeMaxWR;
 
             rule.Team2Rule.MaxKill = RuleTeam2Model.MaxKill;
             rule.Team2Rule.FlagKD = RuleTeam2Model.FlagKD;
@@ -431,6 +469,7 @@ public partial class RuleView : UserControl
             rule.Team2Rule.LifeMaxKPM = RuleTeam2Model.LifeMaxKPM;
             rule.Team2Rule.LifeMaxWeaponStar = RuleTeam2Model.LifeMaxWeaponStar;
             rule.Team2Rule.LifeMaxVehicleStar = RuleTeam2Model.LifeMaxVehicleStar;
+            rule.Team2Rule.LifeMaxWR = RuleTeam2Model.LifeMaxWR;
 
             rule.WhiteList.Clear();
             foreach (string name in ListBox_CustomWhites.Items)
@@ -484,6 +523,9 @@ public partial class RuleView : UserControl
             CheckBox_WhiteKPM.IsChecked = rule.WhiteKPM;
             CheckBox_WhiteRank.IsChecked = rule.WhiteRank;
             CheckBox_WhiteWeapon.IsChecked = rule.WhiteWeapon;
+            CheckBox_WhiteLifeMaxWR.IsChecked = rule.WhiteMaxWR;
+            CheckBox_ToggleTeamLimt.IsChecked = rule.WhiteAllowToggleTeam;
+
             // 应用队伍1规则
             RuleTeam1Model.MaxKill = rule.Team1Rule.MaxKill;
             RuleTeam1Model.FlagKD = rule.Team1Rule.FlagKD;
@@ -494,6 +536,7 @@ public partial class RuleView : UserControl
             RuleTeam1Model.MaxRank = rule.Team1Rule.MaxRank;
             RuleTeam1Model.LifeMaxKD = rule.Team1Rule.LifeMaxKD;
             RuleTeam1Model.LifeMaxKPM = rule.Team1Rule.LifeMaxKPM;
+            RuleTeam1Model.LifeMaxWR = rule.Team1Rule.LifeMaxWR;
             RuleTeam1Model.LifeMaxWeaponStar = rule.Team1Rule.LifeMaxWeaponStar;
             RuleTeam1Model.LifeMaxVehicleStar = rule.Team1Rule.LifeMaxVehicleStar;
             // 应用队伍2规则
@@ -506,6 +549,7 @@ public partial class RuleView : UserControl
             RuleTeam2Model.MaxRank = rule.Team2Rule.MaxRank;
             RuleTeam2Model.LifeMaxKD = rule.Team2Rule.LifeMaxKD;
             RuleTeam2Model.LifeMaxKPM = rule.Team2Rule.LifeMaxKPM;
+            RuleTeam2Model.LifeMaxWR = rule.Team2Rule.LifeMaxWR;
             RuleTeam2Model.LifeMaxWeaponStar = rule.Team2Rule.LifeMaxWeaponStar;
             RuleTeam2Model.LifeMaxVehicleStar = rule.Team2Rule.LifeMaxVehicleStar;
 
@@ -537,21 +581,25 @@ public partial class RuleView : UserControl
 
 
         // 读取武器限制信息
-        for (int i = 0; i < DataGrid_RuleWeaponModels.Count; i++)
+        if (!Globals.IsCloudMode)
         {
-            var item = DataGrid_RuleWeaponModels[i];
+            for (int i = 0; i < DataGrid_RuleWeaponModels.Count; i++)
+            {
+                var item = DataGrid_RuleWeaponModels[i];
 
-            var v1 = rule.Team1Weapon.IndexOf(item.English);
-            if (v1 != -1)
-                item.Team1 = true;
-            else
-                item.Team1 = false;
+                var v1 = rule.Team1Weapon.IndexOf(item.English);
+                if (v1 != -1)
+                    item.Team1 = true;
+                else
+                    item.Team1 = false;
 
-            var v2 = rule.Team2Weapon.IndexOf(item.English);
-            if (v2 != -1)
-                item.Team2 = true;
-            else
-                item.Team2 = false;
+                var v2 = rule.Team2Weapon.IndexOf(item.English);
+                if (v2 != -1)
+                    item.Team2 = true;
+                else
+                    item.Team2 = false;
+            }
+
         }
 
         SaveConfig();
@@ -628,8 +676,9 @@ public partial class RuleView : UserControl
     /// </summary>
     private async void PushRule2Cloud()
     {
-
-             var result = await CloudApi.PushRule(
+        string team1weapon = string.Join(",", Globals.CustomWeapons_Team1);
+        string team2weapon = string.Join(",", Globals.CustomWeapons_Team2);
+        var result = await CloudApi.PushRule(
               whiteLifeKD: Globals.WhiteLifeKD,
               whiteLifeKPM: Globals.WhiteLifeKPM,
               whiteLifeWeaponStar: Globals.WhiteLifeWeaponStar,
@@ -640,7 +689,8 @@ public partial class RuleView : UserControl
               whiteRank: Globals.WhiteRank,
               whiteWeapon: Globals.WhiteWeapon,
               whiteToggleTeam: Globals.IsAllowToggle,
-              whiteWR: Globals.IsAllowWhlistToggleTeam,
+              whiteLifeMaxWR: Globals.WhiteLifeMaxWR,
+              whiteAllowToggleTeam: Globals.IsAllowWhlistToggleTeam,
               team1MaxKill: Globals.ServerRule_Team1.MaxKill,
               team1FlagKD: Globals.ServerRule_Team1.FlagKD,
               team1MaxKD: Globals.ServerRule_Team1.MaxKD,
@@ -668,7 +718,9 @@ public partial class RuleView : UserControl
               serverId: Globals.ServerId,
               gameId: Globals.GameId,
               guid: Globals.PersistedGameId,
-              operatorPersonaId: Globals.PersonaId
+              operatorPersonaId: Globals.PersonaId,
+              team1Weapon: team1weapon,
+              team2Weapon: team2weapon
               );
 
         if (result.IsSuccess)
@@ -715,7 +767,8 @@ public partial class RuleView : UserControl
                      Globals.WhiteKPM = CheckBox_WhiteKPM.IsChecked == true;
                      Globals.WhiteRank = CheckBox_WhiteRank.IsChecked == true;
                      Globals.WhiteWeapon = CheckBox_WhiteWeapon.IsChecked == true;
-                     
+                     Globals.IsAllowWhlistToggleTeam = CheckBox_ToggleTeamLimt .IsChecked == true;
+                     Globals.WhiteLifeMaxWR = CheckBox_WhiteLifeMaxWR.IsChecked == true;
                      Globals.ServerRule_Team1.MaxKill = RuleTeam1Model.MaxKill;
                      Globals.ServerRule_Team1.FlagKD = RuleTeam1Model.FlagKD;
                      Globals.ServerRule_Team1.MaxKD = RuleTeam1Model.MaxKD;
@@ -857,8 +910,11 @@ public partial class RuleView : UserControl
                          AddRuleLog("", "免疫等级限制");
                      if (Globals.WhiteWeapon)
                          AddRuleLog("", "免疫武器限制");
-                     
-                     int index = 1;
+                    if (Globals.WhiteLifeMaxWR)
+                        AddRuleLog("", "免疫生涯胜率限制");
+                    if (Globals.IsAllowWhlistToggleTeam)
+                        AddRuleLog("", "免疫更换队伍限制");
+                    int index = 1;
                      AddRuleLog("【白名单列表】");
                      foreach (var item in Globals.CustomWhites_Name)
                      {
@@ -896,7 +952,8 @@ public partial class RuleView : UserControl
             Globals.WhiteKPM = CheckBox_WhiteKPM.IsChecked == true;
             Globals.WhiteRank = CheckBox_WhiteRank.IsChecked == true;
             Globals.WhiteWeapon = CheckBox_WhiteWeapon.IsChecked == true;
-
+            Globals.WhiteLifeMaxWR = CheckBox_WhiteLifeMaxWR.IsChecked == true;
+            Globals.IsAllowWhlistToggleTeam = CheckBox_ToggleTeamLimt.IsChecked == true;
             Globals.ServerRule_Team1.MaxKill = RuleTeam1Model.MaxKill;
             Globals.ServerRule_Team1.FlagKD = RuleTeam1Model.FlagKD;
             Globals.ServerRule_Team1.MaxKD = RuleTeam1Model.MaxKD;
@@ -1038,6 +1095,10 @@ public partial class RuleView : UserControl
                 AddRuleLog("", "免疫等级限制");
             if (Globals.WhiteWeapon)
                 AddRuleLog("", "免疫武器限制");
+            if (Globals.WhiteLifeMaxWR)
+                AddRuleLog("", "免疫生涯胜率限制");
+            if (Globals.IsAllowWhlistToggleTeam)
+                AddRuleLog("", "免疫更换队伍限制");
 
             int index = 1;
             AddRuleLog("【白名单列表】");
@@ -1130,38 +1191,45 @@ public partial class RuleView : UserControl
         /// <param name="e"></param>
         private async void Button_RefreshWhite_Click(object sender, RoutedEventArgs e)
     {
-
-        NotifierHelper.Show(NotifierType.Information, $"正在刷新联网白名单中");
-        if (Globals.ServerId == 0)
+        if (Globals.IsCloudMode)
         {
-            NotifierHelper.Show(NotifierType.Error, $"请进入任意服务器");
-            return;
-        }
-        if (!Globals.LoginPlayerIsAdmin)
-        {
-            NotifierHelper.Show(NotifierType.Error, $"您不是当前服务器管理员");
-            return;
-        }
-        var result = await BF1API.RefreshWhiteList(ServerId: Globals.ServerId.ToString());
-        if (result.IsSuccess)
-        {
-            var test = result.Content.Replace("\r", "");
-
-            List<Players> players = JsonConvert.DeserializeObject<List<Players>>(test);
-
-            ListBox_CustomWhites.Items.Clear();
-
-            foreach (Players player in players)
+            NotifierHelper.Show(NotifierType.Information, $"正在刷新联网白名单中");
+            if (Globals.ServerId == 0)
             {
-                ListBox_CustomWhites.Items.Add(player.PlayerName);
+                NotifierHelper.Show(NotifierType.Error, $"请进入任意服务器");
+                return;
             }
+            if (!Globals.LoginPlayerIsAdmin)
+            {
+                NotifierHelper.Show(NotifierType.Error, $"您不是当前服务器管理员");
+                return;
+            }
+            var result = await BF1API.RefreshWhiteList(ServerId: Globals.ServerId.ToString());
+            if (result.IsSuccess)
+            {
+                var test = result.Content.Replace("\r", "");
 
-            NotifierHelper.Show(NotifierType.Success, $"联网白名单刷新成功");
+                List<Players> players = JsonConvert.DeserializeObject<List<Players>>(test);
+
+                ListBox_CustomWhites.Items.Clear();
+
+                foreach (Players player in players)
+                {
+                    ListBox_CustomWhites.Items.Add(player.PlayerName);
+                }
+
+                NotifierHelper.Show(NotifierType.Success, $"在线白名单刷新成功");
+            }
+            else
+            {
+                NotifierHelper.Show(NotifierType.Error, $"在线白名单刷新失败");
+            }
         }
         else
         {
-            NotifierHelper.Show(NotifierType.Error, $"联网白名单刷新失败");
+            NotifierHelper.Show(NotifierType.Success, $"当前为离线模式无法使用在线白名单");
         }
+
 
     }
     /// <summary>
@@ -1247,37 +1315,48 @@ public partial class RuleView : UserControl
     private async void Button_RefreshBlack_Click(object sender, RoutedEventArgs e)
     {
 
-        NotifierHelper.Show(NotifierType.Information, $"正在刷新联网黑名单中");
-        if (Globals.ServerId == 0)
-        {
-            NotifierHelper.Show(NotifierType.Error, $"请进入任意服务器");
-            return;
-        }
-        if (!Globals.LoginPlayerIsAdmin)
-        {
-            NotifierHelper.Show(NotifierType.Error, $"您不是当前服务器管理员");
-            return;
-        }
-        var result = await CloudApi.RefreshBlackList(ServerId: Globals.ServerId.ToString());
-        if (result.IsSuccess)
-        {
-            var test = result.Content.Replace("\r", "");
 
-            List<Players> players = JsonConvert.DeserializeObject<List<Players>>(test);
-
-            ListBox_CustomBlacks.Items.Clear();
-
-            foreach (Players player in players)
+        if(Globals.IsCloudMode)
+        {
+            NotifierHelper.Show(NotifierType.Information, $"正在刷新联网黑名单中");
+            if (Globals.ServerId == 0)
             {
-                ListBox_CustomBlacks.Items.Add(player.PlayerName);
+                NotifierHelper.Show(NotifierType.Error, $"请进入任意服务器");
+                return;
             }
+            if (!Globals.LoginPlayerIsAdmin)
+            {
+                NotifierHelper.Show(NotifierType.Error, $"您不是当前服务器管理员");
+                return;
+            }
+            var result = await CloudApi.RefreshBlackList(ServerId: Globals.ServerId.ToString());
+            if (result.IsSuccess)
+            {
+                var test = result.Content.Replace("\r", "");
 
-            NotifierHelper.Show(NotifierType.Success, $"联网黑名单刷新成功");
+                List<Players> players = JsonConvert.DeserializeObject<List<Players>>(test);
+
+                ListBox_CustomBlacks.Items.Clear();
+
+                foreach (Players player in players)
+                {
+                    ListBox_CustomBlacks.Items.Add(player.PlayerName);
+                }
+
+                NotifierHelper.Show(NotifierType.Success, $"联网黑名单刷新成功");
+            }
+            else
+            {
+                NotifierHelper.Show(NotifierType.Error, $"联网黑名单刷新失败");
+            }
         }
         else
         {
-            NotifierHelper.Show(NotifierType.Error, $"联网黑名单刷新失败");
+            NotifierHelper.Show(NotifierType.Success, $"当前为离线模式无法使用在线白名单");
+
         }
+
+
 
     }
         /// <summary>
@@ -1595,7 +1674,15 @@ public partial class RuleView : UserControl
                 foreach (var item in File.ReadAllLines(fileDialog.FileName))
                 {
                     if (!string.IsNullOrWhiteSpace(item))
+                    {
                         ListBox_CustomBlacks.Items.Add(item);
+                        if (Globals.IsCloudMode)
+                        {
+                            
+                        }
+
+                    }
+
                 }
 
                 NotifierHelper.Show(NotifierType.Success, "批量导入txt文件到黑名单列表成功");
@@ -1676,9 +1763,5 @@ public partial class RuleView : UserControl
         NotifierHelper.Show(NotifierType.Success, "清空黑名单列表成功");
     }
 
-    private void CheckBox_ToggleTeamLimt_Click(object sender, RoutedEventArgs e)
-    {
-        Globals.IsAllowWhlistToggleTeam = CheckBox_ToggleTeamLimt.IsChecked == true;
-    }
 
 }

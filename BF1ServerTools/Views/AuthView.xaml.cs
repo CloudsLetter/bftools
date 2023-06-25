@@ -501,17 +501,17 @@ public partial class AuthView : UserControl
             TextBlock_SessionIdState.Text = firstMessage;
             Border_SessionIdState.Background = Brushes.Green;
 
-            var result1 = CloudApi.CheckAlive();
-            if (result.IsSuccess)
+            var result1 = await CloudApi.CheckAlive();
+            if (result1.IsSuccess)
             {
                 Globals.IsCloudMode = true;
-                NotifierHelper.Show(NotifierType.Success, $"[{result.ExecTime:0.00} 秒]  验证成功\n{firstMessage}-在线模式");
+                NotifierHelper.Show(NotifierType.Success, $"[{result.ExecTime:0.00} 秒]  验证成功\n{firstMessage}在线模式");
 
             }
             else
             {
                 Globals.IsCloudMode = false;
-                NotifierHelper.Show(NotifierType.Success, $"[{result.ExecTime:0.00} 秒]  验证成功\n{firstMessage}-服务器无响应回退到离线模式");
+                NotifierHelper.Show(NotifierType.Warning, $"[{result.ExecTime:0.00} 秒]  验证成功\n{firstMessage}服务器无响应回退到离线模式");
             }
         }
         else
