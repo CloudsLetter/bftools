@@ -504,6 +504,64 @@ public partial class RuleView : UserControl
         }
     }
 
+
+    /// <summary>
+    /// 切回离线模式
+    /// </summary>
+/*    public void Switch2Offline_Mode()
+    {
+        var index = ComboBox_ConfigNames.SelectedIndex;
+        if (index == -1)
+            return;
+
+        var rule = RuleConfig.RuleInfos[index];
+
+        ListBox_CustomWhites.Items.Clear();
+        if (!Globals.IsCloudMode)
+        {
+            foreach (var item in rule.WhiteList)
+            {
+                ListBox_CustomWhites.Items.Add(item);
+            }
+        }
+
+        // 读取黑名单列表
+        ListBox_CustomBlacks.Items.Clear();
+
+        ListBox_CustomWhites.Items.Clear();
+        if (!Globals.IsCloudMode)
+        {
+            foreach (var item in rule.BlackList)
+            {
+                ListBox_CustomBlacks.Items.Add(item);
+            }
+        }
+
+
+        // 读取武器限制信息
+        if (!Globals.IsCloudMode)
+        {
+            for (int i = 0; i < DataGrid_RuleWeaponModels.Count; i++)
+            {
+                var item = DataGrid_RuleWeaponModels[i];
+
+                var v1 = rule.Team1Weapon.IndexOf(item.English);
+                if (v1 != -1)
+                    item.Team1 = true;
+                else
+                    item.Team1 = false;
+
+                var v2 = rule.Team2Weapon.IndexOf(item.English);
+                if (v2 != -1)
+                    item.Team2 = true;
+                else
+                    item.Team2 = false;
+            }
+
+        }
+    }
+
+*/
     /// <summary>
     /// ComboBox选中项变更事件
     /// </summary>
@@ -558,56 +616,58 @@ public partial class RuleView : UserControl
             RuleTeam2Model.LifeMaxWeaponStar = rule.Team2Rule.LifeMaxWeaponStar;
             RuleTeam2Model.LifeMaxVehicleStar = rule.Team2Rule.LifeMaxVehicleStar;
 
-        }
+            // 白名单特权
 
-        // 白名单特权
-
-        // 读取白名单列表
-        ListBox_CustomWhites.Items.Clear();
-        if (!Globals.IsCloudMode)
-        {
-            foreach (var item in rule.WhiteList)
+            // 读取白名单列表
+            ListBox_CustomWhites.Items.Clear();
+            if (!Globals.IsCloudMode)
             {
-                ListBox_CustomWhites.Items.Add(item);
-            }
-        }
-
-        // 读取黑名单列表
-        ListBox_CustomBlacks.Items.Clear();
-
-        ListBox_CustomWhites.Items.Clear();
-        if (!Globals.IsCloudMode)
-        {
-            foreach (var item in rule.BlackList)
-            {
-                ListBox_CustomBlacks.Items.Add(item);
-            }
-        }
-
-
-        // 读取武器限制信息
-        if (!Globals.IsCloudMode)
-        {
-            for (int i = 0; i < DataGrid_RuleWeaponModels.Count; i++)
-            {
-                var item = DataGrid_RuleWeaponModels[i];
-
-                var v1 = rule.Team1Weapon.IndexOf(item.English);
-                if (v1 != -1)
-                    item.Team1 = true;
-                else
-                    item.Team1 = false;
-
-                var v2 = rule.Team2Weapon.IndexOf(item.English);
-                if (v2 != -1)
-                    item.Team2 = true;
-                else
-                    item.Team2 = false;
+                foreach (var item in rule.WhiteList)
+                {
+                    ListBox_CustomWhites.Items.Add(item);
+                }
             }
 
+            // 读取黑名单列表
+            ListBox_CustomBlacks.Items.Clear();
+
+            ListBox_CustomWhites.Items.Clear();
+            if (!Globals.IsCloudMode)
+            {
+                foreach (var item in rule.BlackList)
+                {
+                    ListBox_CustomBlacks.Items.Add(item);
+                }
+            }
+
+
+            // 读取武器限制信息
+            if (!Globals.IsCloudMode)
+            {
+                for (int i = 0; i < DataGrid_RuleWeaponModels.Count; i++)
+                {
+                    var item = DataGrid_RuleWeaponModels[i];
+
+                    var v1 = rule.Team1Weapon.IndexOf(item.English);
+                    if (v1 != -1)
+                        item.Team1 = true;
+                    else
+                        item.Team1 = false;
+
+                    var v2 = rule.Team2Weapon.IndexOf(item.English);
+                    if (v2 != -1)
+                        item.Team2 = true;
+                    else
+                        item.Team2 = false;
+                }
+
+            }
+            SaveConfig();
+
         }
 
-        SaveConfig();
+
+
     }
 
     /// <summary>

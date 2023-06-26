@@ -51,6 +51,7 @@ public partial class AuthView : UserControl
         {
             AuthConfig.IsUseMode1 = true;
             AuthConfig.SelectedIndex = 0;
+            AuthConfig.ReverseOrder = false;
             AuthConfig.AuthInfos = new();
             // 初始化10个配置文件槽
             for (int i = 0; i < 10; i++)
@@ -585,13 +586,15 @@ public partial class AuthView : UserControl
         {
             Globals.ReverseOrder = false;
             NotifierHelper.Show(NotifierType.Success, "正序输出");
-
+            AuthConfig.ReverseOrder = false;
+            SaveConfig();
         }
         else
         {
             Globals.ReverseOrder = true;
             NotifierHelper.Show(NotifierType.Success, "反序输出");
-
+            AuthConfig.ReverseOrder = true;
+            SaveConfig();
         }
     }
 

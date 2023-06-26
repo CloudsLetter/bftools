@@ -96,7 +96,7 @@ public partial class App : Application
         builder.AppendLine("===================================");
         builder.AppendLine($"【当前版本】：{CoreUtil.ClientVersionInfo}");
         builder.AppendLine($"【编译时间】：{CoreUtil.ClientBuildTime}");
-        builder.AppendLine($"【操作建议】：请将此日志上传到战地1服管工具QQ群");
+        builder.AppendLine($"【操作建议】：请将此日志上传到战地1服管工具QQ群或发送到wojiuchigua@gmail.com");
         builder.AppendLine("===================================");
         builder.AppendLine($"【出现时间】：{DateTime.Now}");
 

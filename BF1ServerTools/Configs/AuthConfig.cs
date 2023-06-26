@@ -4,6 +4,7 @@ public class AuthConfig
 {
     public bool IsUseMode1 { get; set; }
     public int SelectedIndex { get; set; }
+    public bool ReverseOrder { get; set; }
     public List<AuthInfo> AuthInfos { get; set; }
     public class AuthInfo
     {

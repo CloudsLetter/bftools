@@ -521,7 +521,7 @@ private void ToggleButton_EnabledChatInputWindow_Click(object sender, RoutedEven
                     {
                         this.Dispatcher.Invoke(() =>
                         {
-                            if (Globals.IsCloudMode)
+                            if (Globals.ReverseOrder)
                             {
                                 TextBox_GameChats.Text = ($"{sender} {content}\r\n{TextBox_GameChats.Text}");
 
