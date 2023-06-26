@@ -49,4 +49,16 @@ public partial class MainModel : ObservableObject
     /// </summary>
     [ObservableProperty]
     private long personaId2;
+
+    /// <summary>
+    /// 是否在线chi
+    /// </summary>
+    [ObservableProperty]
+    private string ifOnlineChi;
+
+    /// <summary>
+    /// 是否在线eng
+    /// </summary>
+    [ObservableProperty]
+    private string ifOnlinEng;
 }

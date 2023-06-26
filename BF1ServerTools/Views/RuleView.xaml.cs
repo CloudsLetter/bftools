@@ -427,6 +427,10 @@ public partial class RuleView : UserControl
     private void SaveConfig()
     {
         // 更新当前授权信息
+        if (!Globals.IsCloudMode)
+        {
+
+        
         var index = ComboBox_ConfigNames.SelectedIndex;
         if (index != -1)
         {
@@ -497,6 +501,7 @@ public partial class RuleView : UserControl
         }
 
         File.WriteAllText(F_Rule_Path, JsonHelper.JsonSeri(RuleConfig));
+        }
     }
 
     /// <summary>

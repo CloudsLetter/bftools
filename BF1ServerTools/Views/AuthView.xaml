@@ -137,6 +137,10 @@
                 x:Name="Button_OpenConfigFolder"
                 Click="Button_OpenConfigFolder_Click"
                 Content="打开配置文件夹" />
+            <Button
+                    Margin="5,5,0,0"
+                    Click="Button_ReverseOrder_Click"
+                    Content="正反序输出日志和聊天记录" />
         </StackPanel>
         <!--  ******************************  -->
         <RichTextBox
@@ -200,14 +204,15 @@
                     </Hyperlink>
                 </Paragraph>
                 <Paragraph Style="{StaticResource ParagraphStyle_H18}">
-                    重要提示
+                    更新日志
                 </Paragraph>
                 <Paragraph Style="{StaticResource ParagraphStyle_Content}">
-                    如使用白名单免疫更换队伍限制，在多个管理员同时挂工具的情况下，请确保所有管理员工具加载的白名单一致或只有一个管理员否则请不要使用该功能！！！否则会产生令人无法预料的结果。例如被踢出服务器或换回原有服务器或产生无限踢出换边...
-                    <LineBreak />
-                    ————————————————
-                    <LineBreak />
-                    如使用禁止玩家更换队伍功能(换回原有队伍方法或踢出方法(踢出方法暂时没写))，请确保所有管理员工具处于在线状态或只有一个管理员否则请不要使用该功能！！！否则会产生令人无法预料的结果。因为禁止玩家更换队伍是将玩家更换至原来的队伍，但凡有个管理工具处于离线状态，那么玩家可能会被无限踢出换边。
+                    <Hyperlink
+                        Click="Hyperlink_Click"
+                        NavigateUri="https://blog.cloudyi.xyz/modified-version-bfservertools"
+                        Style="{StaticResource HyperlinkStyle_Base}">
+                        点我查看更新日志
+                    </Hyperlink>
                 </Paragraph>
             </FlowDocument>
         </RichTextBox>

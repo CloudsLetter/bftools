@@ -149,6 +149,17 @@ public partial class MainWindow
                 this.Dispatcher.Invoke(this.Close);
                 return;
             }*/
+               
+            if (Globals.IsCloudMode)
+            {
+                MainModel.IfOnlineChi = "在线模式";
+                MainModel.IfOnlinEng = "online";
+            }
+            else
+            {
+                MainModel.IfOnlineChi = "离线模式";
+                MainModel.IfOnlinEng = "offline";
+            }
 
             Thread.Sleep(1000);
         }

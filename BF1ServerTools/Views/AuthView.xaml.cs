@@ -163,6 +163,7 @@ public partial class AuthView : UserControl
         File.WriteAllText(F_Auth_Path, JsonHelper.JsonSeri(AuthConfig));
     }
 
+
     /// <summary>
     /// ComboBox选中项变更事件
     /// </summary>
@@ -462,7 +463,14 @@ public partial class AuthView : UserControl
             TextBlock_SessionIdState.Text = firstMessage;
             Border_SessionIdState.Background = Brushes.Green;
             NotifierHelper.Show(NotifierType.Success, $"[{result.ExecTime:0.00} 秒]  验证成功\n{firstMessage}");
-            Globals.IsCloudMode = false;
+            if (Globals.IsCloudMode)
+            {
+                NotifierHelper.Show(NotifierType.Warning, "请勿从在线模式切回离线模式，重启工具以使用离线模式");
+            }
+            else
+            {
+                Globals.IsCloudMode = false;
+            }
         }
         else
         {
@@ -570,4 +578,21 @@ public partial class AuthView : UserControl
         if (sender is Hyperlink link)
             ProcessUtil.OpenPath(link.NavigateUri.AbsoluteUri);
     }
+
+    private void Button_ReverseOrder_Click(object sender, RoutedEventArgs e)
+    {
+        if (Globals.ReverseOrder)
+        {
+            Globals.ReverseOrder = false;
+            NotifierHelper.Show(NotifierType.Success, "正序输出");
+
+        }
+        else
+        {
+            Globals.ReverseOrder = true;
+            NotifierHelper.Show(NotifierType.Success, "反序输出");
+
+        }
+    }
+
 }
