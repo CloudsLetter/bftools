@@ -211,7 +211,7 @@
                         Click="Hyperlink_Click"
                         NavigateUri="https://blog.cloudyi.xyz/posts/modified-version-bfservertools"
                         Style="{StaticResource HyperlinkStyle_Base}">
-                        重要: 如使用在线模式请点我查看注意事项以及更新日志，否则后果自负
+                        重要: 如使该工具请点我查看注意事项以及更新日志，否则后果自负
                     </Hyperlink>
                 </Paragraph>
             </FlowDocument>

@@ -519,7 +519,7 @@
                         <GridViewColumn DisplayMemberBinding="{Binding LifeKd, StringFormat={}{0:0.00}}" Header="LKD" />
                         <GridViewColumn DisplayMemberBinding="{Binding LifeKpm, StringFormat={}{0:0.00}}" Header="LKPM" />
                         <GridViewColumn DisplayMemberBinding="{Binding LifeTime}" Header="时长" />
-                        <GridViewColumn DisplayMemberBinding="{Binding LifeWR}" Header="胜率"  Width="60"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding WR}" Header="胜率"  Width="60"/>
                         <GridViewColumn Header="兵种">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>

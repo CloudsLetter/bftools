@@ -235,7 +235,6 @@ public partial class RuleView : UserControl
                             var result = await BF1API.RefreshWhiteList(ServerId: Globals.ServerId.ToString());
                             if (result.IsSuccess)
                             {
-                                isShow = true;
                                 var test = result.Content.Replace("\r", "");
 
                                 List<Players> players = JsonConvert.DeserializeObject<List<Players>>(test);
@@ -266,7 +265,6 @@ public partial class RuleView : UserControl
                             var result2 = await CloudApi.RefreshBlackList(ServerId: Globals.ServerId.ToString());
                             if (result2.IsSuccess)
                             {
-                                isShow = true;
                                 var test = result2.Content.Replace("\r", "");
 
                                 List<Players> players = JsonConvert.DeserializeObject<List<Players>>(test);
@@ -367,6 +365,8 @@ public partial class RuleView : UserControl
 
 
                             }
+                            isShow2 = false;
+
                         }
 
 
@@ -1109,6 +1109,183 @@ public partial class RuleView : UserControl
             NotifierHelper.Show(NotifierType.Warning, "查询当前规则成功，上传失败");
         }
     }
+
+
+    /// <summary>
+    /// 刷新当前规则
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private async void Buttonn_Refresh_Rule(object sender, RoutedEventArgs e)
+    {
+
+        if (Globals.IsCloudMode)
+        {
+
+
+
+        if (Globals.ServerId != 0)
+        {
+            if (Globals.LoginPlayerIsAdmin)
+            {
+                var result = await BF1API.RefreshWhiteList(ServerId: Globals.ServerId.ToString());
+                if (result.IsSuccess)
+                {
+                    var test = result.Content.Replace("\r", "");
+                
+                    List<Players> players = JsonConvert.DeserializeObject<List<Players>>(test);
+                
+                    this.Dispatcher.Invoke(
+                        new Action(
+                            delegate
+                            {
+                                ListBox_CustomWhites.Items.Clear();
+                            }
+                        )
+                    );
+                
+                    foreach (Players player in players)
+                    {
+                
+                        this.Dispatcher.Invoke(
+                            new Action(
+                                delegate
+                                {
+                                    ListBox_CustomWhites.Items.Add(player.PlayerName);
+                                }
+                            )
+                        );
+                    }
+                }
+                
+                var result2 = await CloudApi.RefreshBlackList(ServerId: Globals.ServerId.ToString());
+                if (result2.IsSuccess)
+                {
+                    var test = result2.Content.Replace("\r", "");
+                
+                    List<Players> players = JsonConvert.DeserializeObject<List<Players>>(test);
+                
+                    this.Dispatcher.Invoke(
+                        new Action(
+                            delegate
+                            {
+                                ListBox_CustomBlacks.Items.Clear();
+                            }
+                        )
+                    );
+                
+                    foreach (Players player in players)
+                    {
+                
+                        this.Dispatcher.Invoke(
+                            new Action(
+                                delegate
+                                {
+                                    ListBox_CustomBlacks.Items.Add(player.PlayerName);
+                                }
+                            )
+                        );
+                    }
+                }
+                
+                var result3 = await CloudApi.QueryRule(ServerId: Globals.ServerId);
+                
+                if (result3.IsSuccess)
+                {
+                    var tmp = result3.Content.Replace("\r", "");
+                    CloudRule data = JsonConvert.DeserializeObject<CloudRule>(tmp);
+                    this.Dispatcher.Invoke(
+                          new Action(
+                              delegate
+                              {
+                                  CheckBox_WhiteLifeKD.IsChecked = data.WhiteLifeKD;
+                                  CheckBox_WhiteLifeKPM.IsChecked = data.WhiteLifeKPM;
+                                  CheckBox_WhiteLifeWeaponStar.IsChecked = data.WhiteLifeWeaponStar;
+                                  CheckBox_WhiteLifeVehicleStar.IsChecked = data.WhiteLifeVehicleStar;
+                                  CheckBox_WhiteKill.IsChecked = data.WhiteKill;
+                                  CheckBox_WhiteKD.IsChecked = data.WhiteKD;
+                                  CheckBox_WhiteKPM.IsChecked = data.WhiteKPM;
+                                  CheckBox_WhiteRank.IsChecked = data.WhiteRank;
+                                  CheckBox_WhiteWeapon.IsChecked = data.WhiteWeapon;
+                                  CheckBox_WhiteLifeMaxWR.IsChecked = data.WhiteWR;
+                                  CheckBox_ToggleTeamLimt.IsChecked = data.WhiteToggleTeam;
+                                  // 应用队伍1规则
+                                  RuleTeam1Model.MaxKill = data.Team1MaxKill;
+                                  RuleTeam1Model.FlagKD = data.Team1FlagKD;
+                                  RuleTeam1Model.MaxKD = data.Team1MaxKD;
+                                  RuleTeam1Model.FlagKPM = data.Team1FlagKPM;
+                                  RuleTeam1Model.MaxKPM = data.Team1MaxKPM;
+                                  RuleTeam1Model.MinRank = data.Team1MinRank;
+                                  RuleTeam1Model.MaxRank = data.Team1MaxRank;
+                                  RuleTeam1Model.LifeMaxKD = data.Team1LifeMaxKD;
+                                  RuleTeam1Model.LifeMaxKPM = data.Team1LifeMaxKPM;
+                                  RuleTeam1Model.LifeMaxWeaponStar = data.Team1LifeMaxWeaponStar;
+                                  RuleTeam1Model.LifeMaxVehicleStar = data.Team1LifeMaxVehicleStar;
+                                  RuleTeam1Model.LifeMaxWR = data.Team1LifeMaxWR;
+                                  // 应用队伍2规则
+                                  RuleTeam2Model.MaxKill = data.Team2MaxKill;
+                                  RuleTeam2Model.FlagKD = data.Team2FlagKD;
+                                  RuleTeam2Model.MaxKD = data.Team2MaxKD;
+                                  RuleTeam2Model.FlagKPM = data.Team2FlagKPM;
+                                  RuleTeam2Model.MaxKPM = data.Team2MaxKPM;
+                                  RuleTeam2Model.MinRank = data.Team2MinRank;
+                                  RuleTeam2Model.MaxRank = data.Team2MaxRank;
+                                  RuleTeam2Model.LifeMaxKD = data.Team2LifeMaxKD;
+                                  RuleTeam2Model.LifeMaxKPM = data.Team2LifeMaxKPM;
+                                  RuleTeam2Model.LifeMaxWeaponStar = data.Team2LifeMaxWeaponStar;
+                                  RuleTeam2Model.LifeMaxVehicleStar = data.Team2LifeMaxVehicleStar;
+                                  RuleTeam2Model.LifeMaxWR = data.Team2LifeMaxWR;
+                
+                                  List<string> list = new List<string>(data.Team1WeaponLimit.Split(','));
+                                  List<string> list2 = new List<string>(data.Team2WeaponLimit.Split(','));
+                
+                                  for (int i = 0; i < DataGrid_RuleWeaponModels.Count; i++)
+                                  {
+                                      var item = DataGrid_RuleWeaponModels[i];
+                
+                                      var v1 = list.IndexOf(item.English);
+                                      if (v1 != -1)
+                                          item.Team1 = true;
+                                      else
+                                          item.Team1 = false;
+                
+                                      var v2 = list2.IndexOf(item.English);
+                                      if (v2 != -1)
+                                          item.Team2 = true;
+                                      else
+                                          item.Team2 = false;
+                                  }
+                              }
+                          )
+                      );
+
+
+                 }
+                    else
+                    {
+                        NotifierHelper.Show(NotifierType.Error, "刷新失败");
+                        return;
+
+                    }
+                    NotifierHelper.Show(NotifierType.Success, "刷新成功");
+
+                }
+                else
+            {
+                NotifierHelper.Show(NotifierType.Error, $"您不是当前服务器管理员");
+            }
+        }
+        else
+        {
+            NotifierHelper.Show(NotifierType.Error, $"请进入任意服务器");
+        }
+        }
+    else
+    {
+            NotifierHelper.Show(NotifierType.Error, $"离线模式无法使用该功能请使用在线模式");
+    }
+    }
+
 
     /// <summary>
     /// 应用并查询当前规则
@@ -1930,6 +2107,8 @@ public partial class RuleView : UserControl
     /// <param name="e"></param>
     private void MenuItem_ImportCustomWhites_Click(object sender, RoutedEventArgs e)
     {
+        if (!Globals.IsCloudMode)
+        {
         try
         {
             var fileDialog = new OpenFileDialog
@@ -1955,6 +2134,11 @@ public partial class RuleView : UserControl
         catch (Exception ex)
         {
             NotifierHelper.ShowException(ex);
+        }
+    }
+        else
+        {
+            NotifierHelper.Show(NotifierType.Error, "在线模式下无法使用该功能，未来将支持该功能");
         }
     }
 
@@ -2000,6 +2184,8 @@ public partial class RuleView : UserControl
     /// <param name="e"></param>
     private void MenuItem_DistinctCustomWhites_Click(object sender, RoutedEventArgs e)
     {
+        if (!Globals.IsCloudMode)
+        {
         if (ListBox_CustomWhites.Items.IsEmpty)
         {
             NotifierHelper.Show(NotifierType.Warning, "白名单列表为空，去重操作取消");
@@ -2015,6 +2201,11 @@ public partial class RuleView : UserControl
 
         NotifierHelper.Show(NotifierType.Success, "白名单列表去重成功");
     }
+        else
+        {
+            NotifierHelper.Show(NotifierType.Error, "在线模式下无法使用该功能，未来将支持该功能");
+        }
+    }
 
     /// <summary>
     /// 清空白名单列表
@@ -2023,8 +2214,15 @@ public partial class RuleView : UserControl
     /// <param name="e"></param>
     private void MenuItem_ClearCustomWhites_Click(object sender, RoutedEventArgs e)
     {
+        if (!Globals.IsCloudMode)
+        {
         ListBox_CustomWhites.Items.Clear();
         NotifierHelper.Show(NotifierType.Success, "清空白名单列表成功");
+        }
+        else
+        {
+            NotifierHelper.Show(NotifierType.Error, "在线模式下无法使用该功能，未来将支持该功能");
+        }
     }
 
     /// <summary>
@@ -2034,6 +2232,8 @@ public partial class RuleView : UserControl
     /// <param name="e"></param>
     private void MenuItem_ImportCustomBlacks_Click(object sender, RoutedEventArgs e)
     {
+        if (!Globals.IsCloudMode)
+        {
         try
         {
             var fileDialog = new OpenFileDialog
@@ -2067,6 +2267,11 @@ public partial class RuleView : UserControl
         catch (Exception ex)
         {
             NotifierHelper.ShowException(ex);
+        }
+        }
+        else
+        {
+            NotifierHelper.Show(NotifierType.Error, "在线模式下无法使用该功能，未来将支持该功能");
         }
     }
 
@@ -2112,20 +2317,29 @@ public partial class RuleView : UserControl
     /// <param name="e"></param>
     private void MenuItem_DistinctCustomBlacks_Click(object sender, RoutedEventArgs e)
     {
-        if (ListBox_CustomBlacks.Items.IsEmpty)
+        if (!Globals.IsCloudMode)
         {
-            NotifierHelper.Show(NotifierType.Warning, "黑名单列表为空，去重操作取消");
-            return;
+
+
+            if (ListBox_CustomBlacks.Items.IsEmpty)
+            {
+                NotifierHelper.Show(NotifierType.Warning, "黑名单列表为空，去重操作取消");
+                return;
+            }
+
+            List<string> tempStr = new();
+            foreach (string item in ListBox_CustomBlacks.Items)
+                tempStr.Add(item);
+            ListBox_CustomBlacks.Items.Clear();
+            foreach (var item in tempStr.Distinct().ToList())
+                ListBox_CustomBlacks.Items.Add(item);
+
+            NotifierHelper.Show(NotifierType.Success, "黑名单列表去重成功");
         }
-
-        List<string> tempStr = new();
-        foreach (string item in ListBox_CustomBlacks.Items)
-            tempStr.Add(item);
-        ListBox_CustomBlacks.Items.Clear();
-        foreach (var item in tempStr.Distinct().ToList())
-            ListBox_CustomBlacks.Items.Add(item);
-
-        NotifierHelper.Show(NotifierType.Success, "黑名单列表去重成功");
+        else
+        {
+            NotifierHelper.Show(NotifierType.Error, "在线模式下无法使用该功能,未来将支持该功能");
+        }
     }
 
     /// <summary>
@@ -2135,8 +2349,15 @@ public partial class RuleView : UserControl
     /// <param name="e"></param>
     private void MenuItem_ClearCustomBlacks_Click(object sender, RoutedEventArgs e)
     {
+        if (!Globals.IsCloudMode)
+        {
         ListBox_CustomBlacks.Items.Clear();
         NotifierHelper.Show(NotifierType.Success, "清空黑名单列表成功");
+        }
+        else
+        {
+            NotifierHelper.Show(NotifierType.Error, "在线模式下无法使用该功能,未来将支持该功能");
+        }
     }
 
 

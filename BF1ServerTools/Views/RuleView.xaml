@@ -379,7 +379,7 @@
                         x:Name="ListBox_CustomWhites"
                         Margin="5"
                         Style="{StaticResource ListBoxStyle_CustomWhites}">
-                        <!--<ListBox.ContextMenu>
+                        <ListBox.ContextMenu>
                             <ContextMenu>
                                 <MenuItem
                                     Name="MenuItem_ImportCustomWhites"
@@ -399,7 +399,7 @@
                                     Click="MenuItem_ClearCustomWhites_Click"
                                     Header="清空白名单列表" />
                             </ContextMenu>
-                        </ListBox.ContextMenu>-->
+                        </ListBox.ContextMenu>
                     </ListBox>
                     <!--  ****************  -->
                     <StackPanel>
@@ -464,7 +464,7 @@
                         x:Name="ListBox_CustomBlacks"
                         Margin="5"
                         Style="{StaticResource ListBoxStyle_CustomWhites}">
- <!--                       <ListBox.ContextMenu>
+                        <ListBox.ContextMenu>
                             <ContextMenu>
                                 <MenuItem
                                     Name="MenuItem_ImportCustomBlacks"
@@ -484,7 +484,7 @@
                                     Click="MenuItem_ClearCustomBlacks_Click"
                                     Header="清空黑名单列表" />
                             </ContextMenu>
-                        </ListBox.ContextMenu> -->
+                        </ListBox.ContextMenu>
                     </ListBox>
                     <!--  ****************  -->
                     <StackPanel>
@@ -608,9 +608,13 @@
             <!--  *************  -->
             <ui:UiLabelIcon Content="应用规则" />
             <Button
+                x:Name="Refresh_Rule"
+                Click="Buttonn_Refresh_Rule"
+                Content="刷新规则" />
+            <Button
                 x:Name="Button_ApplyAndQueryCurrentRule"
                 Click="Button_ApplyAndQueryCurrentRule_Click"
-                Content="应用并查询当前规则" />
+                Content="应用上传并查询当前规则" />
             <TextBlock Style="{StaticResource TextBlockStyle_Hint}">
                 说明：每次修改规则，都必须重新应用规则才会生效。
             </TextBlock>
