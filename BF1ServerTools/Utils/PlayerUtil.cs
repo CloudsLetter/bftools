@@ -279,7 +279,27 @@ public static class PlayerUtil
         }
     }
 
+    /// <summary>
+    /// 获取胜率f
+    /// </summary>
+    /// <param name="personaId"></param>
+    /// <returns></returns>
+    public static float GetWRF(long personaId)
+    {
+        lock (Obj)
+        {
+            if (Globals.LifePlayerCacheDatas != null)
+            {
+                var index = Globals.LifePlayerCacheDatas.FindIndex(item => item.PersonaId == personaId);
+                if (index != -1)
+                {
+                    return Globals.LifePlayerCacheDatas[index].LifeMaxWR;
+                }
+            }
 
+            return 0.00f;
+        }
+    }
     /// <summary>
     /// 获取游玩时长
     /// </summary>

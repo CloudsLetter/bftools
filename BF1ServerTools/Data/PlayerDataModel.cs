@@ -123,6 +123,11 @@ public partial class PlayerDataModel : ObservableObject, IComparable<PlayerDataM
     /// </summary>
     [ObservableProperty]
     private string wR;
+    /// <summary>
+    /// 胜率F
+    /// </summary>
+    [ObservableProperty]
+    private float wRF;
     ///////////////////////////////////////////////////////////////////////
 
     /// <summary>
@@ -221,6 +226,8 @@ public partial class PlayerDataModel : ObservableObject, IComparable<PlayerDataM
                 return other.lifeKpm.CompareTo(this.lifeKpm);
             case OrderBy.LTime:
                 return other.lifeTime.CompareTo(this.lifeTime);
+            case OrderBy.WR:
+                return other.wRF.CompareTo(this.wRF);
             case OrderBy.Kit3:
                 return other.kit3.CompareTo(this.kit3);
             case OrderBy.Weapon:

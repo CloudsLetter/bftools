@@ -28,6 +28,8 @@ public class PlayerData
     public float LifeKpm { get; set; }
     public int LifeTime { get; set; }
     public string LifeWR { get; set; }
+    public float LifeWRF { get; set; }
+
     public string Kit { get; set; }
     public string Kit2 { get; set; }
     public string Kit3 { get; set; }

@@ -185,6 +185,7 @@
                             <ComboBoxItem Content="生涯KD" />
                             <ComboBoxItem Content="生涯KPM" />
                             <ComboBoxItem Content="时长" />
+                            <ComboBoxItem Content="胜率" />
                             <ComboBoxItem Content="兵种" />
                             <ComboBoxItem Content="主武器" />
                         </ComboBox>

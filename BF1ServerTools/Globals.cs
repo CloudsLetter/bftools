@@ -312,6 +312,7 @@ public enum OrderBy
     LKD,
     LKPM,
     LTime,
+    WR,
     Kit3,
     Weapon
 }
