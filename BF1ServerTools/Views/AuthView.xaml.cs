@@ -466,11 +466,9 @@ public partial class AuthView : UserControl
             NotifierHelper.Show(NotifierType.Success, $"[{result.ExecTime:0.00} 秒]  验证成功\n{firstMessage}");
             if (Globals.IsCloudMode)
             {
-                NotifierHelper.Show(NotifierType.Warning, "请勿从在线模式切回离线模式，重启工具以使用离线模式");
-            }
-            else
-            {
                 Globals.IsCloudMode = false;
+                Globals.IsClean = false;
+                NotifierHelper.Show(NotifierType.Success, "已切回离线模式");
             }
         }
         else
@@ -514,6 +512,7 @@ public partial class AuthView : UserControl
             if (result1.IsSuccess)
             {
                 Globals.IsCloudMode = true;
+                Globals.IsCloudMode2 = true;
                 NotifierHelper.Show(NotifierType.Success, $"[{result.ExecTime:0.00} 秒]  验证成功\n{firstMessage}在线模式");
 
             }

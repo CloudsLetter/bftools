@@ -153,7 +153,6 @@ public partial class RuleView : UserControl
             if (Globals.IsCloudMode)
             {
 
-
                 if (Globals.ServerId != 0)
                 {
                     if (Globals.ServerId != serverid)
@@ -229,6 +228,148 @@ public partial class RuleView : UserControl
                     }
                     else
                     {
+
+                        if (!Globals.IsClean)
+                        {
+                            Globals.IsClean = true;
+                            var result = await BF1API.RefreshWhiteList(ServerId: Globals.ServerId.ToString());
+                            if (result.IsSuccess)
+                            {
+                                isShow = true;
+                                var test = result.Content.Replace("\r", "");
+
+                                List<Players> players = JsonConvert.DeserializeObject<List<Players>>(test);
+
+                                this.Dispatcher.Invoke(
+                                    new Action(
+                                        delegate
+                                        {
+                                            ListBox_CustomWhites.Items.Clear();
+                                        }
+                                    )
+                                );
+
+                                foreach (Players player in players)
+                                {
+
+                                    this.Dispatcher.Invoke(
+                                        new Action(
+                                            delegate
+                                            {
+                                                ListBox_CustomWhites.Items.Add(player.PlayerName);
+                                            }
+                                        )
+                                    );
+                                }
+                            }
+
+                            var result2 = await CloudApi.RefreshBlackList(ServerId: Globals.ServerId.ToString());
+                            if (result2.IsSuccess)
+                            {
+                                isShow = true;
+                                var test = result2.Content.Replace("\r", "");
+
+                                List<Players> players = JsonConvert.DeserializeObject<List<Players>>(test);
+
+                                this.Dispatcher.Invoke(
+                                    new Action(
+                                        delegate
+                                        {
+                                            ListBox_CustomBlacks.Items.Clear();
+                                        }
+                                    )
+                                );
+
+                                foreach (Players player in players)
+                                {
+
+                                    this.Dispatcher.Invoke(
+                                        new Action(
+                                            delegate
+                                            {
+                                                ListBox_CustomBlacks.Items.Add(player.PlayerName);
+                                            }
+                                        )
+                                    );
+                                }
+                            }
+
+                            var result3 = await CloudApi.QueryRule(ServerId: Globals.ServerId);
+
+                            if (result3.IsSuccess)
+                            {
+                                var tmp = result3.Content.Replace("\r", "");
+                                CloudRule data = JsonConvert.DeserializeObject<CloudRule>(tmp);
+                                this.Dispatcher.Invoke(
+                                      new Action(
+                                          delegate
+                                          {
+                                              CheckBox_WhiteLifeKD.IsChecked = data.WhiteLifeKD;
+                                              CheckBox_WhiteLifeKPM.IsChecked = data.WhiteLifeKPM;
+                                              CheckBox_WhiteLifeWeaponStar.IsChecked = data.WhiteLifeWeaponStar;
+                                              CheckBox_WhiteLifeVehicleStar.IsChecked = data.WhiteLifeVehicleStar;
+                                              CheckBox_WhiteKill.IsChecked = data.WhiteKill;
+                                              CheckBox_WhiteKD.IsChecked = data.WhiteKD;
+                                              CheckBox_WhiteKPM.IsChecked = data.WhiteKPM;
+                                              CheckBox_WhiteRank.IsChecked = data.WhiteRank;
+                                              CheckBox_WhiteWeapon.IsChecked = data.WhiteWeapon;
+                                              CheckBox_WhiteLifeMaxWR.IsChecked = data.WhiteWR;
+                                              CheckBox_ToggleTeamLimt.IsChecked = data.WhiteToggleTeam;
+                                              // 应用队伍1规则
+                                              RuleTeam1Model.MaxKill = data.Team1MaxKill;
+                                              RuleTeam1Model.FlagKD = data.Team1FlagKD;
+                                              RuleTeam1Model.MaxKD = data.Team1MaxKD;
+                                              RuleTeam1Model.FlagKPM = data.Team1FlagKPM;
+                                              RuleTeam1Model.MaxKPM = data.Team1MaxKPM;
+                                              RuleTeam1Model.MinRank = data.Team1MinRank;
+                                              RuleTeam1Model.MaxRank = data.Team1MaxRank;
+                                              RuleTeam1Model.LifeMaxKD = data.Team1LifeMaxKD;
+                                              RuleTeam1Model.LifeMaxKPM = data.Team1LifeMaxKPM;
+                                              RuleTeam1Model.LifeMaxWeaponStar = data.Team1LifeMaxWeaponStar;
+                                              RuleTeam1Model.LifeMaxVehicleStar = data.Team1LifeMaxVehicleStar;
+                                              RuleTeam1Model.LifeMaxWR = data.Team1LifeMaxWR;
+                                              // 应用队伍2规则
+                                              RuleTeam2Model.MaxKill = data.Team2MaxKill;
+                                              RuleTeam2Model.FlagKD = data.Team2FlagKD;
+                                              RuleTeam2Model.MaxKD = data.Team2MaxKD;
+                                              RuleTeam2Model.FlagKPM = data.Team2FlagKPM;
+                                              RuleTeam2Model.MaxKPM = data.Team2MaxKPM;
+                                              RuleTeam2Model.MinRank = data.Team2MinRank;
+                                              RuleTeam2Model.MaxRank = data.Team2MaxRank;
+                                              RuleTeam2Model.LifeMaxKD = data.Team2LifeMaxKD;
+                                              RuleTeam2Model.LifeMaxKPM = data.Team2LifeMaxKPM;
+                                              RuleTeam2Model.LifeMaxWeaponStar = data.Team2LifeMaxWeaponStar;
+                                              RuleTeam2Model.LifeMaxVehicleStar = data.Team2LifeMaxVehicleStar;
+                                              RuleTeam2Model.LifeMaxWR = data.Team2LifeMaxWR;
+
+                                              List<string> list = new List<string>(data.Team1WeaponLimit.Split(','));
+                                              List<string> list2 = new List<string>(data.Team2WeaponLimit.Split(','));
+
+                                              for (int i = 0; i < DataGrid_RuleWeaponModels.Count; i++)
+                                              {
+                                                  var item = DataGrid_RuleWeaponModels[i];
+
+                                                  var v1 = list.IndexOf(item.English);
+                                                  if (v1 != -1)
+                                                      item.Team1 = true;
+                                                  else
+                                                      item.Team1 = false;
+
+                                                  var v2 = list2.IndexOf(item.English);
+                                                  if (v2 != -1)
+                                                      item.Team2 = true;
+                                                  else
+                                                      item.Team2 = false;
+                                              }
+                                          }
+                                      )
+                                  );
+
+
+                            }
+                        }
+
+
                         if (isShow2)
                         {
                             isShow2 = false;
@@ -395,6 +536,67 @@ public partial class RuleView : UserControl
                 }
                 else
                 {
+                    if (!Globals.IsClean)
+                    {
+                        this.Dispatcher.Invoke(
+                                     new Action(
+                                         delegate
+                                         {
+                                             ListBox_CustomWhites.Items.Clear();
+                                             ListBox_CustomBlacks.Items.Clear();
+                                             CheckBox_WhiteLifeKD.IsChecked = false;
+                                             CheckBox_WhiteLifeKPM.IsChecked = false;
+                                             CheckBox_WhiteLifeMaxWR.IsChecked = false;
+                                             CheckBox_WhiteLifeWeaponStar.IsChecked = false;
+                                             CheckBox_WhiteLifeVehicleStar.IsChecked = false;
+                                             CheckBox_WhiteKill.IsChecked = false;
+                                             CheckBox_WhiteKD.IsChecked = false;
+                                             CheckBox_WhiteKPM.IsChecked = false;
+                                             CheckBox_WhiteRank.IsChecked = false;
+                                             CheckBox_WhiteWeapon.IsChecked = false;
+                                             CheckBox_ToggleTeamLimt.IsChecked = false;
+
+                                             // 应用队伍1规则
+                                             RuleTeam1Model.MaxKill = 0;
+                                             RuleTeam1Model.FlagKD = 0;
+                                             RuleTeam1Model.MaxKD = 0.00f;
+                                             RuleTeam1Model.FlagKPM = 0;
+                                             RuleTeam1Model.MaxKPM = 0.00f;
+                                             RuleTeam1Model.MinRank = 0;
+                                             RuleTeam1Model.MaxRank = 0;
+                                             RuleTeam1Model.LifeMaxKD = 0;
+                                             RuleTeam1Model.LifeMaxKPM = 0;
+                                             RuleTeam1Model.LifeMaxWeaponStar = 0;
+                                             RuleTeam1Model.LifeMaxVehicleStar = 0;
+                                             RuleTeam1Model.LifeMaxWR = 0;
+                                             // 应用队伍2规则
+                                             RuleTeam2Model.MaxKill = 0;
+                                             RuleTeam2Model.FlagKD = 0;
+                                             RuleTeam2Model.MaxKD = 0.00f;
+                                             RuleTeam2Model.FlagKPM = 0;
+                                             RuleTeam2Model.MaxKPM = 0.00f;
+                                             RuleTeam2Model.MinRank = 0;
+                                             RuleTeam2Model.MaxRank = 0;
+                                             RuleTeam2Model.LifeMaxKD = 0;
+                                             RuleTeam2Model.LifeMaxKPM = 0;
+                                             RuleTeam2Model.LifeMaxWeaponStar = 0;
+                                             RuleTeam2Model.LifeMaxVehicleStar = 0;
+                                             RuleTeam2Model.LifeMaxWR = 0;
+
+                                             for (int i = 0; i < DataGrid_RuleWeaponModels.Count; i++)
+                                             {
+                                                 var item = DataGrid_RuleWeaponModels[i];
+
+                                                 item.Team1 = false;
+                                                 item.Team2 = false;
+                                             }
+                                         }
+                                          )
+                             );
+                    }
+
+
+
                     if (!isClear)
                     {
                         isClear = true;
@@ -410,6 +612,115 @@ public partial class RuleView : UserControl
                         );
 
                     }
+                }
+            }
+            else
+            {
+                if (Globals.IsCloudMode2)
+                {
+                    Globals.IsCloudMode2 = false;
+
+                    Dispatcher.Invoke(
+                        new Action(
+                            delegate
+                {
+                         var index = ComboBox_ConfigNames.SelectedIndex;
+                         if (index == -1)
+                         return;
+                        
+                         var rule = RuleConfig.RuleInfos[index];
+                         CheckBox_WhiteLifeKD.IsChecked = rule.WhiteLifeKD;
+                         CheckBox_WhiteLifeKPM.IsChecked = rule.WhiteLifeKPM;
+                         CheckBox_WhiteLifeWeaponStar.IsChecked = rule.WhiteLifeWeaponStar;
+                         CheckBox_WhiteLifeVehicleStar.IsChecked = rule.WhiteLifeVehicleStar;
+                         CheckBox_WhiteKill.IsChecked = rule.WhiteKill;
+                         CheckBox_WhiteKD.IsChecked = rule.WhiteKD;
+                         CheckBox_WhiteKPM.IsChecked = rule.WhiteKPM;
+                         CheckBox_WhiteRank.IsChecked = rule.WhiteRank;
+                         CheckBox_WhiteWeapon.IsChecked = rule.WhiteWeapon;
+                         CheckBox_WhiteLifeMaxWR.IsChecked = rule.WhiteMaxWR;
+                         CheckBox_ToggleTeamLimt.IsChecked = rule.WhiteAllowToggleTeam;
+                        
+                         // 应用队伍1规则
+                         RuleTeam1Model.MaxKill = rule.Team1Rule.MaxKill;
+                         RuleTeam1Model.FlagKD = rule.Team1Rule.FlagKD;
+                         RuleTeam1Model.MaxKD = rule.Team1Rule.MaxKD;
+                         RuleTeam1Model.FlagKPM = rule.Team1Rule.FlagKPM;
+                         RuleTeam1Model.MaxKPM = rule.Team1Rule.MaxKPM;
+                         RuleTeam1Model.MinRank = rule.Team1Rule.MinRank;
+                         RuleTeam1Model.MaxRank = rule.Team1Rule.MaxRank;
+                         RuleTeam1Model.LifeMaxKD = rule.Team1Rule.LifeMaxKD;
+                         RuleTeam1Model.LifeMaxKPM = rule.Team1Rule.LifeMaxKPM;
+                         RuleTeam1Model.LifeMaxWR = rule.Team1Rule.LifeMaxWR;
+                         RuleTeam1Model.LifeMaxWeaponStar = rule.Team1Rule.LifeMaxWeaponStar;
+                         RuleTeam1Model.LifeMaxVehicleStar = rule.Team1Rule.LifeMaxVehicleStar;
+                         // 应用队伍2规则
+                         RuleTeam2Model.MaxKill = rule.Team2Rule.MaxKill;
+                         RuleTeam2Model.FlagKD = rule.Team2Rule.FlagKD;
+                         RuleTeam2Model.MaxKD = rule.Team2Rule.MaxKD;
+                         RuleTeam2Model.FlagKPM = rule.Team2Rule.FlagKPM;
+                         RuleTeam2Model.MaxKPM = rule.Team2Rule.MaxKPM;
+                         RuleTeam2Model.MinRank = rule.Team2Rule.MinRank;
+                         RuleTeam2Model.MaxRank = rule.Team2Rule.MaxRank;
+                         RuleTeam2Model.LifeMaxKD = rule.Team2Rule.LifeMaxKD;
+                         RuleTeam2Model.LifeMaxKPM = rule.Team2Rule.LifeMaxKPM;
+                         RuleTeam2Model.LifeMaxWR = rule.Team2Rule.LifeMaxWR;
+                         RuleTeam2Model.LifeMaxWeaponStar = rule.Team2Rule.LifeMaxWeaponStar;
+                         RuleTeam2Model.LifeMaxVehicleStar = rule.Team2Rule.LifeMaxVehicleStar;
+                        
+                         // 白名单特权
+                        
+                         // 读取白名单列表
+                         ListBox_CustomWhites.Items.Clear();
+                         if (!Globals.IsCloudMode)
+                         {
+                             foreach (var item in rule.WhiteList)
+                             {
+                                 ListBox_CustomWhites.Items.Add(item);
+                             }
+                         }
+                        
+                         // 读取黑名单列表
+                         ListBox_CustomBlacks.Items.Clear();
+                        
+                         ListBox_CustomWhites.Items.Clear();
+                         if (!Globals.IsCloudMode)
+                         {
+                             foreach (var item in rule.BlackList)
+                             {
+                                 ListBox_CustomBlacks.Items.Add(item);
+                             }
+                         }
+                        
+                        
+                         // 读取武器限制信息
+                         if (!Globals.IsCloudMode)
+                         {
+                             for (int i = 0; i < DataGrid_RuleWeaponModels.Count; i++)
+                             {
+                                 var item = DataGrid_RuleWeaponModels[i];
+                        
+                                 var v1 = rule.Team1Weapon.IndexOf(item.English);
+                                 if (v1 != -1)
+                                     item.Team1 = true;
+                                 else
+                                     item.Team1 = false;
+                        
+                                 var v2 = rule.Team2Weapon.IndexOf(item.English);
+                                 if (v2 != -1)
+                                     item.Team2 = true;
+                                 else
+                                     item.Team2 = false;
+                             }
+                        SaveConfig();
+
+                    }
+
+                }
+            )
+            );
+
+
                 }
             }
                 Thread.Sleep(2000);

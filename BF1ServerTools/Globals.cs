@@ -269,21 +269,23 @@ public static class Globals
     /// 使用云功能
     /// </summary>
     public static bool IsCloudMode = false;
+    public static bool IsCloudMode2 = false;
+    public static bool IsClean = false;
 
-/*    /// <summary>
-    /// 使用云功能
-    /// </summary>
-    public static bool IsCloudMode = false;*/
+    /*    /// <summary>
+        /// 使用云功能
+        /// </summary>
+        public static bool IsCloudMode = false;*/
 
-/*    /// <summary>
-    /// 使用云功能
-    /// </summary>
-    public static bool IsCloudMode = false;
+    /*    /// <summary>
+        /// 使用云功能
+        /// </summary>
+        public static bool IsCloudMode = false;
 
-    /// <summary>
-    /// 使用云功能
-    /// </summary>
-    public static bool IsCloudMode = false;*/
+        /// <summary>
+        /// 使用云功能
+        /// </summary>
+        public static bool IsCloudMode = false;*/
 
     ///////////////////////////////////////////////////////
 
