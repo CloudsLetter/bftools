@@ -586,7 +586,7 @@ public partial class RuleView : UserControl
                                              RuleTeam1Model.LifeMaxWeaponStar = 0;
                                              RuleTeam1Model.LifeMaxVehicleStar = 0;
                                              RuleTeam1Model.LifeMaxWRLevel = 0;
-                                             RuleTeam1Model.LifeMaxWR = 0;
+                                             RuleTeam1Model.LifeMaxWR = 0.00f;
                                              // 应用队伍2规则
                                              RuleTeam2Model.MaxKill = 0;
                                              RuleTeam2Model.FlagKD = 0;

@@ -87,7 +87,7 @@ public partial class LogView : UserControl
                 if (TextBox_ScoreKickLog.LineCount >= 1000)
                     TextBox_ScoreKickLog.Clear();
 
-                if (Globals.IsCloudMode)
+                if (Globals.ReverseOrder)
                 {
                     AppendScoreKickLog($"状态: {info.State}\n");
                     AppendScoreKickLog($"踢出理由: {info.Reason}");
@@ -316,7 +316,6 @@ public partial class LogView : UserControl
         if (Globals.ReverseOrder)
         {
             TextBox_KickOKLog.Text = $"{log}\r\n{TextBox_KickOKLog.Text}";
-
         }
         else
         {

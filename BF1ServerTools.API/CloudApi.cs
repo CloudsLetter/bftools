@@ -17,23 +17,23 @@ public class CloudRespError
 public static class CloudApi
 {
 
-    private const string hostpg = "https://bf1.cloudyun.xyz/ping";
+    private const string hostpg = "http://127.0.0.1:8080/ping";
 
-    private const string hostaq = "https://bf1.cloudyun.xyz/api/bf1/autotoggleteam/query";
-    private const string hostad = "https://bf1.cloudyun.xyz/api/bf1/autotoggleteam/add";
-    private const string hostar = "https://bf1.cloudyun.xyz/api/bf1/autotoggleteam/remove";
-    private const string hostbq = "https://bf1.cloudyun.xyz/api/bf1/blacklist/query";
-    private const string hostba = "https://bf1.cloudyun.xyz/api/bf1/blacklist/add";
-    private const string hostbr = "https://bf1.cloudyun.xyz/api/bf1/blacklist/remove";
+    private const string hostaq = "http://127.0.0.1:8080/api/bf1/autotoggleteam/query";
+    private const string hostad = "http://127.0.0.1:8080/api/bf1/autotoggleteam/add";
+    private const string hostar = "http://127.0.0.1:8080/api/bf1/autotoggleteam/remove";
+    private const string hostbq = "http://127.0.0.1:8080/api/bf1/blacklist/query";
+    private const string hostba = "http://127.0.0.1:8080/api/bf1/blacklist/add";
+    private const string hostbr = "http://127.0.0.1:8080/api/bf1/blacklist/remove";
 
-    private const string kickhistoryad = "https://bf1.cloudyun.xyz/api/bf1/kickhistory/add";
+    private const string kickhistoryad = "http://127.0.0.1:8080/api/bf1/kickhistory/add";
 
-    private const string toggglehistoryad = "https://bf1.cloudyun.xyz/api/bf1/togglehistory/add";
+    private const string toggglehistoryad = "http://127.0.0.1:8080/api/bf1/togglehistory/add";
 
-    private const string playgamingdatad = "https://bf1.cloudyun.xyz/api/bf1/playergamingdata/add";
+    private const string playgamingdatad = "http://127.0.0.1:8080/api/bf1/playergamingdata/add";
 
-    private const string ruleqr = "https://bf1.cloudyun.xyz/api/bf1/rule/query";
-    private const string rulead = "https://bf1.cloudyun.xyz/api/bf1/rule/push";
+    private const string ruleqr = "http://127.0.0.1:8080/api/bf1/rule/query";
+    private const string rulead = "http://127.0.0.1:8080/api/bf1/rule/push";
 
     private static readonly RestClient clientpg;
 
@@ -533,7 +533,7 @@ public static class CloudApi
             var request = new RestRequest()
                 .AddJsonBody(reqBody);
 
-            var response = await clientbr.ExecutePostAsync(request);
+            var response = await clientkickhistoryad.ExecutePostAsync(request);
             if (response.StatusCode == HttpStatusCode.OK)
             {
                 respContent.IsSuccess = true;
@@ -763,7 +763,6 @@ public static class CloudApi
                Team1LifeMaxWRLevel = team1LifeMaxWRLevel,
                Team2LifeMaxWRLevel = team2LifeMaxWRLevel,
                Allow2LowScoreTeam  = allow2LowScoreTeam
-
             };
 
             var request = new RestRequest()
