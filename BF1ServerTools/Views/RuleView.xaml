@@ -96,6 +96,24 @@
                                 Minimum="0"
                                 Value="{Binding RuleTeam1Model.MaxRank, Mode=TwoWay}" />
 
+<!--                            <DockPanel>
+                                <TextBlock Text="分数限制" />
+                                <TextBlock HorizontalAlignment="Right" Text="{Binding RuleTeam1Model.ScoreLimt, StringFormat={}{0:0}}" />
+                            </DockPanel>
+                            <Slider
+                                Maximum="1000"
+                                Minimum="0"
+                                Value="{Binding RuleTeam1Model.ScoreLimt, Mode=TwoWay}" />
+                            <DockPanel>
+                                <TextBlock Text="分数差距" />
+                                <TextBlock HorizontalAlignment="Right" Text="{Binding RuleTeam1Model.ScoreGap, StringFormat={}{0:0}}" />
+                            </DockPanel>
+                            <Slider
+                                Maximum="1000"
+                                Minimum="0"
+                                Value="{Binding RuleTeam1Model.ScoreGap, Mode=TwoWay}" />
+    -->                        
+                            
                             <TextBlock Style="{StaticResource TextBlockStyle_Hint}">
                                 说明：设置为0代表忽略该规则
                             </TextBlock>
@@ -173,6 +191,23 @@
                                 Maximum="150"
                                 Minimum="0"
                                 Value="{Binding RuleTeam2Model.MaxRank, Mode=TwoWay}" />
+ <!--                           <DockPanel>
+                                <TextBlock Text="分数限制" />
+                                <TextBlock HorizontalAlignment="Right" Text="{Binding RuleTeam1Model.ScoreLimt, StringFormat={}{0:0}}" />
+                            </DockPanel>
+                            <Slider
+                                Maximum="1000"
+                                Minimum="0"
+                                Value="{Binding  RuleTeam1Model.ScoreLimt, Mode=TwoWay}" />
+                            <DockPanel>
+                                <TextBlock Text="分数差距" />
+                                <TextBlock HorizontalAlignment="Right" Text="{Binding RuleTeam1Model.ScoreGap, StringFormat={}{0:0}}" />
+                            </DockPanel>
+                            <Slider
+                                Maximum="1000"
+                                Minimum="0"
+                                Value="{Binding RuleTeam1Model.ScoreGap, Mode=TwoWay}" />
+                            -->
                         </StackPanel>
                     </StackPanel>
                 </UniformGrid>
@@ -207,6 +242,15 @@
                                 Minimum="0"
                                 TickFrequency="0.1"
                                 Value="{Binding RuleTeam1Model.LifeMaxKPM, Mode=TwoWay}" />
+                            <DockPanel>
+                                <TextBlock Text="计算最高生涯胜率等级" />
+                                <TextBlock HorizontalAlignment="Right" Text="{Binding RuleTeam1Model.LifeMaxWRLevel, StringFormat={}{0:0}}" />
+                            </DockPanel>
+                            <Slider
+                                Maximum="150"
+                                Minimum="0"
+                                TickFrequency="1"
+                                Value="{Binding RuleTeam1Model.LifeMaxWRLevel, Mode=TwoWay}" />
                             <DockPanel>
                                 <TextBlock Text="最高生涯胜率" />
                                 <TextBlock HorizontalAlignment="Right" Text="{Binding RuleTeam1Model.LifeMaxWR, StringFormat={}{0:0.00}}" />
@@ -262,6 +306,15 @@
                                 Minimum="0"
                                 TickFrequency="0.1"
                                 Value="{Binding RuleTeam2Model.LifeMaxKPM, Mode=TwoWay}" />
+                            <DockPanel>
+                                <TextBlock Text="计算最高生涯胜率等级" />
+                                <TextBlock HorizontalAlignment="Right" Text="{Binding RuleTeam2Model.LifeMaxWRLevel, StringFormat={}{0:0}}" />
+                            </DockPanel>
+                            <Slider
+                                Maximum="150"
+                                Minimum="0"
+                                TickFrequency="1"
+                                Value="{Binding RuleTeam2Model.LifeMaxWRLevel, Mode=TwoWay}" />
                             <DockPanel>
                                 <TextBlock Text="最高生涯胜率" />
                                 <TextBlock HorizontalAlignment="Right" Text="{Binding RuleTeam2Model.LifeMaxWR, StringFormat={}{0:0.00}}" />
@@ -606,7 +659,8 @@
             <CheckBox x:Name="CheckBox_WhiteWeapon" Content="免疫武器限制" />
             <CheckBox x:Name="CheckBox_ToggleTeamLimt" Content="免疫更换队伍限制" />
             <!--  *************  -->
-            <ui:UiLabelIcon Content="应用规则" />
+            <ui:UiLabelIcon Content="应用 刷新 允许换边抗压" />
+            <CheckBox x:Name="CheckBox_AllowToggle2LowScoreTeam" Content="允许换边抗压" />
             <Button
                 x:Name="Refresh_Rule"
                 Click="Buttonn_Refresh_Rule"

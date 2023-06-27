@@ -670,6 +670,7 @@ public static class CloudApi
         bool whiteToggleTeam,
         bool whiteLifeMaxWR,
         bool whiteAllowToggleTeam,
+        bool allow2LowScoreTeam,
         int team1MaxKill,
         int team1FlagKD,
         double team1MaxKD,
@@ -679,6 +680,7 @@ public static class CloudApi
         int team1MaxRank,
         double team1LifeMaxKD,
         double team1LifeMaxKPM,
+        int team1LifeMaxWRLevel,
         double team1LifeMaxWR,
         int team1LifeMaxWeaponStar,
         int team1LifeMaxVehicleStar,
@@ -691,6 +693,7 @@ public static class CloudApi
         int team2MaxRank,
         double team2LifeMaxKD,
         double team2LifeMaxKPM,
+        int team2LifeMaxWRLevel,
         double team2LifeMaxWR,
         int team2LifeMaxWeaponStar,
         int team2LifeMaxVehicleStar,
@@ -699,7 +702,9 @@ public static class CloudApi
         string guid,
         long operatorPersonaId,
         string team1Weapon,
-        string team2Weapon
+        string team2Weapon,
+        int team1ScoreLimit,
+        int team1ScoreGap
         )
     {
         var sw = new Stopwatch();
@@ -752,7 +757,13 @@ public static class CloudApi
                ServerId = serverId,
                GameId = gameId,
                GUID = guid,
-               OperatorPersonaId = operatorPersonaId
+               OperatorPersonaId = operatorPersonaId,
+               Team1ScoreLimit = team1ScoreLimit,
+               Team1ScoreGap = team1ScoreGap,
+               Team1LifeMaxWRLevel = team1LifeMaxWRLevel,
+               Team2LifeMaxWRLevel = team2LifeMaxWRLevel,
+               Allow2LowScoreTeam  = allow2LowScoreTeam
+
             };
 
             var request = new RestRequest()

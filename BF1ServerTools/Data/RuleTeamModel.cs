@@ -70,11 +70,27 @@ public partial class RuleTeamModel : ObservableObject
     [ObservableProperty]
     private int lifeMaxVehicleStar;
 
+
+    /// <summary>
+    /// 计算最大生涯胜率等级
+    /// </summary>
+    [ObservableProperty]
+    private int lifeMaxWRLevel;
+
     /// <summary>
     /// 最大生涯胜率
     /// </summary>
     [ObservableProperty]
     private float lifeMaxWR;
-
+    /// <summary>
+    /// 最大生涯胜率
+    /// </summary>
+    [ObservableProperty]
+    private int scoreLimt;
+    /// <summary>
+    /// 最大生涯胜率
+    /// </summary>
+    [ObservableProperty]
+    private int scoreGap;
 
 }

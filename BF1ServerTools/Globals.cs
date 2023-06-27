@@ -232,6 +232,10 @@ public static class Globals
     /// 是否换边踢人模式
     /// </summary>
     public static bool ToggleKickMode = false;
+
+    public static bool Allow2LowScoreTeam = false;
+
+    public static string ServerMode = "";
     /// <summary>
     /// 是否允许超出胜率限制
     /// </summary>
@@ -272,6 +276,8 @@ public static class Globals
     public static bool IsCloudMode2 = false;
     public static bool IsClean = false;
 
+    public static int Team1Score = 0;
+    public static int Team2Score = 0;
     /*    /// <summary>
         /// 使用云功能
         /// </summary>

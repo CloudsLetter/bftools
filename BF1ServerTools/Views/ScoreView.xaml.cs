@@ -135,10 +135,13 @@ public partial class ScoreView : UserControl
             if (ScoreModel.ServerGameMode == "征服")
             {
                 // 最大比分
+                Globals.ServerMode = ScoreModel.ServerGameMode;
                 _serverData.MaxScore = Server.GetServerMaxScore();
                 // 队伍1、队伍2分数
                 _serverData.Team1Score = Server.GetTeam1Score();
                 _serverData.Team2Score = Server.GetTeam2Score();
+                Globals.Team1Score = Server.GetTeam1Score();
+                Globals.Team2Score = Server.GetTeam2Score();
                 // 队伍1、队伍2从击杀获取得分
                 _serverData.Team1Kill = Server.GetTeam1KillScore();
                 _serverData.Team2Kill = Server.GetTeam2KillScore();

@@ -490,13 +490,38 @@ public partial class MonitView : UserControl
                 AddBreakRulePlayerInfo(playerData, BreakType.LifeKPM, $"Life KPM Limit {serverRule.LifeMaxKPM:0.00}");
             }
 
+
+
+
             // 限制玩家生涯胜率 
-            if (serverRule.LifeMaxWR != 0 &&
-                Globals.LifePlayerCacheDatas[lifeIndex].LifeMaxWR > serverRule.LifeMaxWR)
+            if (playerData.Rank > serverRule.LifeMaxWRLevel && playerData.Rank != 0 && serverRule.LifeMaxWRLevel != 0)
             {
-                AddBreakRulePlayerInfo(playerData, BreakType.LifeMaxWR, $"Life WR Limit {serverRule.LifeMaxWR:0.00}");
+                if (serverRule.LifeMaxWR != 0 &&
+                Globals.LifePlayerCacheDatas[lifeIndex].LifeMaxWR > serverRule.LifeMaxWR)
+                {
+                    AddBreakRulePlayerInfo(playerData, BreakType.LifeMaxWR, $"Life WR Limit {serverRule.LifeMaxWR:0.00}");
+
+                }
+            }
+
+            if (Globals.ServerRule_Team1.ScoreLimit != 0)
+            {
+
+                if (Globals.Team1Score + Globals.Team2Score < Globals.ServerRule_Team1.ScoreLimit)
+                {
+                    if (Globals.Team2Score - Globals.Team1Score > Globals.ServerRule_Team1.ScoreGap)
+                    {
+
+                    }
+                    if (Globals.Team1Score - Globals.Team2Score > Globals.ServerRule_Team1.ScoreGap)
+                    {
+
+                    }
+                }
+
 
             }
+
             var tempData = new List<string>
             {
                 playerData.WeaponS0,
@@ -817,7 +842,6 @@ public partial class MonitView : UserControl
             info.Flag = KickFlag.Faild;
             info.State = $"踢出失败  {result.Content}";
             info.Time = DateTime.Now;
-
             LogView.ActionAddKickNOLog(info);
         }
     }
@@ -888,7 +912,21 @@ public partial class MonitView : UserControl
                     To = 2
                 };
                 LogView.ActionAddChangeTeamInfoLog(tempChangeTeamInfo);
-                CloudUtil.AutTogglTeame(tempChangeTeamInfo);
+
+                if (Globals.Allow2LowScoreTeam)
+                {
+                    if (Globals.ServerMode == "征服" && Globals.Team2Score > Globals.Team1Score)
+                    {
+                        CloudUtil.AutTogglTeame(tempChangeTeamInfo);
+
+                    }
+                }
+                else
+                {
+                    CloudUtil.AutTogglTeame(tempChangeTeamInfo);
+
+                }
+
 
                 break;
 
@@ -917,7 +955,18 @@ public partial class MonitView : UserControl
                     To = 1
                 };
                 LogView.ActionAddChangeTeamInfoLog(tempChangeTeamInfo);
-                CloudUtil.AutTogglTeame(tempChangeTeamInfo);
+
+                if (Globals.Allow2LowScoreTeam)
+                {
+                    if (Globals.ServerMode == "征服" && Globals.Team2Score < Globals.Team1Score)
+                    {
+                        CloudUtil.AutTogglTeame(tempChangeTeamInfo);
+                    }
+                }
+                else
+                {
+                    CloudUtil.AutTogglTeame(tempChangeTeamInfo);
+                }
 
                 break;
 

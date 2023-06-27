@@ -18,5 +18,9 @@ public class ServerRule
     public int LifeMaxWeaponStar { get; set; } = 0;
     public int LifeMaxVehicleStar { get; set; } = 0;
 
+    public int LifeMaxWRLevel { get; set; } = 0;
+
     public float LifeMaxWR { get; set; } = 0.00f;
+    public int ScoreLimit { get; set; } = 0;
+    public int ScoreGap { get; set; } = 0;
 }
