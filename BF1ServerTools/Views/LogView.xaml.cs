@@ -312,7 +312,6 @@ public partial class LogView : UserControl
     /// <param name="log"></param>
     private void AppendKickOKLog(string log)
     {
-        TextBox_KickOKLog.AppendText($"{log}\n");
         if (Globals.ReverseOrder)
         {
             TextBox_KickOKLog.Text = $"{log}\r\n{TextBox_KickOKLog.Text}";
