@@ -171,7 +171,7 @@ public static class CloudUtil
 
                     }
 
-                    LogView.ActionAddKickOKLog( new AutoKickInfo()
+                    LogView.ActionAddKickOKLog(new AutoKickInfo()
                     {
                         Time = DateTime.Now,
                         Rank = info.Rank,
@@ -366,7 +366,7 @@ public static class CloudUtil
 
                     LogView.ActionAddChangeTeamInfoLog(info);
                     if (Globals.IsCloudMode)
-                    { 
+                    {
                         var _ = CloudApi.PushToggleHistory(PlayerRank: info.Rank.ToString(), PlayerName: info.Name, PersonaId: info.PersonaId.ToString(), GameMode: info.GameMode, MapName: info.MapName, Team1Name: info.Team1Name, Team2Name: info.Team2Name, State: info.State, ServerId: Globals.ServerId.ToString(), Guid: Globals.PersistedGameId, GameId: Globals.GameId.ToString());
                     }
 
@@ -392,5 +392,143 @@ public static class CloudUtil
         }
 
     }
+
+/*    public static int GetMapID(){
+        if (Globals.CurrentMapName == "ID_M_LEVEL_MENU" || Globals.CurrentMapName == "大厅菜单")
+        {
+            return 0;
+        }
+        if (Globals.CurrentMapName == "ID_M_MP_LEVEL_MOUNTAIN_FORT" || Globals.CurrentMapName == "格拉巴山")
+        {
+            return 4;
+        }
+        if (Globals.CurrentMapName == "ID_M_MP_LEVEL_FOREST" || Globals.CurrentMapName == "阿尔贡森林")
+        {
+            return 11;
+        }
+        if (Globals.CurrentMapName == "ID_M_MP_LEVEL_ITALIAN_COAST" || Globals.CurrentMapName == "帝国边境")
+        {
+            return 2;
+        }
+        if (Globals.CurrentMapName == "ID_M_MP_LEVEL_CHATEAU" || Globals.CurrentMapName == "流血宴厅")
+        {
+            return 7;
+        }
+        if (Globals.CurrentMapName == "ID_M_MP_LEVEL_SCAR" || Globals.CurrentMapName == "圣康坦的伤痕")
+        {
+            return 8;
+        }
+        if (Globals.CurrentMapName == "ID_M_MP_LEVEL_DESERT" || Globals.CurrentMapName == "西奈沙漠")
+        {
+            return 10;
+        }
+        if (Globals.CurrentMapName == "ID_M_MP_LEVEL_AMIENS" || Globals.CurrentMapName == "亚眠")
+        {
+            return 0;
+        }
+        if (Globals.CurrentMapName == "ID_M_MP_LEVEL_SUEZ" || Globals.CurrentMapName == "苏伊士")
+        {
+            return 9;
+        }
+        if (Globals.CurrentMapName == "ID_M_MP_LEVEL_FAO_FORTRESS" || Globals.CurrentMapName == "法欧堡")
+        {
+            return 6;
+        }
+        if (Globals.CurrentMapName == "ID_M_MP_LEVEL_GIANT" || Globals.CurrentMapName == "庞然暗影")
+        {
+            return 12;
+        }
+        if (Globals.CurrentMapName == "ID_M_MP_LEVEL_FIELDS" || Globals.CurrentMapName == "苏瓦松")
+        {
+            return 16;
+        }
+        if (Globals.CurrentMapName == "ID_M_MP_LEVEL_GRAVEYARD" || Globals.CurrentMapName == "决裂")
+        {
+            return 5;
+        }
+        if (Globals.CurrentMapName == "ID_M_MP_LEVEL_UNDERWORLD" || Globals.CurrentMapName == "法乌克斯要塞")
+        {
+            return 15;
+        }
+        if (Globals.CurrentMapName == "ID_M_MP_LEVEL_VERDUN" || Globals.CurrentMapName == "凡尔登高地")
+        {
+            return 13;
+        }
+        if (Globals.CurrentMapName == "ID_M_MP_LEVEL_TRENCH" || Globals.CurrentMapName == "尼维尔之夜")
+        {
+            return 14;
+        }
+        if (Globals.CurrentMapName == "ID_M_MP_LEVEL_SHOVELTOWN" || Globals.CurrentMapName == "攻占托尔")
+        {
+            return 3;
+        }
+        if (Globals.CurrentMapName == "ID_M_MP_LEVEL_BRIDGE" || Globals.CurrentMapName == "勃鲁希洛夫关口")
+        {
+            return 18;
+        }
+        if (Globals.CurrentMapName == "ID_M_MP_LEVEL_ISLANDS" || Globals.CurrentMapName == "阿尔比恩")
+        {
+            return 22;
+        }
+        if (Globals.CurrentMapName == "ID_M_MP_LEVEL_RAVINES" || Globals.CurrentMapName == "武普库夫山口")
+        {
+            return 20;
+        }
+        if (Globals.CurrentMapName == "ID_M_MP_LEVEL_VALLEY" || Globals.CurrentMapName == "加利西亚")
+        {
+            return 17;
+        }
+        if (Globals.CurrentMapName == "ID_M_MP_LEVEL_TSARITSYN" || Globals.CurrentMapName == "察里津")
+        {
+            return 19;
+        }
+        if (Globals.CurrentMapName == "ID_M_MP_LEVEL_VOLGA" || Globals.CurrentMapName == "窝瓦河")
+        {
+            return 21;
+        }
+        if (Globals.CurrentMapName == "ID_M_MP_LEVEL_BEACHHEAD" || Globals.CurrentMapName == "海丽丝岬")
+        {
+            return 23;
+        }
+        if (Globals.CurrentMapName == "ID_M_MP_LEVEL_HARBOR" || Globals.CurrentMapName == "泽布吕赫")
+        {
+            return 24;
+        }
+        if (Globals.CurrentMapName == "ID_M_MP_LEVEL_NAVAL" || Globals.CurrentMapName == "黑尔戈兰湾")
+        {
+            return 29;
+        }
+        if (Globals.CurrentMapName == "ID_M_MP_LEVEL_RIDGE" || Globals.CurrentMapName == "阿奇巴巴")
+        {
+            return 25;
+        }
+        if (Globals.CurrentMapName == "ID_M_MP_LEVEL_OFFENSIVE" || Globals.CurrentMapName == "索姆河")
+        {
+            return 28;
+        }
+        if (Globals.CurrentMapName == "ID_M_MP_LEVEL_HELL" || Globals.CurrentMapName == "帕斯尚尔")
+        {
+            return 27;
+        }
+        if (Globals.CurrentMapName == "ID_M_MP_LEVEL_RIVER" || Globals.CurrentMapName == "卡波雷托")
+        {
+            return 26;
+        }
+        if (Globals.CurrentMapName == "ID_M_MP_LEVEL_ALPS" || Globals.CurrentMapName == "剃刀边缘")
+        {
+            return 32;
+        }
+        if (Globals.CurrentMapName == "ID_M_MP_LEVEL_BLITZ" || Globals.CurrentMapName == "伦敦的呼唤：夜袭")
+        {
+            return 30;
+        }
+        if (Globals.CurrentMapName == "ID_M_MP_LEVEL_LONDON" || Globals.CurrentMapName == "伦敦的呼唤：灾祸")
+        {
+            return 31;
+        }
+
+        return 0;
+
+    }*/
 
 }

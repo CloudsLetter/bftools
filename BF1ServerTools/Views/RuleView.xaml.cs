@@ -316,11 +316,11 @@ public partial class RuleView : UserControl
                                               CheckBox_WhiteKPM.IsChecked = data.WhiteKPM;
                                               CheckBox_WhiteRank.IsChecked = data.WhiteRank;
                                               CheckBox_WhiteWeapon.IsChecked = data.WhiteWeapon;
-                                              CheckBox_WhiteLifeMaxWR.IsChecked = data.WhiteWR;
-                                              CheckBox_ToggleTeamLimt.IsChecked = data.WhiteToggleTeam;
-                                              CheckBox_AllowToggle2LowScoreTeam.IsChecked = data.Allow2LowSocre;
+                                              CheckBox_WhiteLifeMaxWR.IsChecked = data.WhiteLifeMaxWR;
+                                              CheckBox_ToggleTeamLimt.IsChecked = data.WhiteAllowToggleTeam;
+                                              CheckBox_AllowToggle2LowScoreTeam.IsChecked = data.Allow2LowScoreTeam;
                                               // 应用队伍1规则
-                                              RuleTeam1Model.ScoreLimt = data.Team1ScoreLimt;
+                                              RuleTeam1Model.ScoreLimt = data.Team1ScoreLimit;
                                               RuleTeam1Model.ScoreGap = data.Team1ScoreGap;
                                               RuleTeam1Model.MaxKill = data.Team1MaxKill;
                                               RuleTeam1Model.FlagKD = data.Team1FlagKD;
@@ -476,11 +476,11 @@ public partial class RuleView : UserControl
                                               CheckBox_WhiteKPM.IsChecked = data.WhiteKPM;
                                               CheckBox_WhiteRank.IsChecked = data.WhiteRank;
                                               CheckBox_WhiteWeapon.IsChecked = data.WhiteWeapon;
-                                              CheckBox_WhiteLifeMaxWR.IsChecked = data.WhiteWR;
-                                              CheckBox_ToggleTeamLimt.IsChecked = data.WhiteToggleTeam;
-                                              CheckBox_AllowToggle2LowScoreTeam.IsChecked = data.Allow2LowSocre;
+                                              CheckBox_WhiteLifeMaxWR.IsChecked = data.WhiteLifeMaxWR;
+                                              CheckBox_ToggleTeamLimt.IsChecked = data.WhiteAllowToggleTeam;
+                                              CheckBox_AllowToggle2LowScoreTeam.IsChecked = data.Allow2LowScoreTeam;
                                               // 应用队伍1规则
-                                              RuleTeam1Model.ScoreLimt = data.Team1ScoreLimt;
+                                              RuleTeam1Model.ScoreLimt = data.Team1ScoreLimit;
                                               RuleTeam1Model.ScoreGap = data.Team1ScoreGap;
                                               RuleTeam1Model.MaxKill = data.Team1MaxKill;
                                               RuleTeam1Model.FlagKD = data.Team1FlagKD;
@@ -546,6 +546,10 @@ public partial class RuleView : UserControl
                                 isClear = false;
                             }
 
+                        }
+                        if (Globals.SystemAutoBalance && Globals.Team2PlayerCount - Globals.Team1PlayerCount <= 1 && Globals.Team2PlayerCount - Globals.Team1PlayerCount > 0 || Globals.Team1PlayerCount - Globals.Team2PlayerCount <= 1 && Globals.Team1PlayerCount - Globals.Team2PlayerCount > 0)
+                        {
+                            Globals.SystemAutoBalance = false;
                         }
                     }
                 }
@@ -1243,11 +1247,12 @@ public partial class RuleView : UserControl
                                   CheckBox_WhiteKPM.IsChecked = data.WhiteKPM;
                                   CheckBox_WhiteRank.IsChecked = data.WhiteRank;
                                   CheckBox_WhiteWeapon.IsChecked = data.WhiteWeapon;
-                                  CheckBox_WhiteLifeMaxWR.IsChecked = data.WhiteWR;
-                                  CheckBox_ToggleTeamLimt.IsChecked = data.WhiteToggleTeam;
-                                  CheckBox_AllowToggle2LowScoreTeam.IsChecked = data.Allow2LowSocre;
+                                  CheckBox_WhiteLifeMaxWR.IsChecked = data.WhiteLifeMaxWR;
+                                  CheckBox_ToggleTeamLimt.IsChecked = data.WhiteAllowToggleTeam;
+                                  CheckBox_AllowToggle2LowScoreTeam.IsChecked = data.Allow2LowScoreTeam;
+
                                   // 应用队伍1规则
-                                  RuleTeam1Model.ScoreLimt = data.Team1ScoreLimt;
+                                  RuleTeam1Model.ScoreLimt = data.Team1ScoreLimit;
                                   RuleTeam1Model.ScoreGap = data.Team1ScoreGap;
                                   RuleTeam1Model.MaxKill = data.Team1MaxKill;
                                   RuleTeam1Model.FlagKD = data.Team1FlagKD;
@@ -1416,11 +1421,17 @@ public partial class RuleView : UserControl
                          NotifierHelper.Show(NotifierType.Warning, "队伍2 限制等级规则设置不正确");
                          return;
                      }
-                     
-                     /////////////////////////////////////////////////////////////////////////////
-                     
-                     // 清空限制武器列表
-                     Globals.CustomWeapons_Team1.Clear();
+                     // 检查重开比分设置 
+                     if (Globals.ServerRule_Team1.ScoreGap >= Globals.ServerRule_Team1.ScoreLimit && Globals.ServerRule_Team1.ScoreLimit != 0 && Globals.ServerRule_Team1.ScoreGap != 0)
+                    {
+                        Globals.IsSetRuleOK = false;
+                        NotifierHelper.Show(NotifierType.Warning, "计算重开分差限制规则设置不正确");
+                        return;
+                    }
+                    /////////////////////////////////////////////////////////////////////////////
+
+                    // 清空限制武器列表
+                    Globals.CustomWeapons_Team1.Clear();
                      Globals.CustomWeapons_Team2.Clear();
                      // 添加自定义限制武器
                      foreach (var item in DataGrid_RuleWeaponModels)
@@ -1611,7 +1622,13 @@ public partial class RuleView : UserControl
                 NotifierHelper.Show(NotifierType.Warning, "队伍2 限制等级规则设置不正确");
                 return;
             }
-
+            // 检查重开比分设置 
+            if (Globals.ServerRule_Team1.ScoreGap >= Globals.ServerRule_Team1.ScoreLimit && Globals.ServerRule_Team1.ScoreLimit != 0 && Globals.ServerRule_Team1.ScoreGap != 0)
+            {
+                Globals.IsSetRuleOK = false;
+                NotifierHelper.Show(NotifierType.Warning, "计算重开分差限制规则设置不正确");
+                return;
+            }
             /////////////////////////////////////////////////////////////////////////////
 
             // 清空限制武器列表

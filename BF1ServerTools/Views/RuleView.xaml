@@ -96,8 +96,8 @@
                                 Minimum="0"
                                 Value="{Binding RuleTeam1Model.MaxRank, Mode=TwoWay}" />
 
-<!--                            <DockPanel>
-                                <TextBlock Text="分数限制" />
+                            <DockPanel>
+                                <TextBlock Text="计算重开分差限制" />
                                 <TextBlock HorizontalAlignment="Right" Text="{Binding RuleTeam1Model.ScoreLimt, StringFormat={}{0:0}}" />
                             </DockPanel>
                             <Slider
@@ -111,9 +111,7 @@
                             <Slider
                                 Maximum="1000"
                                 Minimum="0"
-                                Value="{Binding RuleTeam1Model.ScoreGap, Mode=TwoWay}" />
-    -->                        
-                            
+                                Value="{Binding RuleTeam1Model.ScoreGap, Mode=TwoWay}" />     
                             <TextBlock Style="{StaticResource TextBlockStyle_Hint}">
                                 说明：设置为0代表忽略该规则
                             </TextBlock>
@@ -191,8 +189,8 @@
                                 Maximum="150"
                                 Minimum="0"
                                 Value="{Binding RuleTeam2Model.MaxRank, Mode=TwoWay}" />
- <!--                           <DockPanel>
-                                <TextBlock Text="分数限制" />
+                            <DockPanel>
+                                <TextBlock Text="计算重开分差限制" />
                                 <TextBlock HorizontalAlignment="Right" Text="{Binding RuleTeam1Model.ScoreLimt, StringFormat={}{0:0}}" />
                             </DockPanel>
                             <Slider
@@ -207,7 +205,7 @@
                                 Maximum="1000"
                                 Minimum="0"
                                 Value="{Binding RuleTeam1Model.ScoreGap, Mode=TwoWay}" />
-                            -->
+                            
                         </StackPanel>
                     </StackPanel>
                 </UniformGrid>

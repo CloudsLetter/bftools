@@ -16,8 +16,9 @@ public class CloudRule
     public bool WhiteKPM { get; set; }
     public bool WhiteRank { get; set; }
     public bool WhiteWeapon { get; set; }
-    public bool WhiteToggleTeam { get; set; }
-    public bool WhiteWR { get; set; }
+    public bool WhiteAllowToggleTeam { get; set; }
+    public bool Allow2LowScoreTeam { get; set; }
+    public bool WhiteLifeMaxWR { get; set; }
     public bool Allow2LowSocre { get; set; }
     public int Team1MaxKill { get; set; }
     public int Team1FlagKD { get; set; }
@@ -26,7 +27,7 @@ public class CloudRule
     public float Team1MaxKPM { get; set; }
     public int Team1MinRank { get; set; }
     public int Team1MaxRank { get; set; }
-    public int Team1ScoreLimt { get; set; }
+    public int Team1ScoreLimit { get; set; }
     public int Team1ScoreGap { get; set; }
     public float Team1LifeMaxKD { get; set; }
     public float Team1LifeMaxKPM { get; set; }
@@ -49,6 +50,8 @@ public class CloudRule
     public int Team2LifeMaxWeaponStar { get; set; }
     public int Team2LifeMaxVehicleStar { get; set; }
     public string Team2WeaponLimit { get; set; }
+    public int Team2ScoreLimit { get; set; }
+    public int Team2ScoreGap { get; set; }
     public long ServerId { get; set; }
     public long GameId { get; set; }
     public string Guid { get; set; }

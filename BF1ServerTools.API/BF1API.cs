@@ -8,11 +8,11 @@ namespace BF1ServerTools.API;
 public static class BF1API
 {
     private const string host = "https://sparta-gw.battlelog.com/jsonrpc/pc/api";
-    private const string hostwl = "http://127.0.0.1:8080/api/bf1/whitelist/query";
-    private const string hostla = "http://127.0.0.1:8080/api/bf1/whitelist/add";
-    private const string hostwlr = "http://127.0.0.1:8080/api/bf1/whitelist/remove";
-    private const string hostrule = "http://127.0.0.1:8080/api/bf1/rule";
-    private const string hostmessages = "http://127.0.0.1:8080/api/bf1/messages/add";
+    private const string hostwl = "https://bf1.cloudyun.xyz/api/bf1/whitelist/query";
+    private const string hostla = "https://bf1.cloudyun.xyz/api/bf1/whitelist/add";
+    private const string hostwlr = "https://bf1.cloudyun.xyz/api/bf1/whitelist/remove";
+    private const string hostrule = "https://bf1.cloudyun.xyz/api/bf1/rule";
+    private const string hostmessages = "https://bf1.cloudyun.xyz/api/bf1/messages/add";
 
     private static readonly RestClient client;
     private static readonly RestClient clientcl;

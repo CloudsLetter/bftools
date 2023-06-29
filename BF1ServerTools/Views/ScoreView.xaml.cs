@@ -105,10 +105,9 @@ public partial class ScoreView : UserControl
             // 服务器地图名称
             _serverData.MapName = Server.GetMapName();
             _serverData.MapName = string.IsNullOrEmpty(_serverData.MapName) ? "未知" : _serverData.MapName;
-
             // 服务器游戏模式
             _serverData.GameMode = Server.GetGameMode();
-
+            
             // 服务器时间
             _serverData.Time = Server.GetServerTime();
 
@@ -118,12 +117,18 @@ public partial class ScoreView : UserControl
             ScoreModel.ServerTime = PlayerUtil.SecondsToMMSS(_serverData.Time);
 
             ScoreModel.ServerMapName = ClientHelper.GetMapChsName(_serverData.MapName);
+            Globals.CurrentMapName = ClientHelper.GetMapChsName(_serverData.MapName);
+
             ScoreModel.ServerMapImg = ClientHelper.GetMapPrevImage(_serverData.MapName);
 
             if (_serverData.MapName == "未知" || ScoreModel.ServerMapName == "大厅菜单")
                 ScoreModel.ServerGameMode = "未知";
             else
+            {
+
                 ScoreModel.ServerGameMode = ClientHelper.GetGameMode(_serverData.GameMode);
+                Globals.CurrentMapMode = ClientHelper.GetGameMode(_serverData.GameMode);
+            }
 
             ScoreModel.Team1Img = ClientHelper.GetTeam1Image(_serverData.MapName);
             ScoreModel.Team2Img = ClientHelper.GetTeam2Image(_serverData.MapName);
@@ -135,8 +140,8 @@ public partial class ScoreView : UserControl
             if (ScoreModel.ServerGameMode == "征服")
             {
                 // 最大比分
-                Globals.ServerMode = ScoreModel.ServerGameMode;
                 _serverData.MaxScore = Server.GetServerMaxScore();
+                Globals.TeamMaxScore = Server.GetServerMaxScore();
                 // 队伍1、队伍2分数
                 _serverData.Team1Score = Server.GetTeam1Score();
                 _serverData.Team2Score = Server.GetTeam2Score();
@@ -423,10 +428,11 @@ public partial class ScoreView : UserControl
     {
         if (PlayerList_Team1.Count == 0 && ListView_PlayerList_Team1.Count != 0)
             ListView_PlayerList_Team1.Clear();
-
+            Globals.Team1PlayerCount = 0;
         if (PlayerList_Team1.Count != 0)
         {
             // 更新ListView中现有的玩家数据，并把ListView中已经不在服务器的玩家清除
+            Globals.Team1PlayerCount = PlayerList_Team1.Count;
             for (int i = 0; i < ListView_PlayerList_Team1.Count; i++)
             {
                 int index = PlayerList_Team1.FindIndex(val => val.PersonaId == ListView_PlayerList_Team1[i].PersonaId);
@@ -526,9 +532,10 @@ public partial class ScoreView : UserControl
     {
         if (PlayerList_Team2.Count == 0 && ListView_PlayerList_Team2.Count != 0)
             ListView_PlayerList_Team2.Clear();
-
+            Globals.Team2PlayerCount = 0;
         if (PlayerList_Team2.Count != 0)
         {
+            Globals.Team2PlayerCount = PlayerList_Team2.Count;
             // 更新ListView中现有的玩家数据，并把ListView中已经不在服务器的玩家清除
             for (int i = 0; i < ListView_PlayerList_Team2.Count; i++)
             {

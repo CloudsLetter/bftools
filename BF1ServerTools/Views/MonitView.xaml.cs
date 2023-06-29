@@ -10,6 +10,8 @@ using BF1ServerTools.Windows;
 using static BF1ServerTools.API.RespJson.GetWeapons.ResultItem.WeaponsItem;
 using static System.Net.Mime.MediaTypeNames;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
+using Newtonsoft.Json;
+using System;
 
 namespace BF1ServerTools.Views;
 
@@ -264,6 +266,13 @@ public partial class MonitView : UserControl
         }
     }
 
+
+    /// <summary>
+    /// 检测系统自动平衡
+    /// </summary>
+
+
+
     /// <summary>
     /// 检查违规玩家线程
     /// </summary>
@@ -467,6 +476,20 @@ public partial class MonitView : UserControl
     }
 
     /// <summary>
+    /// 重开
+    /// </summary>
+    private async void ChangeMap(){
+
+       int mapLevel = Globals.ServerMapList.FindIndex((str) => str == Globals.CurrentMapMode + Globals.CurrentMapName);
+        if (mapLevel != -1)
+        {
+            _ = await BF1API.RSPChooseLevel(sessionId: Globals.SessionId, persistedGameId: Globals.PersistedGameId, mapLevel);
+
+        }
+
+    }
+
+    /// <summary>
     /// 检查队伍12玩家是否违规
     /// </summary>
     /// <param name="playerData"></param>
@@ -504,21 +527,28 @@ public partial class MonitView : UserControl
                 }
             }
 
-            if (Globals.ServerRule_Team1.ScoreLimit != 0)
+            if (Globals.ServerRule_Team1.ScoreLimit != 0 && Globals.ServerRule_Team1.ScoreGap != 0 && Globals.Team1Score !=0 && Globals.Team2Score != 0 && Globals.IsSetRuleOK && Globals.CurrentMapMode != "行动模式")
             {
 
-                if (Globals.Team1Score + Globals.Team2Score < Globals.ServerRule_Team1.ScoreLimit)
+                double scoreLimit = (double)Globals.ServerRule_Team1.ScoreLimit / Globals.TeamMaxScore;
+
+                double scoreGap = (double)Globals.ServerRule_Team1.ScoreGap / Globals.TeamMaxScore;
+
+                int newScoreLimit = (int)(Globals.TeamMaxScore * scoreLimit);
+
+                int newscoreGap = (int)(Globals.TeamMaxScore * scoreGap);
+
+                if (Globals.Team1Score + Globals.Team2Score > newScoreLimit)
                 {
-                    if (Globals.Team2Score - Globals.Team1Score > Globals.ServerRule_Team1.ScoreGap)
+                    if (Globals.Team1Score - Globals.Team2Score > newscoreGap)
                     {
-
+                        ChangeMap();
                     }
-                    if (Globals.Team1Score - Globals.Team2Score > Globals.ServerRule_Team1.ScoreGap)
+                    if (Globals.Team2Score - Globals.Team1Score > newscoreGap)
                     {
-
+                        ChangeMap();
                     }
                 }
-
 
             }
 
@@ -867,7 +897,32 @@ public partial class MonitView : UserControl
         return list;
     }
 
-    /// <summary>
+
+    private async void Add2TempList(long personaid)
+    {
+        var result2 = await CloudApi.AddAutoToggleTeamList(personaid.ToString());
+        if (result2.IsSuccess)
+        {
+
+        }
+        else
+        {
+            try
+            {
+                var data = result2.Content.Replace("\r", "");
+                RepsoneData dataObj = JsonConvert.DeserializeObject<RepsoneData>(data);
+                if (dataObj.Id != "0003")
+                {
+                    Globals.TempToggleTeamList.Add(personaid);
+                }
+            }
+            catch (Exception)
+            {
+                Globals.TempToggleTeamList.Add(personaid);
+            }
+        }
+    }
+     /// <summary>
     /// 检测换边玩家
     /// </summary>
     private void CheckPlayerChangeTeam()
@@ -913,20 +968,32 @@ public partial class MonitView : UserControl
                 };
                 LogView.ActionAddChangeTeamInfoLog(tempChangeTeamInfo);
 
+                if (!Globals.SystemAutoBalance)
+                {
+
+                
                 if (Globals.Allow2LowScoreTeam)
                 {
-                    if (Globals.ServerMode == "征服" && Globals.Team2Score > Globals.Team1Score)
-                    {
-                        CloudUtil.AutTogglTeame(tempChangeTeamInfo);
+                        if (Globals.CurrentMapMode != "行动模式")
+                        {
+                            if ( Globals.Team2Score > Globals.Team1Score)
+                            {
+                                CloudUtil.AutTogglTeame(tempChangeTeamInfo);
 
-                    }
+                            }
+                            else
+                            {
+                                Add2TempList(item.PersonaId);
+                            }
+                        }
+
                 }
                 else
                 {
                     CloudUtil.AutTogglTeame(tempChangeTeamInfo);
 
                 }
-
+                }
 
                 break;
 
@@ -956,18 +1023,31 @@ public partial class MonitView : UserControl
                 };
                 LogView.ActionAddChangeTeamInfoLog(tempChangeTeamInfo);
 
+                if (!Globals.SystemAutoBalance)
+                {
+
+               
                 if (Globals.Allow2LowScoreTeam)
                 {
-                    if (Globals.ServerMode == "征服" && Globals.Team2Score < Globals.Team1Score)
-                    {
-                        CloudUtil.AutTogglTeame(tempChangeTeamInfo);
+                        if (Globals.CurrentMapMode != "行动模式")
+                        {
+                            if (Globals.Team2Score < Globals.Team1Score)
+                            {
+                                CloudUtil.AutTogglTeame(tempChangeTeamInfo);
+
+                            }
+                            else
+                            {
+                                Add2TempList(item.PersonaId);
+                            }
+                        }
                     }
-                }
                 else
                 {
                     CloudUtil.AutTogglTeame(tempChangeTeamInfo);
                 }
 
+                }
                 break;
 
             }

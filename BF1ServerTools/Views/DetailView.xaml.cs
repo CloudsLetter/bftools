@@ -75,6 +75,8 @@ public partial class DetailView : UserControl
                             this.Dispatcher.BeginInvoke(DispatcherPriority.Background, () =>
                             {
                                 ListBox_Map.Items.Add(map);
+                                Globals.ServerMapList.Add($"{map.MapMode}{map.MapName}");
+
                             });
                         });
 
@@ -131,10 +133,10 @@ public partial class DetailView : UserControl
                     Globals.PersistedGameId = string.Empty;
 
                     ListBox_MapList.Clear();
+                    Globals.ServerMapList.Clear();
                     ListBox_AdminList.Clear();
                     ListBox_VIPList.Clear();
                     ListBox_BANList.Clear();
-
                     this.Dispatcher.Invoke(DispatcherPriority.Background, () =>
                     {
                         ListBox_Map.Items.Clear();
@@ -168,10 +170,10 @@ public partial class DetailView : UserControl
         DetailModel.ServerOwnerImage = string.Empty;
 
         ListBox_MapList.Clear();
+        Globals.ServerMapList.Clear();
         ListBox_AdminList.Clear();
         ListBox_VIPList.Clear();
         ListBox_BANList.Clear();
-
         Globals.ServerAdmins_PID.Clear();
         Globals.ServerVIPs_PID.Clear();
 
@@ -719,10 +721,10 @@ public partial class DetailView : UserControl
                 Globals.PersistedGameId = string.Empty;
 
                 ListBox_MapList.Clear();
+                Globals.ServerMapList.Clear();
                 ListBox_AdminList.Clear();
                 ListBox_VIPList.Clear();
                 ListBox_BANList.Clear();
-
                 this.Dispatcher.Invoke(DispatcherPriority.Background, () =>
                 {
                     ListBox_Map.Items.Clear();
@@ -736,6 +738,7 @@ public partial class DetailView : UserControl
                     this.Dispatcher.BeginInvoke(DispatcherPriority.Background, () =>
                     {
                         ListBox_Map.Items.Add(map);
+                        Globals.ServerMapList.Add($"{map.MapMode}{map.MapName}");
                     });
                 });
 

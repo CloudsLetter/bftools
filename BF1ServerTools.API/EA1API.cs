@@ -60,7 +60,7 @@ public static class EA1API
                     }
 
                     respAuth.IsSuccess = true;
-                    respAuth.Code = localtion.Replace("http://127.0.0.1/success?code=", "").Replace("https://127.0.0.1/success?code=", "");
+                    respAuth.Code = localtion.Replace("https://bf.cloudyun.xyz/success?code=", "").Replace("https://127.0.0.1/success?code=", "");
                 }
 
                 respAuth.Content = localtion;
