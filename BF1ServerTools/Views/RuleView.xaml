@@ -97,7 +97,7 @@
                                 Value="{Binding RuleTeam1Model.MaxRank, Mode=TwoWay}" />
 
                             <DockPanel>
-                                <TextBlock Text="计算重开分差限制" />
+                                <TextBlock Text="重开分数限制" />
                                 <TextBlock HorizontalAlignment="Right" Text="{Binding RuleTeam1Model.ScoreLimt, StringFormat={}{0:0}}" />
                             </DockPanel>
                             <Slider
@@ -190,7 +190,7 @@
                                 Minimum="0"
                                 Value="{Binding RuleTeam2Model.MaxRank, Mode=TwoWay}" />
                             <DockPanel>
-                                <TextBlock Text="计算重开分差限制" />
+                                <TextBlock Text="重开分数限制" />
                                 <TextBlock HorizontalAlignment="Right" Text="{Binding RuleTeam1Model.ScoreLimt, StringFormat={}{0:0}}" />
                             </DockPanel>
                             <Slider

@@ -538,13 +538,13 @@ public partial class MonitView : UserControl
 
                 int newscoreGap = (int)(Globals.TeamMaxScore * scoreGap);
 
-                if (Globals.Team1Score + Globals.Team2Score > newScoreLimit)
+                if (Globals.Team1Score + Globals.Team2Score <= newScoreLimit)
                 {
-                    if (Globals.Team1Score - Globals.Team2Score > newscoreGap)
+                    if (Globals.Team1Score - Globals.Team2Score >= newscoreGap)
                     {
                         ChangeMap();
                     }
-                    if (Globals.Team2Score - Globals.Team1Score > newscoreGap)
+                    if (Globals.Team2Score - Globals.Team1Score >= newscoreGap)
                     {
                         ChangeMap();
                     }
@@ -1387,7 +1387,7 @@ public partial class MonitView : UserControl
     /// <param name="e"></param>
     private void CheckBox_Not_Allow_Toggle_Kick_Click(object sender, RoutedEventArgs e)
     {
-        Globals.IsAllowToggle = CheckBox_Not_Allow_Toggle_Kick.IsChecked == true;
+        Globals.IsNotAllowToggle = CheckBox_Not_Allow_Toggle_Kick.IsChecked == true;
         CheckBox_Not_Allow_Toggle_Back.IsChecked = false;
         Globals.ToggleKickMode = true;
     }
@@ -1399,7 +1399,7 @@ public partial class MonitView : UserControl
     /// <param name="e"></param>
     private void CheckBox_Not_Allow_Toggle_Back_Click(object sender, RoutedEventArgs e)
     {
-        Globals.IsAllowToggle = CheckBox_Not_Allow_Toggle_Back.IsChecked == true;
+        Globals.IsNotAllowToggle = CheckBox_Not_Allow_Toggle_Back.IsChecked == true;
         CheckBox_Not_Allow_Toggle_Kick.IsChecked = false;
         if (Globals.ToggleKickMode)
         {

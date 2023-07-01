@@ -4,6 +4,7 @@ using BF1ServerTools.Utils;
 
 using Microsoft.Web.WebView2.Core;
 using CommunityToolkit.Mvvm.Messaging;
+using BF1ServerTools.Helper;
 
 namespace BF1ServerTools.Windows;
 
@@ -169,12 +170,20 @@ public partial class WebView2Window
         if (MessageBox.Show("你确认要清空本地缓存吗，这一般会在需要更换当前登录账号的情况下使用", "清空本地缓存提示",
             MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
         {
-            await WebView2.CoreWebView2.ExecuteScriptAsync("localStorage.clear()");
-            WebView2.CoreWebView2.CookieManager.DeleteAllCookies();
+            if (WebView2 != null && WebView2.CoreWebView2 != null)
+            {
+                await WebView2.CoreWebView2.ExecuteScriptAsync("localStorage.clear()");
+                WebView2.CoreWebView2.CookieManager.DeleteAllCookies();
 
-            WebView2.Reload();
+                WebView2.Reload();
 
-            TextBlock_Log.Text = "清空WebView2缓存成功";
+                TextBlock_Log.Text = "清空WebView2缓存成功";
+            }
+            else
+            {
+                TextBlock_Log.Text = "未安装WebView2运行时";
+                NotifierHelper.Show(NotifierType.Warning, "请先安装WebView2运行时");
+            }
         }
     }
 }

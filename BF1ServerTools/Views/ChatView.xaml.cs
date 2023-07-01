@@ -532,8 +532,16 @@ private void ToggleButton_EnabledChatInputWindow_Click(object sender, RoutedEven
                             }
                         });
                         RobotView.ActionSendGameChatsMsgToQQ(sender, content);
+                        if (Globals.IsNotAllowToggle)
+                        {
+                            if (content == "The teams are imbalanced, automatic balancing will start in a few seconds." || content == "隊伍不平衡，將在幾秒後開始自動平衡。")
+                            {
+                                Globals.SystemAutoBalance = true;
+                            }
+                        }
                         if (Globals.IsCloudMode)
                         {
+                           
                             if (sender == "")
                             {
                                 PushMessage2Server(playerName: "Server", content: content);

@@ -226,7 +226,7 @@ public static class Globals
     /// <summary>
     /// 是否允许换边
     /// </summary>
-    public static bool IsAllowToggle = false;
+    public static bool IsNotAllowToggle = false;
 
     /// <summary>
     /// 是否换边踢人模式

@@ -26,7 +26,7 @@ public static class CloudUtil
     public static async void AutTogglTeame(ChangeTeamInfo info)
     {
 
-        if (Globals.LoginPlayerIsAdmin && Globals.IsAllowToggle && Globals.IsSetRuleOK)
+        if (Globals.LoginPlayerIsAdmin && Globals.IsNotAllowToggle && Globals.IsSetRuleOK)
         {
             bool toggleTeam = false;
 

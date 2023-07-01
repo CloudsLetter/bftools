@@ -547,7 +547,7 @@ public partial class RuleView : UserControl
                             }
 
                         }
-                        if (Globals.SystemAutoBalance && Globals.Team2PlayerCount - Globals.Team1PlayerCount <= 1 && Globals.Team2PlayerCount - Globals.Team1PlayerCount > 0 || Globals.Team1PlayerCount - Globals.Team2PlayerCount <= 1 && Globals.Team1PlayerCount - Globals.Team2PlayerCount > 0)
+                        if (Globals.SystemAutoBalance && Globals.Team2PlayerCount - Globals.Team1PlayerCount <= 1 && Globals.Team2PlayerCount - Globals.Team1PlayerCount >= 0 || Globals.Team1PlayerCount - Globals.Team2PlayerCount <= 1 && Globals.Team1PlayerCount - Globals.Team2PlayerCount >= 0)
                         {
                             Globals.SystemAutoBalance = false;
                         }
@@ -1099,7 +1099,7 @@ public partial class RuleView : UserControl
               whiteKPM: Globals.WhiteKPM,
               whiteRank: Globals.WhiteRank,
               whiteWeapon: Globals.WhiteWeapon,
-              whiteToggleTeam: Globals.IsAllowToggle,
+              whiteToggleTeam: Globals.IsNotAllowToggle,
               whiteLifeMaxWR: Globals.WhiteLifeMaxWR,
               whiteAllowToggleTeam: Globals.IsAllowWhlistToggleTeam,
               allow2LowScoreTeam: Globals.Allow2LowScoreTeam,
