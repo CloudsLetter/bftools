@@ -152,8 +152,16 @@
                     <TextBlock Text="{Binding LifeTime}" />
                 </StackPanel>
                 <StackPanel Margin="5">
+                    <TextBlock Text="命中率：" />
+                    <TextBlock Text="{Binding LifeAccuracyRatio}" />
+                </StackPanel>
+                <StackPanel Margin="5">
+                    <TextBlock Text="爆头率：" />
+                    <TextBlock Text="{Binding LifeHeadShotRatio}" />
+                </StackPanel>
+                <StackPanel Margin="5">
                     <TextBlock Text="胜率：" />
-                    <TextBlock Text="{Binding WR}" />
+                    <TextBlock Text="{Binding LifeWR}" />
                 </StackPanel>
             </StackPanel>
             <Border

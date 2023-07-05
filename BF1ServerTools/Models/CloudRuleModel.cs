@@ -18,6 +18,8 @@ public class CloudRule
     public bool WhiteWeapon { get; set; }
     public bool WhiteAllowToggleTeam { get; set; }
     public bool Allow2LowScoreTeam { get; set; }
+    public bool WhiteLifeMaxAccuracyRatio { get; set; }
+    public bool WhiteLifeMaxHeadShotRatio { get; set; }
     public bool WhiteLifeMaxWR { get; set; }
     public bool Allow2LowSocre { get; set; }
     public int Team1MaxKill { get; set; }
@@ -31,6 +33,11 @@ public class CloudRule
     public int Team1ScoreGap { get; set; }
     public float Team1LifeMaxKD { get; set; }
     public float Team1LifeMaxKPM { get; set; }
+    public int Team1LifeMaxAccuracyRatioLevel { get; set; }
+    public float Team1LifeMaxAccuracyRatio { get; set; }
+    public int Team1LifeMaxHeadShotRatioLevel { get; set; }
+    public float Team1LifeMaxHeadShotRatio { get; set; }
+
     public int Team1LifeMaxWRLevel { get; set; }
     public float Team1LifeMaxWR { get; set; }
     public int Team1LifeMaxWeaponStar { get; set; }
@@ -45,6 +52,10 @@ public class CloudRule
     public int Team2MaxRank { get; set; }
     public float Team2LifeMaxKD { get; set; }
     public float Team2LifeMaxKPM { get; set; }
+    public int Team2LifeMaxAccuracyRatioLevel { get; set; }
+    public float Team2LifeMaxAccuracyRatio { get; set; }
+    public int Team2LifeMaxHeadShotRatioLevel { get; set; }
+    public float Team2LifeMaxHeadShotRatio { get; set; }
     public int Team2LifeMaxWRLevel { get; set; }
     public float Team2LifeMaxWR { get; set; }
     public int Team2LifeMaxWeaponStar { get; set; }

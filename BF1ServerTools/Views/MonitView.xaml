@@ -124,6 +124,10 @@
                     Click="CheckBox_Not_Allow_Toggle_Kick_Click"
                     Content="禁止玩家更换队伍 踢出方法" />
                 <CheckBox
+                    x:Name="CheckBox_Not_Allow_Toggle_ToggleBeforeKick"
+                    Click="CheckBox_ToggleTeam_Before_Kick_Click"
+                    Content="禁止玩家更换队伍 先换后踢方法" />
+                <CheckBox
                     x:Name="CheckBox_IsAutoKickSpectator"
                     Click="CheckBox_IsAutoKickSpectator_Click"
                     Content="限制非管理员观战玩家" />

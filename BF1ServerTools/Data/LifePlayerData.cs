@@ -12,10 +12,11 @@ public class LifePlayerData
     public int Wins { get; set; }
     public int Losses { get; set; }
     public int roundsPlayed { get; set; }
+    public float LifeMaxAccuracyRatio { get; set; }
+    public float LifeMaxHeadShotRatio { get; set; }
     public float LifeMaxWR { get; set; }
     public bool IsWeaponOK { get; set; }
     public bool IsVehicleOK { get; set; }
-
     public List<WeaponVehicleInfo> WeaponInfos { get; set; }
     public List<WeaponVehicleInfo> VehicleInfos { get; set; }
     public class WeaponVehicleInfo

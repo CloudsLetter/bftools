@@ -100,6 +100,7 @@ public static class PlayerUtil
         else
             return "0%";
     }
+
     /// <summary>
     /// 计算百分比返回浮点数
     /// </summary>
@@ -113,7 +114,23 @@ public static class PlayerUtil
         else
             return 0.00f;
     }
+
     /// <summary>
+    /// 不计算百分比返回浮点数
+    /// </summary>
+    /// <param name="num1"></param>
+    /// <param name="num2"></param>
+    /// <returns></returns>
+    /// <summary>
+    public static float GetPlayerAccuracyRatioF(float num1)
+    {
+        if (num1 != 0)
+            return (float)Math.Round(num1  * 100, 2);
+        else
+            return 0.00f;
+    }
+
+
     /// 获取击杀星数
     /// </summary>
     /// <param name="kills"></param>
@@ -300,6 +317,98 @@ public static class PlayerUtil
             return 0.00f;
         }
     }
+
+    /// <summary>
+    /// 获取命中率
+    /// </summary>
+    /// <param name="personaId"></param>
+    /// <returns></returns>
+    public static string GetAR(long personaId)
+    {
+        lock (Obj)
+        {
+            if (Globals.LifePlayerCacheDatas != null)
+            {
+                var index = Globals.LifePlayerCacheDatas.FindIndex(item => item.PersonaId == personaId);
+                if (index != -1)
+                {
+                    float ar = Globals.LifePlayerCacheDatas[index].LifeMaxAccuracyRatio;
+                    return $"{ar.ToString("0.00")}%";
+                }
+            }
+
+            return "0.00%";
+        }
+    }
+
+    /// <summary>
+    /// 获取命中率F
+    /// </summary>
+    /// <param name="personaId"></param>
+    /// <returns></returns>
+    public static float GetARF(long personaId)
+    {
+        lock (Obj)
+        {
+            if (Globals.LifePlayerCacheDatas != null)
+            {
+                var index = Globals.LifePlayerCacheDatas.FindIndex(item => item.PersonaId == personaId);
+                if (index != -1)
+                {
+                    return Globals.LifePlayerCacheDatas[index].LifeMaxAccuracyRatio;
+                }
+            }
+
+            return 0.00f;
+        }
+    }
+
+    /// <summary>
+    /// 获取爆头率
+    /// </summary>
+    /// <param name="personaId"></param>
+    /// <returns></returns>
+    public static string GetHSR(long personaId)
+    {
+        lock (Obj)
+        {
+            if (Globals.LifePlayerCacheDatas != null)
+            {
+                var index = Globals.LifePlayerCacheDatas.FindIndex(item => item.PersonaId == personaId);
+                if (index != -1)
+                {
+                    float hsr = Globals.LifePlayerCacheDatas[index].LifeMaxHeadShotRatio;
+                    return $"{hsr.ToString("0.00")}%";
+                }
+            }
+
+            return "0.00%";
+        }
+    }
+
+    /// <summary>
+    /// 获取命中率F
+    /// </summary>
+    /// <param name="personaId"></param>
+    /// <returns></returns>
+    public static float GetHSRF(long personaId)
+    {
+        lock (Obj)
+        {
+            if (Globals.LifePlayerCacheDatas != null)
+            {
+                var index = Globals.LifePlayerCacheDatas.FindIndex(item => item.PersonaId == personaId);
+                if (index != -1)
+                {
+                    return Globals.LifePlayerCacheDatas[index].LifeMaxHeadShotRatio;
+                }
+            }
+
+            return 0.00f;
+        }
+    }
+
+
     /// <summary>
     /// 获取游玩时长
     /// </summary>

@@ -185,6 +185,8 @@
                             <ComboBoxItem Content="生涯KD" />
                             <ComboBoxItem Content="生涯KPM" />
                             <ComboBoxItem Content="时长" />
+                            <ComboBoxItem Content="命中率" />
+                            <ComboBoxItem Content="爆头率" />
                             <ComboBoxItem Content="胜率" />
                             <ComboBoxItem Content="兵种" />
                             <ComboBoxItem Content="主武器" />
@@ -384,7 +386,9 @@
                         <GridViewColumn DisplayMemberBinding="{Binding LifeKd, StringFormat={}{0:0.00}}" Header="LKD" />
                         <GridViewColumn DisplayMemberBinding="{Binding LifeKpm, StringFormat={}{0:0.00}}" Header="LKPM" />
                         <GridViewColumn DisplayMemberBinding="{Binding LifeTime}" Header="时长" />
-                        <GridViewColumn DisplayMemberBinding="{Binding WR}" Header="胜率" Width="60" />
+                        <GridViewColumn DisplayMemberBinding="{Binding LifeAccuracyRatio}" Header="命中率" Width="60" />
+                        <GridViewColumn DisplayMemberBinding="{Binding LifeHeadShotRatio}" Header="爆头率" Width="60" />
+                        <GridViewColumn DisplayMemberBinding="{Binding LifeWR}" Header="胜率" Width="60" />
                         <GridViewColumn Header="兵种">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
@@ -519,7 +523,9 @@
                         <GridViewColumn DisplayMemberBinding="{Binding LifeKd, StringFormat={}{0:0.00}}" Header="LKD" />
                         <GridViewColumn DisplayMemberBinding="{Binding LifeKpm, StringFormat={}{0:0.00}}" Header="LKPM" />
                         <GridViewColumn DisplayMemberBinding="{Binding LifeTime}" Header="时长" />
-                        <GridViewColumn DisplayMemberBinding="{Binding WR}" Header="胜率"  Width="60"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding LifeAccuracyRatio}" Header="命中率" Width="60" />
+                        <GridViewColumn DisplayMemberBinding="{Binding LifeHeadShotRatio}" Header="爆头率" Width="60" />
+                        <GridViewColumn DisplayMemberBinding="{Binding LifeWR}" Header="胜率" Width="60" />
                         <GridViewColumn Header="兵种">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>

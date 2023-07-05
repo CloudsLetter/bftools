@@ -27,6 +27,10 @@ public class PlayerData
     public float LifeKd { get; set; }
     public float LifeKpm { get; set; }
     public int LifeTime { get; set; }
+    public string LifeAccuracyRatio { get; set; }
+    public float LifeAccuracyRatioF { get; set; }
+    public string LifeHeadShotRatio { get; set; }
+    public float LifeHeadShotRatioF { get; set; }
     public string LifeWR { get; set; }
     public float LifeWRF { get; set; }
 

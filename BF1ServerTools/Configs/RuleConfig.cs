@@ -17,6 +17,8 @@ public class RuleConfig
         public bool WhiteRank { get; set; }
         public bool WhiteWeapon { get; set; }
         public bool Allow2LowScoreTeam { get; set; }
+        public bool WhiteLifeMaxAccuracyRatio { get; set; }
+        public bool WhiteLifeMaxHeadShotRatio { get; set; }
         public bool WhiteMaxWR { get; set; }
         public bool WhiteAllowToggleTeam { get; set; }
         public Rule Team1Rule { get; set; }
@@ -36,6 +38,10 @@ public class RuleConfig
             public int MaxRank { get; set; }
             public float LifeMaxKD { get; set; }
             public float LifeMaxKPM { get; set; }
+            public int LifeMaxAccuracyRatioLevel { get; set; }
+            public float LifeMaxAccuracyRatio { get; set; }
+            public int LifeMaxHeadShotRatioLevel { get; set; }
+            public float LifeMaxHeadShotRatio { get; set; }
             public int LifeMaxWRLevel { get; set; }
             public float LifeMaxWR { get; set; }
             public int LifeMaxWeaponStar { get; set; }

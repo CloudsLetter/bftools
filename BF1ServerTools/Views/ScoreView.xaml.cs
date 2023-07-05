@@ -279,6 +279,10 @@ public partial class ScoreView : UserControl
                 item.LifeKd = PlayerUtil.GetLifeKD(item.PersonaId);
                 item.LifeKpm = PlayerUtil.GetLifeKPM(item.PersonaId);
                 item.LifeTime = PlayerUtil.GetLifeTime(item.PersonaId);
+                item.LifeAccuracyRatio = PlayerUtil.GetAR(item.PersonaId);
+                item.LifeAccuracyRatioF = PlayerUtil.GetARF(item.PersonaId);
+                item.LifeHeadShotRatio = PlayerUtil.GetHSR(item.PersonaId);
+                item.LifeHeadShotRatioF = PlayerUtil.GetHSRF(item.PersonaId);
                 item.LifeWR = PlayerUtil.GetWR(item.PersonaId);
                 item.LifeWRF = PlayerUtil.GetWRF(item.PersonaId);
                 item.Admin = PlayerUtil.IsAdminVIP(item.PersonaId, Globals.ServerAdmins_PID);
@@ -452,8 +456,12 @@ public partial class ScoreView : UserControl
                     ListView_PlayerList_Team1[i].LifeKd = PlayerList_Team1[index].LifeKd;
                     ListView_PlayerList_Team1[i].LifeKpm = PlayerList_Team1[index].LifeKpm;
                     ListView_PlayerList_Team1[i].LifeTime = PlayerList_Team1[index].LifeTime;
-                    ListView_PlayerList_Team1[i].WR = PlayerList_Team1[index].LifeWR;
-                    ListView_PlayerList_Team1[i].WRF = PlayerList_Team1[index].LifeWRF;
+                    ListView_PlayerList_Team1[i].LifeAccuracyRatio = PlayerList_Team1[index].LifeAccuracyRatio;
+                    ListView_PlayerList_Team1[i].LifeAccuracyRatioF = PlayerList_Team1[index].LifeAccuracyRatioF;
+                    ListView_PlayerList_Team1[i].LifeHeadShotRatio = PlayerList_Team1[index].LifeHeadShotRatio;
+                    ListView_PlayerList_Team1[i].LifeHeadShotRatioF = PlayerList_Team1[index].LifeHeadShotRatioF;
+                    ListView_PlayerList_Team1[i].LifeWR = PlayerList_Team1[index].LifeWR;
+                    ListView_PlayerList_Team1[i].LifeWRF = PlayerList_Team1[index].LifeWRF;
                     ListView_PlayerList_Team1[i].Score = PlayerList_Team1[index].Score;
                     ListView_PlayerList_Team1[i].Kit = PlayerList_Team1[index].Kit;
                     ListView_PlayerList_Team1[i].Kit2 = PlayerList_Team1[index].Kit2;
@@ -497,8 +505,12 @@ public partial class ScoreView : UserControl
                         LifeKd = PlayerList_Team1[i].LifeKd,
                         LifeKpm = PlayerList_Team1[i].LifeKpm,
                         LifeTime = PlayerList_Team1[i].LifeTime,
-                        WR = PlayerList_Team1[i].LifeWR,
-                        WRF = PlayerList_Team1[i].LifeWRF,
+                        LifeAccuracyRatio = PlayerList_Team1[i].LifeAccuracyRatio,
+                        LifeAccuracyRatioF = PlayerList_Team1[i].LifeAccuracyRatioF,
+                        LifeHeadShotRatio = PlayerList_Team1[i].LifeHeadShotRatio,
+                        LifeHeadShotRatioF = PlayerList_Team1[i].LifeHeadShotRatioF,
+                        LifeWR = PlayerList_Team1[i].LifeWR,
+                        LifeWRF = PlayerList_Team1[i].LifeWRF,
                         Score = PlayerList_Team1[i].Score,
                         Kit = PlayerList_Team1[i].Kit,
                         Kit2 = PlayerList_Team1[i].Kit2,
@@ -556,8 +568,12 @@ public partial class ScoreView : UserControl
                     ListView_PlayerList_Team2[i].LifeKd = PlayerList_Team2[index].LifeKd;
                     ListView_PlayerList_Team2[i].LifeKpm = PlayerList_Team2[index].LifeKpm;
                     ListView_PlayerList_Team2[i].LifeTime = PlayerList_Team2[index].LifeTime;
-                    ListView_PlayerList_Team2[i].WR = PlayerList_Team2[index].LifeWR;
-                    ListView_PlayerList_Team2[i].WRF = PlayerList_Team2[index].LifeWRF;
+                    ListView_PlayerList_Team2[i].LifeAccuracyRatio = PlayerList_Team2[index].LifeAccuracyRatio;
+                    ListView_PlayerList_Team2[i].LifeAccuracyRatioF = PlayerList_Team2[index].LifeAccuracyRatioF;
+                    ListView_PlayerList_Team2[i].LifeHeadShotRatio = PlayerList_Team2[index].LifeHeadShotRatio;
+                    ListView_PlayerList_Team2[i].LifeHeadShotRatioF = PlayerList_Team2[index].LifeHeadShotRatioF;
+                    ListView_PlayerList_Team2[i].LifeWR = PlayerList_Team2[index].LifeWR;
+                    ListView_PlayerList_Team2[i].LifeWRF = PlayerList_Team2[index].LifeWRF;
                     ListView_PlayerList_Team2[i].Score = PlayerList_Team2[index].Score;
                     ListView_PlayerList_Team2[i].Kit = PlayerList_Team2[index].Kit;
                     ListView_PlayerList_Team2[i].Kit2 = PlayerList_Team2[index].Kit2;
@@ -601,8 +617,12 @@ public partial class ScoreView : UserControl
                         LifeKd = PlayerList_Team2[i].LifeKd,
                         LifeKpm = PlayerList_Team2[i].LifeKpm,
                         LifeTime = PlayerList_Team2[i].LifeTime,
-                        WR = PlayerList_Team2[i].LifeWR,
-                        WRF = PlayerList_Team2[i].LifeWRF,
+                        LifeAccuracyRatio = PlayerList_Team2[i].LifeAccuracyRatio,
+                        LifeAccuracyRatioF = PlayerList_Team2[i].LifeAccuracyRatioF,
+                        LifeHeadShotRatio = PlayerList_Team2[i].LifeHeadShotRatio,
+                        LifeHeadShotRatioF = PlayerList_Team2[i].LifeHeadShotRatioF,
+                        LifeWR = PlayerList_Team2[i].LifeWR,
+                        LifeWRF = PlayerList_Team2[i].LifeWRF,
                         Score = PlayerList_Team2[i].Score,
                         Kit = PlayerList_Team2[i].Kit,
                         Kit2 = PlayerList_Team2[i].Kit2,
@@ -946,8 +966,12 @@ public partial class ScoreView : UserControl
             builder.Append($"生涯KD：{item.LifeKd}，");
             builder.Append($"生涯KPM：{item.LifeKpm}，");
             builder.Append($"生涯时长：{item.LifeTime}，");
-            builder.Append($"胜率: {item.WR}");
-            builder.Append($"胜率F: {item.WRF}");
+            builder.Append($"命中率: {item.LifeAccuracyRatio}");
+            builder.Append($"命中率F: {item.LifeAccuracyRatioF}");
+            builder.Append($"爆头率: {item.LifeHeadShotRatio}");
+            builder.Append($"爆头率F: {item.LifeHeadShotRatioF}");
+            builder.Append($"胜率: {item.LifeWR}");
+            builder.Append($"胜率F: {item.LifeWRF}");
             builder.Append($"兵种：{item.Kit3}，");
             builder.Append($"主武器：{item.WeaponS0}，");
             builder.Append($"配枪：{item.WeaponS1}，");
@@ -1121,8 +1145,12 @@ public partial class ScoreView : UserControl
             builder.Append($"生涯KD：{item.LifeKd}，");
             builder.Append($"生涯KPM：{item.LifeKpm}，");
             builder.Append($"生涯时长：{item.LifeTime}，");
-            builder.Append($"胜率: {item.WR}");
-            builder.Append($"胜率F: {item.WRF}");
+            builder.Append($"命中率: {item.LifeAccuracyRatio}");
+            builder.Append($"命中率F: {item.LifeAccuracyRatioF}");
+            builder.Append($"爆头率: {item.LifeHeadShotRatio}");
+            builder.Append($"爆头率F: {item.LifeHeadShotRatioF}");
+            builder.Append($"胜率: {item.LifeWR}");
+            builder.Append($"胜率F: {item.LifeWRF}");
             builder.Append($"兵种：{item.Kit3}，");
             builder.Append($"主武器：{item.WeaponS0}，");
             builder.Append($"配枪：{item.WeaponS1}，");

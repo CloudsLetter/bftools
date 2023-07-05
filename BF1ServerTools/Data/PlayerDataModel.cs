@@ -119,15 +119,40 @@ public partial class PlayerDataModel : ObservableObject, IComparable<PlayerDataM
     private int lifeTime;
 
     /// <summary>
+    /// 命中率
+    /// </summary>
+    [ObservableProperty]
+    private string lifeAccuracyRatio;
+
+    /// <summary>
+    /// 命中率F
+    /// </summary>
+    [ObservableProperty]
+    private float lifeAccuracyRatioF;
+
+    /// <summary>
+    /// 爆头率
+    /// </summary>
+    [ObservableProperty]
+    private string lifeHeadShotRatio;
+
+    /// <summary>
+    /// 爆头率F
+    /// </summary>
+    [ObservableProperty]
+    private float lifeHeadShotRatioF;
+
+    /// <summary>
     /// 胜率
     /// </summary>
     [ObservableProperty]
-    private string wR;
+    private string lifeWR;
+
     /// <summary>
     /// 胜率F
     /// </summary>
     [ObservableProperty]
-    private float wRF;
+    private float lifeWRF;
     ///////////////////////////////////////////////////////////////////////
 
     /// <summary>
@@ -227,7 +252,7 @@ public partial class PlayerDataModel : ObservableObject, IComparable<PlayerDataM
             case OrderBy.LTime:
                 return other.lifeTime.CompareTo(this.lifeTime);
             case OrderBy.WR:
-                return other.wRF.CompareTo(this.wRF);
+                return other.lifeWRF.CompareTo(this.lifeWRF);
             case OrderBy.Kit3:
                 return other.kit3.CompareTo(this.kit3);
             case OrderBy.Weapon:

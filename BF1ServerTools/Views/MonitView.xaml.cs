@@ -170,6 +170,8 @@ public partial class MonitView : UserControl
                             int wins = detailedStats.result.basicStats.wins;
                             int hins = detailedStats.result.basicStats.losses;
                             float wr = PlayerUtil.GetPlayerPercentageF(detailedStats.result.basicStats.wins, detailedStats.result.roundsPlayed);
+                            float ar = PlayerUtil.GetPlayerAccuracyRatioF(detailedStats.result.accuracyRatio);
+                            float hsr = PlayerUtil.GetPlayerPercentageF(detailedStats.result.headShots, kills);
                             Globals.LifePlayerCacheDatas.Add(new()
                             {
                                 Date = DateTime.Now,
@@ -181,6 +183,8 @@ public partial class MonitView : UserControl
                                 WeaponInfos = new(),
                                 VehicleInfos = new(),
                                 LifeMaxWR = wr,
+                                LifeMaxAccuracyRatio = ar,
+                                LifeMaxHeadShotRatio = hsr,
                             });
 
                             // 拿到当前生涯索引
@@ -265,12 +269,6 @@ public partial class MonitView : UserControl
             Thread.Sleep(5000);
         }
     }
-
-
-    /// <summary>
-    /// 检测系统自动平衡
-    /// </summary>
-
 
 
     /// <summary>
@@ -513,7 +511,25 @@ public partial class MonitView : UserControl
                 AddBreakRulePlayerInfo(playerData, BreakType.LifeKPM, $"Life KPM Limit {serverRule.LifeMaxKPM:0.00}");
             }
 
+            // 限制玩家生涯命中率
+            if (playerData.Rank > serverRule.LifeMaxAccuracyRatioLevel && playerData.Rank != 0 && serverRule.LifeMaxAccuracyRatioLevel != 0)
+            {
+                if (serverRule.LifeMaxAccuracyRatio != 0 &&
+                Globals.LifePlayerCacheDatas[lifeIndex].LifeMaxAccuracyRatio > serverRule.LifeMaxAccuracyRatio)
+                {
+                    AddBreakRulePlayerInfo(playerData, BreakType.LifeMaxAccuracyRatio, $"Life AR Limit {serverRule.LifeMaxAccuracyRatio:0.00}");
 
+                }
+            }
+            // 限制玩家生涯爆头率
+            if (playerData.Rank > serverRule.LifeMaxHeadShotRatioLevel && playerData.Rank != 0 && serverRule.LifeMaxHeadShotRatioLevel != 0)
+            {
+                if (serverRule.LifeMaxHeadShotRatio != 0 &&
+                Globals.LifePlayerCacheDatas[lifeIndex].LifeMaxHeadShotRatio > serverRule.LifeMaxHeadShotRatio)
+                {
+                    AddBreakRulePlayerInfo(playerData, BreakType.LifeMaxHeadShotRatio, $"Life HR Limit {serverRule.LifeMaxHeadShotRatio:0.00}");
+                }
+            }
 
 
             // 限制玩家生涯胜率 
@@ -526,10 +542,11 @@ public partial class MonitView : UserControl
 
                 }
             }
-
+            //重开分数限制
             if (Globals.ServerRule_Team1.ScoreLimit != 0 && Globals.ServerRule_Team1.ScoreGap != 0 && Globals.Team1Score !=0 && Globals.Team2Score != 0 && Globals.IsSetRuleOK && Globals.CurrentMapMode != "行动模式")
             {
-
+                if (Globals.CurrentMapName != "索姆河" || Globals.CurrentMapName != "卡波雷托" || Globals.CurrentMapName != "泽布吕赫" || Globals.CurrentMapName != "黑尔戈兰湾")
+                {
                 double scoreLimit = (double)Globals.ServerRule_Team1.ScoreLimit / Globals.TeamMaxScore;
 
                 double scoreGap = (double)Globals.ServerRule_Team1.ScoreGap / Globals.TeamMaxScore;
@@ -548,6 +565,7 @@ public partial class MonitView : UserControl
                     {
                         ChangeMap();
                     }
+                }
                 }
 
             }
@@ -1167,6 +1185,28 @@ public partial class MonitView : UserControl
                 }
             }
 
+            if (item.BreakType == BreakType.LifeMaxAccuracyRatio)
+            {
+                if (Globals.WhiteLifeMaxAccuracyRatio)
+                    continue;
+                else
+                {
+                    breakRuleInfo.Reason = item.Reason;
+                    return false;
+                }
+            }
+
+            if (item.BreakType == BreakType.LifeMaxHeadShotRatio)
+            {
+                if (Globals.WhiteLifeMaxHeadShotRatio)
+                    continue;
+                else
+                {
+                    breakRuleInfo.Reason = item.Reason;
+                    return false;
+                }
+            }
+
             if (item.BreakType == BreakType.LifeMaxWR)
             {
                 if (Globals.WhiteLifeMaxWR)
@@ -1388,7 +1428,22 @@ public partial class MonitView : UserControl
     private void CheckBox_Not_Allow_Toggle_Kick_Click(object sender, RoutedEventArgs e)
     {
         Globals.IsNotAllowToggle = CheckBox_Not_Allow_Toggle_Kick.IsChecked == true;
-        CheckBox_Not_Allow_Toggle_Back.IsChecked = false;
+
+        if (CheckBox_Not_Allow_Toggle_Back.IsChecked == true)
+        {
+            CheckBox_Not_Allow_Toggle_Back.IsChecked = false;
+        }
+
+        if (CheckBox_Not_Allow_Toggle_ToggleBeforeKick.IsChecked == true)
+        {
+            CheckBox_Not_Allow_Toggle_ToggleBeforeKick.IsChecked = false;
+        }
+
+        if (Globals.ToggleTeambeforeKick)
+        {
+            Globals.ToggleTeambeforeKick = false;
+        }
+
         Globals.ToggleKickMode = true;
     }
 
@@ -1400,12 +1455,56 @@ public partial class MonitView : UserControl
     private void CheckBox_Not_Allow_Toggle_Back_Click(object sender, RoutedEventArgs e)
     {
         Globals.IsNotAllowToggle = CheckBox_Not_Allow_Toggle_Back.IsChecked == true;
-        CheckBox_Not_Allow_Toggle_Kick.IsChecked = false;
+
+        if (CheckBox_Not_Allow_Toggle_Kick.IsChecked == true)
+        {
+            CheckBox_Not_Allow_Toggle_Kick.IsChecked = false;
+        }
+
+        if (CheckBox_Not_Allow_Toggle_ToggleBeforeKick.IsChecked == true)
+        {
+            CheckBox_Not_Allow_Toggle_ToggleBeforeKick.IsChecked = false;
+        }
+
+        if (Globals.ToggleTeambeforeKick)
+        {
+            Globals.ToggleTeambeforeKick = false;
+        }
+
         if (Globals.ToggleKickMode)
         {
             Globals.ToggleKickMode = false;
         }
+
     }
+
+    /// <summary>
+    /// 禁止玩家换边先换后踢
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void CheckBox_ToggleTeam_Before_Kick_Click(object sender, RoutedEventArgs e)
+    {
+        Globals.IsNotAllowToggle = CheckBox_Not_Allow_Toggle_ToggleBeforeKick.IsChecked == true;
+
+        if (CheckBox_Not_Allow_Toggle_Kick.IsChecked == true)
+        {
+            CheckBox_Not_Allow_Toggle_Kick.IsChecked = false;
+        }
+
+        if (CheckBox_Not_Allow_Toggle_Back.IsChecked == true)
+        {
+            CheckBox_Not_Allow_Toggle_Back.IsChecked = false;
+        }
+
+        if (Globals.ToggleKickMode)
+        {
+            Globals.ToggleKickMode = false;
+        }
+
+        Globals.ToggleTeambeforeKick = true;
+    }
+
     /// <summary>
     /// 违规列表 ListView选中变更事件
     /// </summary>
@@ -1416,7 +1515,7 @@ public partial class MonitView : UserControl
         if (ListView_BreakPlayer.SelectedItem is BreakRuleInfoModel item)
             MenuItem_Player.Header = $"[{item.Rank}] {item.Name}    {item.Reason}";
         else
-            MenuItem_Player.Header = "当前未选中";
+            MenuItem_Player.Header = "当前未选中"; 
     }
 
     /// <summary>

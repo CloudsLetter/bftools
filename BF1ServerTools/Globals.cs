@@ -272,20 +272,67 @@ public static class Globals
     /// 使用云功能
     /// </summary>
     public static bool IsCloudMode = false;
-    public static bool IsCloudMode2 = false;
-    public static bool IsClean = false;
 
+    /// <summary>
+    /// 团队最大分数
+    /// </summary>
     public static int TeamMaxScore = 0;
+    /// <summary>
+    /// 队伍1分数
+    /// </summary>
     public static int Team1Score = 0;
+    /// <summary>
+    /// 队伍2分数
+    /// </summary>
     public static int Team2Score = 0;
 
-    public static bool SystemAutoBalance = false; 
+    /// <summary>
+    /// 系统自动平衡
+    /// </summary>
+    public static bool SystemAutoBalance = false;
+    /// <summary>
+    /// 队伍1玩家数量
+    /// </summary>
     public static int Team1PlayerCount = 0;
+    /// <summary>
+    /// 队伍2玩家数量
+    /// </summary>
     public static int Team2PlayerCount = 0;
 
+    /// <summary>
+    /// 当前地图名称
+    /// </summary>
     public static string CurrentMapName = string.Empty;
+
+    /// <summary>
+    /// 当前地图模式
+    /// </summary>
     public static string CurrentMapMode = string.Empty;
+
+    /// <summary>
+    /// 服务器地图列表
+    /// </summary>
     public static List<string> ServerMapList = new();
+
+    /// <summary>
+    /// 玩家是否已经换过边
+    /// </summary>
+    public static List<long> AlreadyToggleTeamPlayer = new();
+
+    /// <summary>
+    /// 是否启用先换后踢
+    /// </summary>
+    public static bool ToggleTeambeforeKick = false;
+
+    /// <summary>
+    /// 规则是否已经设置
+    /// </summary>
+    public static bool ISetRule = false;
+
+    public static bool CloudModeSet = false;
+
+    public static bool OffileModeSet = false;
+
     /*    /// <summary>
         /// 使用云功能
         /// </summary>
@@ -312,6 +359,9 @@ public static class Globals
     public static bool WhiteKPM = true;
     public static bool WhiteRank = true;
     public static bool WhiteWeapon = true;
+    public static bool WhiteLifeMaxAccuracyRatio  = true;
+    public static bool WhiteLifeMaxHeadShotRatio = true;
+
 }
 
 public enum OrderBy

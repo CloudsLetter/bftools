@@ -18,6 +18,10 @@ public class ServerRule
     public int LifeMaxWeaponStar { get; set; } = 0;
     public int LifeMaxVehicleStar { get; set; } = 0;
 
+    public int LifeMaxAccuracyRatioLevel { get; set; } = 0;
+    public float LifeMaxAccuracyRatio { get; set; } = 0.00f;
+    public int LifeMaxHeadShotRatioLevel { get; set; } = 0;
+    public float LifeMaxHeadShotRatio { get; set; } = 0;
     public int LifeMaxWRLevel { get; set; } = 0;
 
     public float LifeMaxWR { get; set; } = 0.00f;

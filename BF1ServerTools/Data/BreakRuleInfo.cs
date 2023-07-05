@@ -53,6 +53,8 @@ public enum BreakType
 
     LifeKD,
     LifeKPM,
+    LifeMaxAccuracyRatio,
+    LifeMaxHeadShotRatio,
     LifeMaxWR,
     LifeWeaponStar,
     LifeVehicleStar,
