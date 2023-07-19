@@ -894,9 +894,9 @@ public partial class ScoreView : UserControl
 
                 if (Globals.IsCloudMode)
                 {
-                        Globals.AllowTempAloowToggleTeamList2.Add(item.PersonaId);
-                    
-                        var result2 = await CloudApi.AddAutoToggleTeamList(item.PersonaId.ToString());
+                    Globals.AllowTempAloowToggleTeamList2.Add(item.PersonaId);
+
+                    var result2 = await CloudApi.AddAutoToggleTeamList(item.PersonaId.ToString());
                         if (result2.IsSuccess)
                         {
                     
@@ -913,8 +913,8 @@ public partial class ScoreView : UserControl
                             }
                             catch (Exception)
                             {
-                            }
                         }
+                    }
                 }
                 else
                 {
@@ -1072,9 +1072,8 @@ public partial class ScoreView : UserControl
             {
                 if (Globals.IsCloudMode)
                 {
-
-                        Globals.AllowTempAloowToggleTeamList1.Add(item.PersonaId);
-                        var result2 = await CloudApi.AddAutoToggleTeamList(item.PersonaId.ToString());
+                    Globals.AllowTempAloowToggleTeamList2.Add(item.PersonaId);
+                    var result2 = await CloudApi.AddAutoToggleTeamList(item.PersonaId.ToString());
                         if (result2.IsSuccess)
                         {
                     
@@ -1091,8 +1090,8 @@ public partial class ScoreView : UserControl
                             }
                             catch (Exception)
                             {
-                            }
                         }
+                    }
                 }
                 else
                 {

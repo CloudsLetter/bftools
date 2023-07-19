@@ -463,6 +463,34 @@ public partial class AuthView : UserControl
 
             TextBlock_SessionIdState.Text = firstMessage;
             Border_SessionIdState.Background = Brushes.Green;
+
+            if (Globals.IsCloudMode)
+            {
+                var ress = await CloudApi.RemoveAllToggleTeambeForeKick(Globals.TempGameId.ToString());
+                if (!ress.IsSuccess)
+                {
+                    if (Globals.AlreadyToggleTeamPlayer.Count != 0)
+                    {
+                        if (Globals.AlreadyToggleTeamPlayer.Count != 0)
+                        {
+                            Globals.AlreadyToggleTeamPlayer.Clear();
+                        }
+                        if (Globals.TempToggleTeamList.Count != 0)
+                        {
+                            Globals.TempToggleTeamList.Clear();
+                        }
+                        if (Globals.AllowTempAloowToggleTeamList1.Count != 0)
+                        {
+                            Globals.AllowTempAloowToggleTeamList1.Clear();
+                        }
+                        if (Globals.AllowTempAloowToggleTeamList2.Count != 0)
+                        {
+                            Globals.AllowTempAloowToggleTeamList2.Clear();
+                        }
+                    }
+                }
+            }
+
             NotifierHelper.Show(NotifierType.Success, $"[{result.ExecTime:0.00} 秒]  验证成功\n{firstMessage}");
             if (Globals.IsCloudMode)
             {
@@ -506,6 +534,26 @@ public partial class AuthView : UserControl
 
             TextBlock_SessionIdState.Text = firstMessage;
             Border_SessionIdState.Background = Brushes.Green;
+
+            if (!Globals.IsCloudMode)
+            {
+                if (Globals.AlreadyToggleTeamPlayer.Count != 0)
+                {
+                    Globals.AlreadyToggleTeamPlayer.Clear();
+                }
+                if (Globals.TempToggleTeamList.Count != 0)
+                {
+                    Globals.TempToggleTeamList.Clear();
+                }
+                if (Globals.AllowTempAloowToggleTeamList1.Count != 0)
+                {
+                   Globals.AllowTempAloowToggleTeamList1.Clear();
+                }
+                if (Globals.AllowTempAloowToggleTeamList2.Count != 0)
+                {
+                    Globals.AllowTempAloowToggleTeamList2.Clear();
+                }
+            }
 
             var result1 = await CloudApi.CheckAlive();
             if (result1.IsSuccess)

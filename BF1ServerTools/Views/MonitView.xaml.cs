@@ -994,10 +994,9 @@ public partial class MonitView : UserControl
                 {
                         if (Globals.CurrentMapMode != "行动模式")
                         {
-                            if ( Globals.Team2Score > Globals.Team1Score)
+                            if ( Globals.Team2Score > Globals.Team1Score || Globals.Team1Score == 0 && Globals.Team2Score == 0)
                             {
                                 CloudUtil.AutTogglTeame(tempChangeTeamInfo);
-
                             }
                             else
                             {
@@ -1049,7 +1048,7 @@ public partial class MonitView : UserControl
                 {
                         if (Globals.CurrentMapMode != "行动模式")
                         {
-                            if (Globals.Team2Score < Globals.Team1Score)
+                            if (Globals.Team2Score < Globals.Team1Score || Globals.Team1Score == 0 && Globals.Team2Score == 0)
                             {
                                 CloudUtil.AutTogglTeame(tempChangeTeamInfo);
 

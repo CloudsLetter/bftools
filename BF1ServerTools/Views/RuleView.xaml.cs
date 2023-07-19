@@ -512,6 +512,10 @@ public partial class RuleView : UserControl
                 {
                     if (Globals.LoginPlayerIsAdmin)
                     {
+                        if (Globals.ToggleTeambeforeKick && Globals.TempGameId == 0)
+                        {
+                            Globals.TempGameId = Globals.GameId;
+                        }
                         if (Globals.OffileModeSet)
                         {
                             SetRule2Zero();
@@ -535,6 +539,23 @@ public partial class RuleView : UserControl
                 }
                 else
                 {
+                    if (Globals.ToggleTeambeforeKick && Globals.TempGameId != 0)
+                    {
+                        if (Globals.IsCloudMode)
+                        {
+                            var result = await CloudApi.RemoveAllToggleTeambeForeKick(Globals.TempGameId.ToString());
+                            if (!result.IsSuccess)
+                            {
+                                Globals.AlreadyToggleTeamPlayer.Clear();
+                                Globals.TempGameId= 0;
+                            }
+                        }
+                        else{
+                            Globals.AlreadyToggleTeamPlayer.Clear();
+                            Globals.TempGameId= 0;
+                        }
+                    }
+
                     if (Globals.OffileModeSet)
                     {
                         SetRule2Zero();

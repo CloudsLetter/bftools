@@ -32,12 +32,12 @@ public static class CloudUtil
             var result = await BF1API.RSPKickPlayer(Globals.SessionId, Globals.GameId, info.PersonaId, "BFTools: 禁止跳邊");
             if (result.IsSuccess)
             {
-                info.State = $"将 等级:{info.Rank} 名称: {info.Rank}踢出服务器成功";
+                info.State = $"将 等级:{info.Rank} 名称: {info.Name}踢出服务器成功";
 
             }
             else
             {
-                info.State = $"将 等级:{info.Rank} 名称: {info.Rank}踢出服务器失败";
+                info.State = $"将 等级:{info.Rank} 名称: {info.Name}踢出服务器失败";
 
             }
 
@@ -86,12 +86,12 @@ public static class CloudUtil
             var result = await BF1API.RSPMovePlayer(Globals.SessionId, Globals.GameId, info.PersonaId, info.To);
             if (result.IsSuccess)
             {
-                info.State = $"将 等级:{info.Rank} 名称: {info.Rank}切换回原有队伍成功";
+                info.State = $"将 等级:{info.Rank} 名称: {info.Name}切换回原有队伍成功";
 
             }
             else
             {
-                info.State = $"将 等级:{info.Rank} 名称: {info.Rank}切换回原有队伍失败";
+                info.State = $"将 等级:{info.Rank} 名称: {info.Name}切换回原有队伍失败";
 
             }
             if (Globals.IsCloudMode)
@@ -156,6 +156,7 @@ public static class CloudUtil
         if (Globals.LoginPlayerIsAdmin && Globals.IsNotAllowToggle && Globals.IsSetRuleOK)
         {
             bool toggleTeam =false;
+
             if (info.To == 1 && Globals.AllowTempAloowToggleTeamList1.Count != 0)
             {
                 toggleTeam =  PlayerUtil.IsAtTempTempAloowToggleTeamList(info.PersonaId, Globals.AllowTempAloowToggleTeamList1);
@@ -178,24 +179,33 @@ public static class CloudUtil
                     {
                         var test = results.Content.Replace("\r", "");
                         List<Players> players = JsonConvert.DeserializeObject<List<Players>>(test);
-                        if (PlayerUtil.IsCloudWhite(info.Name, players))
+                        if (Globals.IsAllowWhlistToggleTeam)
                         {
-                            whitelistToggle = true;
+                            if (PlayerUtil.IsCloudWhite(info.Name, players))
+                            {
+                                whitelistToggle = true;
+                            }
                         }
                     }
                     catch
                     {
-                        if (PlayerUtil.IsWhite(info.Name, Globals.CustomWhites_Name))
+                        if (Globals.IsAllowWhlistToggleTeam)
                         {
-                            whitelistToggle = true;
+                            if (PlayerUtil.IsWhite(info.Name, Globals.CustomWhites_Name))
+                            {
+                                whitelistToggle = true;
+                            }
                         }
                     }
                 }
                 else
                 {
-                    if (PlayerUtil.IsWhite(info.Name, Globals.CustomWhites_Name))
+                    if (Globals.IsAllowWhlistToggleTeam)
                     {
-                        whitelistToggle = true;
+                        if (PlayerUtil.IsWhite(info.Name, Globals.CustomWhites_Name))
+                        {
+                            whitelistToggle = true;
+                        }
                     }
                 }
 
@@ -211,27 +221,27 @@ public static class CloudUtil
                 }
             }
 
-            bool IsAdmin = PlayerUtil.IsAdminVIP(info.PersonaId, Globals.ServerAdmins_PID);
+         bool IsAdmin = PlayerUtil.IsAdminVIP(info.PersonaId, Globals.ServerAdmins_PID);
 
-            bool isToggle = false;
+         bool isToggle = false;
 
-
-            if (!IsAdmin && !whitelistToggle)
+        if (Globals.IsNotAllowToggle)
+        {
+            if (Globals.IsCloudMode)
             {
-                if (Globals.IsCloudMode)
+                if (!IsAdmin && !whitelistToggle)
                 {
                     var result3 = await CloudApi.QueryAutoToggleTeamList(info.PersonaId.ToString());
                     if (result3.IsSuccess)
                     {
-                        isToggle = true;
-
-                        if (Globals.TempToggleTeamList.Count != 0)
-                        {
+                            isToggle = true;
+                            if (Globals.TempToggleTeamList.Count != 0)
+                            {
                             if (PlayerUtil.IsAtTempTempAloowToggleTeamList(info.PersonaId, Globals.TempToggleTeamList))
                             {
                                 Globals.TempToggleTeamList.Remove(info.PersonaId);
                             }
-                        }
+                            }
                     }
                     else
                     {
@@ -262,7 +272,8 @@ public static class CloudUtil
                                 }
                             }
                         }
-
+                    
+                    }
                     }
                 }
                 else
@@ -273,37 +284,117 @@ public static class CloudUtil
                         Globals.TempToggleTeamList.Remove(info.PersonaId);
                     }
                 }
+         }
 
-            }
+        bool AlreadyToggle = false;
 
-            if (Globals.ToggleTeambeforeKick)
+        if (Globals.IsNotAllowToggle && Globals.ToggleTeambeforeKick)
+        {
+            if (Globals.IsCloudMode)
             {
-                bool second = false;
-                second = PlayerUtil.IsAtTempTempAloowToggleTeamList(info.PersonaId, Globals.AlreadyToggleTeamPlayer);
-                if (!second)
+                if (!IsAdmin && !whitelistToggle)
                 {
-                    MovePlayerBack(toggleTeam: toggleTeam, IsAdmin: IsAdmin, whitelistToggle: whitelistToggle, isToggle: isToggle, info: info);
+                    var result3 = await CloudApi.QueryToggleTeambeForeKick(gameId: Globals.GameId.ToString(), PersonaId: info.PersonaId.ToString());
+                    if (result3.IsSuccess)
+                    {
+                        AlreadyToggle = true;
+                    }
+                    else
+                    {
+                        try
+                        {
+                            var data = result3.Content.Replace("\r", "");
+                            RepsoneData dataObj = JsonConvert.DeserializeObject<RepsoneData>(data);
+                            if (dataObj.Id != "0002")
+                            {
+                                if (Globals.AlreadyToggleTeamPlayer.Count != 0)
+                                {
+                                    AlreadyToggle = PlayerUtil.IsAtTempTempAloowToggleTeamList(info.PersonaId, Globals.AlreadyToggleTeamPlayer);
+                                }
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            if (Globals.AlreadyToggleTeamPlayer.Count != 0)
+                            {
+                                AlreadyToggle = PlayerUtil.IsAtTempTempAloowToggleTeamList(info.PersonaId, Globals.AlreadyToggleTeamPlayer);
+                            }
+                        }
 
-                    Globals.AlreadyToggleTeamPlayer.Add(info.PersonaId);
+                    }
                 }
-                else if (second)
+            }
+            else
+            {
+                AlreadyToggle = PlayerUtil.IsAtTempTempAloowToggleTeamList(info.PersonaId, Globals.AlreadyToggleTeamPlayer);
+            }
+            }
+
+
+
+
+            if (Globals.IsNotAllowToggle &&  Globals.ToggleTeambeforeKick)
+            {
+                if (!AlreadyToggle)
                 {
-                    KickPlayer(toggleTeam: toggleTeam, IsAdmin: IsAdmin, whitelistToggle: whitelistToggle, isToggle: isToggle, info: info);
-                    Globals.AlreadyToggleTeamPlayer.Remove(info.PersonaId);
+                    if (!IsAdmin && !whitelistToggle && !toggleTeam && !isToggle)
+                    {
+
+                     MovePlayerBack(toggleTeam: toggleTeam, IsAdmin: IsAdmin, whitelistToggle: whitelistToggle, isToggle: isToggle, info: info);
+
+                    if (Globals.IsCloudMode)
+                    {
+                        var result = await CloudApi.AddToggleTeambeForeKick(gameId: Globals.GameId.ToString(), PersonaId: info.PersonaId.ToString());
+                        if (!result.IsSuccess)
+                        {
+                                Globals.AlreadyToggleTeamPlayer.Add(info.PersonaId);
+                        }
+                    }
+                    else
+                    {
+                            Globals.AlreadyToggleTeamPlayer.Add(info.PersonaId);
+                    }
+
+                    }
+                }
+                else    if (AlreadyToggle)
+                {
+                    if (!IsAdmin && !whitelistToggle && !toggleTeam && !isToggle)
+                    {
+                        KickPlayer(toggleTeam: toggleTeam, IsAdmin: IsAdmin, whitelistToggle: whitelistToggle, isToggle: isToggle, info: info);
+                        if (Globals.IsCloudMode)
+                        {
+                            var result = await CloudApi.RemoveToggleTeambeForeKick(gameId: Globals.GameId.ToString(), PersonaId: info.PersonaId.ToString());
+                            if (!result.IsSuccess)
+                            {
+                                if (Globals.AlreadyToggleTeamPlayer.Count != 0)
+                                {
+                                    Globals.AlreadyToggleTeamPlayer.Remove(info.PersonaId);
+                                }
+
+                            }
+                        }
+                        else
+                        {
+                            if (Globals.AlreadyToggleTeamPlayer.Count != 0)
+                            {
+                                Globals.AlreadyToggleTeamPlayer.Remove(info.PersonaId);
+                            }
+                        }
+                    }
 
                 }
 
             }
-            else if (Globals.ToggleKickMode)
+            else if (Globals.IsNotAllowToggle && Globals.ToggleKickMode)
             {
                 //bool toggleTeam, bool IsAdmin, bool whitelistToggle, bool isToggle, ChangeTeamInfo info
                 KickPlayer(toggleTeam: toggleTeam, IsAdmin: IsAdmin, whitelistToggle: whitelistToggle, isToggle: isToggle,info: info);
             }
-            else
+            else if(Globals.IsNotAllowToggle)
             {
                 MovePlayerBack(toggleTeam: toggleTeam, IsAdmin: IsAdmin, whitelistToggle: whitelistToggle, isToggle: isToggle, info: info);
             }
-
         }
 
     }

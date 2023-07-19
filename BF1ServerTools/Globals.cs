@@ -333,6 +333,7 @@ public static class Globals
 
     public static bool OffileModeSet = false;
 
+    public static long TempGameId = 0;
     /*    /// <summary>
         /// 使用云功能
         /// </summary>

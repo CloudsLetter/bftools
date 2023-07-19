@@ -22,6 +22,7 @@ public static class CloudApi
     private const string hostaq = "https://bf1.cloudyun.xyz/api/bf1/autotoggleteam/query";
     private const string hostad = "https://bf1.cloudyun.xyz/api/bf1/autotoggleteam/add";
     private const string hostar = "https://bf1.cloudyun.xyz/api/bf1/autotoggleteam/remove";
+
     private const string hostbq = "https://bf1.cloudyun.xyz/api/bf1/blacklist/query";
     private const string hostba = "https://bf1.cloudyun.xyz/api/bf1/blacklist/add";
     private const string hostbr = "https://bf1.cloudyun.xyz/api/bf1/blacklist/remove";
@@ -34,6 +35,11 @@ public static class CloudApi
 
     private const string ruleqr = "https://bf1.cloudyun.xyz/api/bf1/rule/query";
     private const string rulead = "https://bf1.cloudyun.xyz/api/bf1/rule/push";
+
+    private const string hostbkad = "https://bf1.cloudyun.xyz/api/bf1/toggleteambeforekick/add";
+    private const string hostbkqr = "https://bf1.cloudyun.xyz/api/bf1/toggleteambeforekick/query";
+    private const string hostbkre = "https://bf1.cloudyun.xyz/api/bf1/toggleteambeforekick/remove";
+    private const string hostbkra = "https://bf1.cloudyun.xyz/api/bf1/toggleteambeforekick/removeall";
 
     private static readonly RestClient clientpg;
 
@@ -54,6 +60,10 @@ public static class CloudApi
     private static readonly RestClient clientruleqr;
     private static readonly RestClient clientrulead;
 
+    private static readonly RestClient clientbkad;
+    private static readonly RestClient clientbkqr;
+    private static readonly RestClient clientbkre;
+    private static readonly RestClient clientbkra;
 
     static CloudApi()
     {
@@ -179,6 +189,46 @@ public static class CloudApi
             clientrulead = new RestClient(optionsss);
         }
 
+        if (clientbkad == null)
+        {
+            var optionsss = new RestClientOptions(hostbkad)
+            {
+                MaxTimeout = 5000,
+                ThrowOnAnyError = true
+            };
+            clientbkad = new RestClient(optionsss);
+        }
+
+        if (clientbkqr == null)
+        {
+            var optionsss = new RestClientOptions(hostbkqr)
+            {
+                MaxTimeout = 5000,
+                ThrowOnAnyError = true
+            };
+            clientbkqr = new RestClient(optionsss);
+        }
+
+
+        if (clientbkre == null)
+        {
+            var optionsss = new RestClientOptions(hostbkre)
+            {
+                MaxTimeout = 5000,
+                ThrowOnAnyError = true
+            };
+            clientbkre = new RestClient(optionsss);
+        }
+
+        if (clientbkra == null)
+        {
+            var optionsss = new RestClientOptions(hostbkra)
+            {
+                MaxTimeout = 5000,
+                ThrowOnAnyError = true
+            };
+            clientbkra = new RestClient(optionsss);
+        }
     }
 
 
@@ -896,4 +946,249 @@ public static class CloudApi
     }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public static async Task<RespContent> QueryToggleTeambeForeKick(string gameId,string PersonaId)
+    {
+        var sw = new Stopwatch();
+        sw.Start();
+        var respContent = new RespContent();
+
+        try
+        {
+            var reqBody = new
+            {
+                Token = "chaoshilisaohuo",
+                GameId = gameId,
+                PersonaId = PersonaId,
+            };
+
+            var request = new RestRequest()
+                .AddJsonBody(reqBody);
+
+            var response = await clientbkqr.ExecutePostAsync(request);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                respContent.IsSuccess = true;
+                respContent.Content = response.Content;
+            }
+            else if (response.StatusCode == HttpStatusCode.InternalServerError)
+            {
+                // 处理 HTTP 500 错误
+                respContent.IsSuccess = false;
+                respContent.Content = response.Content;
+            }
+            else if (response.StatusCode == HttpStatusCode.BadRequest)
+            {
+                // 处理 HTTP 400 错误
+                respContent.IsSuccess = false;
+                respContent.Content = response.Content;
+            }
+            else
+            {
+                // 处理其他状态码
+                respContent.IsSuccess = false;
+                respContent.Content = response.Content;
+            }
+        }
+        catch (Exception ex)
+        {
+            respContent.IsSuccess = false;
+            respContent.Content = ex.Message;
+        }
+
+        sw.Stop();
+        respContent.ExecTime = sw.Elapsed.TotalSeconds;
+
+        return respContent;
+
+    }
+
+
+    public static async Task<RespContent> AddToggleTeambeForeKick(string gameId, string PersonaId)
+    {
+        var sw = new Stopwatch();
+        sw.Start();
+        var respContent = new RespContent();
+
+        try
+        {
+            var reqBody = new
+            {
+                Token = "chaoshilisaohuo",
+                GameId = gameId,
+                PersonaId = PersonaId,
+            };
+
+            var request = new RestRequest()
+                .AddJsonBody(reqBody);
+
+            var response = await clientbkad.ExecutePostAsync(request);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                respContent.IsSuccess = true;
+                respContent.Content = response.Content;
+            }
+            else if (response.StatusCode == HttpStatusCode.InternalServerError)
+            {
+                // 处理 HTTP 500 错误
+                respContent.IsSuccess = false;
+                respContent.Content = response.Content;
+            }
+            else if (response.StatusCode == HttpStatusCode.BadRequest)
+            {
+                // 处理 HTTP 400 错误
+                respContent.IsSuccess = false;
+                respContent.Content = response.Content;
+            }
+            else
+            {
+                // 处理其他状态码
+                respContent.IsSuccess = false;
+                respContent.Content = response.Content;
+            }
+        }
+        catch (Exception ex)
+        {
+            respContent.IsSuccess = false;
+            respContent.Content = ex.Message;
+        }
+
+        sw.Stop();
+        respContent.ExecTime = sw.Elapsed.TotalSeconds;
+
+        return respContent;
+
+    }
+
+
+
+
+
+    public static async Task<RespContent> RemoveToggleTeambeForeKick(string gameId, string PersonaId)
+    {
+        var sw = new Stopwatch();
+        sw.Start();
+        var respContent = new RespContent();
+
+        try
+        {
+            var reqBody = new
+            {
+                Token = "chaoshilisaohuo",
+                GameId = gameId,
+                PersonaId = PersonaId,
+            };
+
+            var request = new RestRequest()
+                .AddJsonBody(reqBody);
+
+            var response = await clientbkra.ExecutePostAsync(request);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                respContent.IsSuccess = true;
+                respContent.Content = response.Content;
+            }
+            else if (response.StatusCode == HttpStatusCode.InternalServerError)
+            {
+                // 处理 HTTP 500 错误
+                respContent.IsSuccess = false;
+                respContent.Content = response.Content;
+            }
+            else if (response.StatusCode == HttpStatusCode.BadRequest)
+            {
+                // 处理 HTTP 400 错误
+                respContent.IsSuccess = false;
+                respContent.Content = response.Content;
+            }
+            else
+            {
+                // 处理其他状态码
+                respContent.IsSuccess = false;
+                respContent.Content = response.Content;
+            }
+        }
+        catch (Exception ex)
+        {
+            respContent.IsSuccess = false;
+            respContent.Content = ex.Message;
+        }
+
+        sw.Stop();
+        respContent.ExecTime = sw.Elapsed.TotalSeconds;
+
+        return respContent;
+
+    }
+
+    public static async Task<RespContent> RemoveAllToggleTeambeForeKick(string gameId)
+    {
+        var sw = new Stopwatch();
+        sw.Start();
+        var respContent = new RespContent();
+
+        try
+        {
+            var reqBody = new
+            {
+                Token = "chaoshilisaohuo",
+                GameId = gameId,
+            };
+
+            var request = new RestRequest()
+                .AddJsonBody(reqBody);
+
+            var response = await clientbkra.ExecutePostAsync(request);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                respContent.IsSuccess = true;
+                respContent.Content = response.Content;
+            }
+            else if (response.StatusCode == HttpStatusCode.InternalServerError)
+            {
+                // 处理 HTTP 500 错误
+                respContent.IsSuccess = false;
+                respContent.Content = response.Content;
+            }
+            else if (response.StatusCode == HttpStatusCode.BadRequest)
+            {
+                // 处理 HTTP 400 错误
+                respContent.IsSuccess = false;
+                respContent.Content = response.Content;
+            }
+            else
+            {
+                // 处理其他状态码
+                respContent.IsSuccess = false;
+                respContent.Content = response.Content;
+            }
+        }
+        catch (Exception ex)
+        {
+            respContent.IsSuccess = false;
+            respContent.Content = ex.Message;
+        }
+
+        sw.Stop();
+        respContent.ExecTime = sw.Elapsed.TotalSeconds;
+
+        return respContent;
+
+    }
 }
