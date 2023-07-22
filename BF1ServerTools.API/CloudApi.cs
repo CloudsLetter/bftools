@@ -41,6 +41,8 @@ public static class CloudApi
     private const string hostbkre = "https://bf1.cloudyun.xyz/api/bf1/toggleteambeforekick/remove";
     private const string hostbkra = "https://bf1.cloudyun.xyz/api/bf1/toggleteambeforekick/removeall";
 
+    private const string hostcv = "https://bf1.cloudyun.xyz/api/bf1/checkversion";
+
     private static readonly RestClient clientpg;
 
     private static readonly RestClient clientaq;
@@ -65,6 +67,7 @@ public static class CloudApi
     private static readonly RestClient clientbkre;
     private static readonly RestClient clientbkra;
 
+    private static readonly RestClient clientcv;
     static CloudApi()
     {
         if (clientpg == null)
@@ -228,6 +231,16 @@ public static class CloudApi
                 ThrowOnAnyError = true
             };
             clientbkra = new RestClient(optionsss);
+        }
+
+        if (clientcv == null)
+        {
+            var optionsss = new RestClientOptions(hostcv)
+            {
+                MaxTimeout = 5000,
+                ThrowOnAnyError = true
+            };
+            clientcv = new RestClient(optionsss);
         }
     }
 
@@ -457,7 +470,7 @@ public static class CloudApi
     /// </summary>
     /// <param name="serverToken"></param>
     /// <returns></returns>
-    public static async Task<RespContent> AddBlackList(string ServerId, string Gameid, string Guid, string PlayerName)
+    public static async Task<RespContent> AddBlackList(string ServerId, string Gameid, string Guid, string PlayerName, string ServerName)
     {
         var sw = new Stopwatch();
         sw.Start();
@@ -471,7 +484,8 @@ public static class CloudApi
                 ServerId = ServerId,
                 PlayerName = PlayerName,
                 Guid = Guid,
-                Gameid = Gameid
+                Gameid = Gameid,
+                ServerName = ServerName
             };
 
             var request = new RestRequest()
@@ -556,7 +570,7 @@ public static class CloudApi
     /// </summary>
     /// <param name="serverToken"></param>
     /// <returns></returns>
-    public static async Task<RespContent> KickHIstory(string Operator, string KickedOutPlayerRank, string KickedOutPlayerName, string KickedOutPersonaId, string Reason, string State, string ServerId, string Guid, string GameId, string Type)
+    public static async Task<RespContent> KickHIstory(string Operator, string KickedOutPlayerRank, string KickedOutPlayerName, string KickedOutPersonaId, string Reason, string State, string ServerId, string Guid, string GameId, string Type,string ServerName)
     {
         var sw = new Stopwatch();
         sw.Start();
@@ -577,7 +591,7 @@ public static class CloudApi
                 Guid = Guid,
                 GameId = GameId,
                 Type = Type,
-
+                ServerName = ServerName
             };
 
             var request = new RestRequest()
@@ -613,7 +627,7 @@ public static class CloudApi
     /// </summary>
     /// <param name="serverToken"></param>
     /// <returns></returns>
-    public static async Task<RespContent> PushToggleHistory(string PlayerRank,string PlayerName, string PersonaId,string GameMode, string MapName, string Team1Name,string Team2Name,string State, string ServerId, string Guid, string GameId)
+    public static async Task<RespContent> PushToggleHistory(string PlayerRank,string PlayerName, string PersonaId,string GameMode, string MapName, string Team1Name,string Team2Name,string State, string ServerId, string Guid, string GameId, string ServerName)
     {
         var sw = new Stopwatch();
         sw.Start();
@@ -634,7 +648,8 @@ public static class CloudApi
                 State = State,
                 ServerId = ServerId,
                 Guid = Guid,
-                GameId = GameId
+                GameId = GameId,
+                ServerName = ServerName
             };
 
             var request = new RestRequest()
@@ -764,7 +779,8 @@ public static class CloudApi
         string team1Weapon,
         string team2Weapon,
         int team1ScoreLimit,
-        int team1ScoreGap
+        int team1ScoreGap,
+        string serverName
         )
     {
         var sw = new Stopwatch();
@@ -832,7 +848,8 @@ public static class CloudApi
                OperatorPersonaId = operatorPersonaId,
                Team1ScoreLimit = team1ScoreLimit,
                Team1ScoreGap = team1ScoreGap,
-               Allow2LowScoreTeam  = allow2LowScoreTeam
+               Allow2LowScoreTeam  = allow2LowScoreTeam,
+               ServerName = serverName
             };
 
             var request = new RestRequest()
@@ -945,23 +962,48 @@ public static class CloudApi
 
     }
 
+    public static async Task<RespContent> CheckVersion(string Version)
+    {
+        var sw = new Stopwatch();
+        sw.Start();
+        var respContent = new RespContent();
 
+        try
+        {
 
+            var reqBody = new
+            {
+                Token = "chaoshilisaohuo",
+                Version = Version
+            };
 
+            var request = new RestRequest()
+                .AddJsonBody(reqBody)
+                .AddHeader("Token", "chaoshilisaohuo");
 
+            var response = await clientcv.ExecutePostAsync(request);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                respContent.IsSuccess = true;
+                respContent.Content = response.Content;
+            }
+            else
+            {
+                var respError = JsonHelper.JsonDese<RespError>(response.Content);
+                respContent.Content = $"{respError.error.code} {respError.error.message}";
+            }
+        }
+        catch (Exception ex)
+        {
+            respContent.Content = ex.Message;
+        }
 
+        sw.Stop();
+        respContent.ExecTime = sw.Elapsed.TotalSeconds;
 
+        return respContent;
 
-
-
-
-
-
-
-
-
-
-
+    }
 
 
     public static async Task<RespContent> QueryToggleTeambeForeKick(string gameId,string PersonaId)

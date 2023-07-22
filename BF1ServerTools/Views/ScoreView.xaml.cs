@@ -114,6 +114,7 @@ public partial class ScoreView : UserControl
             //////////////////////////////// 服务器数据整理 ////////////////////////////////
 
             ScoreModel.ServerName = _serverData.Name;
+            Globals.ServerName = _serverData.Name;
             ScoreModel.ServerTime = PlayerUtil.SecondsToMMSS(_serverData.Time);
 
             ScoreModel.ServerMapName = ClientHelper.GetMapChsName(_serverData.MapName);

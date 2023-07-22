@@ -468,11 +468,11 @@ public static class PlayerUtil
             return false;
         }
 
-        if (!Globals.LoginPlayerIsAdmin)
+/*        if (!Globals.LoginPlayerIsAdmin)
         {
             NotifierHelper.Show(NotifierType.Warning, $"玩家 {Globals.DisplayName} 不是当前服务器的管理员");
             return false;
-        }
+        }*/
 
         return true;
     }
@@ -494,13 +494,11 @@ public static class PlayerUtil
             NotifierHelper.Show(NotifierType.Warning, "请先获取玩家SessionId后，再执行本操作");
             return false;
         }
-
-        if (!Globals.LoginPlayerIsAdmin)
+        /*        if (!Globals.LoginPlayerIsAdmin)
         {
             NotifierHelper.Show(NotifierType.Warning, $"玩家 {Globals.DisplayName} 不是当前服务器的管理员");
             return false;
-        }
-
+        }*/
         if (Globals.ServerId == 0)
         {
             NotifierHelper.Show(NotifierType.Warning, "ServerId为空，请重新获取服务器详细信息");

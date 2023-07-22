@@ -334,6 +334,16 @@ public static class Globals
     public static bool OffileModeSet = false;
 
     public static long TempGameId = 0;
+
+    public static int previousSelectedIndex = -1;
+
+    public static bool IsBoot = false;
+
+    public static string Version = "3.0.2.3";
+
+    public static string ServerName = string.Empty;
+
+    public static bool NeedUpdate = false;
     /*    /// <summary>
         /// 使用云功能
         /// </summary>

@@ -61,4 +61,16 @@ public partial class MainModel : ObservableObject
     /// </summary>
     [ObservableProperty]
     private string ifOnlinEng;
+
+    /// <summary>
+    /// 是否需要更新chi
+    /// </summary>
+    [ObservableProperty]
+    private string ifNeedUpdateChi;
+
+    /// <summary>
+    /// 是否需要更新eng
+    /// </summary>
+    [ObservableProperty]
+    private string ifNeedUpdateEng;
 }

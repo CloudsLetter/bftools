@@ -89,7 +89,7 @@ public partial class MainWindow
         Origin_DateTime = DateTime.Now;
 
         ////////////////////////////////////////////
-
+        CheckVersion();
         new Thread(MainWinUpdateThread)
         {
             Name = "MainWinUpdateThread",
@@ -160,11 +160,39 @@ public partial class MainWindow
                 MainModel.IfOnlineChi = "离线模式";
                 MainModel.IfOnlinEng = "offline";
             }
-
             Thread.Sleep(1000);
         }
     }
 
+    private async void CheckVersion (){
+        
+        var result = await CloudApi.CheckVersion(Version: Globals.Version);
+        if (!result.IsSuccess)
+        {
+            Globals.NeedUpdate = false;
+        }
+        else
+        {
+            if (result.Content == "true")
+            {
+                Globals.NeedUpdate = true;
+            }
+            else
+            {
+                Globals.NeedUpdate = false;
+            }
+        }
+        if (Globals.NeedUpdate)
+        {
+            MainModel.IfNeedUpdateChi = "需要更新";
+            MainModel.IfNeedUpdateEng = "true";
+        }
+        else
+        {
+            MainModel.IfNeedUpdateChi = "无需更新";
+            MainModel.IfNeedUpdateEng = "false";
+        }
+    }
     /// <summary>
     /// View页面导航
     /// </summary>

@@ -53,7 +53,7 @@ public static class CloudUtil
             });
             if (Globals.IsCloudMode)
             {
-                _ = CloudApi.KickHIstory(Operator: Globals.PersonaId.ToString(), KickedOutPlayerRank: info.Rank.ToString(), KickedOutPlayerName: info.Name, KickedOutPersonaId: info.PersonaId.ToString(), Reason: "BFTools: 禁止跳邊", State: info.State, ServerId: Globals.ServerId.ToString(), Guid: Globals.PersistedGameId, GameId: Globals.GameId.ToString(), Type: "AutoKickToggle");
+                _ = CloudApi.KickHIstory(Operator: Globals.PersonaId.ToString(), KickedOutPlayerRank: info.Rank.ToString(), KickedOutPlayerName: info.Name, KickedOutPersonaId: info.PersonaId.ToString(), Reason: "BFTools: 禁止跳邊", State: info.State, ServerId: Globals.ServerId.ToString(), Guid: Globals.PersistedGameId, GameId: Globals.GameId.ToString(), Type: "AutoKickToggle", ServerName: Globals.ServerName);
 
             }
 
@@ -86,12 +86,12 @@ public static class CloudUtil
             var result = await BF1API.RSPMovePlayer(Globals.SessionId, Globals.GameId, info.PersonaId, info.To);
             if (result.IsSuccess)
             {
-                info.State = $"将 等级:{info.Rank} 名称: {info.Name}切换回原有队伍成功";
+                info.State = $"将{info.Name}更换回原有队伍成功";
 
             }
             else
             {
-                info.State = $"将 等级:{info.Rank} 名称: {info.Name}切换回原有队伍失败";
+                info.State = $"将{info.Name}更换回原有队伍失败";
 
             }
             if (Globals.IsCloudMode)
@@ -128,7 +128,7 @@ public static class CloudUtil
             LogView.ActionAddChangeTeamInfoLog(info);
             if (Globals.IsCloudMode)
             {
-                var _ = CloudApi.PushToggleHistory(PlayerRank: info.Rank.ToString(), PlayerName: info.Name, PersonaId: info.PersonaId.ToString(), GameMode: info.GameMode, MapName: info.MapName, Team1Name: info.Team1Name, Team2Name: info.Team2Name, State: info.State, ServerId: Globals.ServerId.ToString(), Guid: Globals.PersistedGameId, GameId: Globals.GameId.ToString());
+                var _ = CloudApi.PushToggleHistory(PlayerRank: info.Rank.ToString(), PlayerName: info.Name, PersonaId: info.PersonaId.ToString(), GameMode: info.GameMode, MapName: info.MapName, Team1Name: info.Team1Name, Team2Name: info.Team2Name, State: info.State, ServerId: Globals.ServerId.ToString(), Guid: Globals.PersistedGameId, GameId: Globals.GameId.ToString(), ServerName: Globals.ServerName);
             }
 
         }

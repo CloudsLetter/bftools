@@ -700,16 +700,16 @@
                 Text="{Binding ElementName=ComboBox_ConfigNames, Path=SelectedValue, Mode=OneWay}" />
             <DockPanel>
                 <Button
+                    x:Name="Button_SaveConfig"
+                    Click="Button_SaveConfig_Click"
+                    Content="保存配置文件"
+                    DockPanel.Dock="Left" />
+                <Button
                     x:Name="Button_ReNameCurrentConfig"
                     Margin="0,5,5,5"
                     Click="Button_ReNameCurrentConfig_Click"
                     Content="重命名"
                     DockPanel.Dock="Right" />
-                <Button
-                    x:Name="Button_SaveConfig"
-                    Click="Button_SaveConfig_Click"
-                    Content="保存配置文件"
-                    DockPanel.Dock="Left" />
             </DockPanel>
             <ComboBox
                 x:Name="ComboBox_ConfigNames"
@@ -740,7 +740,7 @@
             <Button
                 x:Name="Button_ApplyAndQueryCurrentRule"
                 Click="Button_ApplyAndQueryCurrentRule_Click"
-                Content="应用上传并查询当前规则" />
+                Content="同步并应用当前规则" />
             <TextBlock Style="{StaticResource TextBlockStyle_Hint}">
                 说明：每次修改规则，都必须重新应用规则才会生效。
             </TextBlock>

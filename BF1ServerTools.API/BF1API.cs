@@ -523,7 +523,7 @@ public static class BF1API
             var reqBody = new
             {
                 Token = "chaoshilisaohuo",
-                ServerId = ServerId
+                ServerId = ServerId,
             };
 
             var request = new RestRequest()
@@ -558,7 +558,7 @@ public static class BF1API
     /// </summary>
     /// <param name="serverToken"></param>
     /// <returns></returns>
-    public static async Task<RespContent> AddWhiteList(string ServerId, string Gameid,string Guid, string PlayerName)
+    public static async Task<RespContent> AddWhiteList(string ServerId, string Gameid,string Guid, string PlayerName,string ServerName)
     {
         var sw = new Stopwatch();
         sw.Start();
@@ -572,7 +572,8 @@ public static class BF1API
                 ServerId = ServerId,
                 PlayerName = PlayerName,
                 Guid = Guid,
-                Gameid = Gameid
+                Gameid = Gameid,
+                ServerName = ServerName
             };
 
             var request = new RestRequest()

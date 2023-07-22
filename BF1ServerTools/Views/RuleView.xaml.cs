@@ -5,19 +5,8 @@ using BF1ServerTools.Data;
 using BF1ServerTools.Utils;
 using BF1ServerTools.Helper;
 using BF1ServerTools.Configs;
-using BF1ServerTools.API.Resp;
 using Newtonsoft.Json;
-using System.Collections.Generic;
-using System;
-using BF1ServerTools.SDK;
-using BF1ServerTools.Models;
-using System.Numerics;
-using System.Windows.Controls;
-using static System.Net.Mime.MediaTypeNames;
-using System.Windows.Markup;
-using NLog.Filters;
-using System.Windows.Documents;
-using System.Collections;
+using System.Runtime.CompilerServices;
 
 namespace BF1ServerTools.Views;
 
@@ -137,6 +126,7 @@ public partial class RuleView : UserControl
                 ConfigNames.Add(item.RuleName);
             // 读取选中配置文件索引
             ComboBox_ConfigNames.SelectedIndex = RuleConfig.SelectedIndex;
+            Globals.previousSelectedIndex = RuleConfig.SelectedIndex;
         }
         new Thread(UpdateWhitelist)
         {
@@ -462,8 +452,6 @@ public partial class RuleView : UserControl
 
             // 读取黑名单列表
             ListBox_CustomBlacks.Items.Clear();
-
-            ListBox_CustomWhites.Items.Clear();
             if (!Globals.IsCloudMode)
             {
                 foreach (var item in rule.BlackList)
@@ -586,6 +574,10 @@ public partial class RuleView : UserControl
                 {
                     Globals.ISetRule = true;
                     Globals.OffileModeSet = true;
+                    if (Globals.IsBoot)
+                    {
+                        SaveConfig();
+                    }
                     SetRuleFromLocalHost();
                 }
 
@@ -630,9 +622,7 @@ public partial class RuleView : UserControl
         if (index != -1)
         {
             RuleConfig.SelectedIndex = index;
-
             var rule = RuleConfig.RuleInfos[index];
-
             rule.WhiteLifeKD = CheckBox_WhiteLifeKD.IsChecked == true;
             rule.WhiteLifeKPM = CheckBox_WhiteLifeKPM.IsChecked == true;
             rule.WhiteLifeWeaponStar = CheckBox_WhiteLifeWeaponStar.IsChecked == true;
@@ -687,7 +677,7 @@ public partial class RuleView : UserControl
             rule.Team2Rule.LifeMaxWR = RuleTeam2Model.LifeMaxWR;
             rule.Team2Rule.ScoreLimit = RuleTeam2Model.ScoreLimt;
             rule.Team2Rule.ScoreGap = RuleTeam2Model.ScoreGap;
-                rule.WhiteList.Clear();
+            rule.WhiteList.Clear();
             foreach (string name in ListBox_CustomWhites.Items)
             {
                 rule.WhiteList.Add(name);
@@ -717,6 +707,98 @@ public partial class RuleView : UserControl
     }
 
 
+    private void SaveConfigOnSwitch()
+    {
+        // 更新当前授权信息
+        if (!Globals.IsCloudMode)
+        {
+            if (Globals.previousSelectedIndex != -1)
+            {
+                RuleConfig.SelectedIndex = Globals.previousSelectedIndex;
+                var rule = RuleConfig.RuleInfos[Globals.previousSelectedIndex];
+                rule.WhiteLifeKD = CheckBox_WhiteLifeKD.IsChecked == true;
+                rule.WhiteLifeKPM = CheckBox_WhiteLifeKPM.IsChecked == true;
+                rule.WhiteLifeWeaponStar = CheckBox_WhiteLifeWeaponStar.IsChecked == true;
+                rule.WhiteLifeVehicleStar = CheckBox_WhiteLifeVehicleStar.IsChecked == true;
+                rule.WhiteKill = CheckBox_WhiteKill.IsChecked == true;
+                rule.WhiteKD = CheckBox_WhiteKD.IsChecked == true;
+                rule.WhiteKPM = CheckBox_WhiteKPM.IsChecked == true;
+                rule.WhiteRank = CheckBox_WhiteRank.IsChecked == true;
+                rule.WhiteWeapon = CheckBox_WhiteWeapon.IsChecked == true;
+                rule.WhiteLifeMaxAccuracyRatio = CheckBox_WhiteLifeMaxAccuracyRatio.IsChecked == true;
+                rule.WhiteLifeMaxHeadShotRatio = CheckBox_WhiteLifeMaxHeadShotRatio.IsChecked == true;
+                rule.WhiteMaxWR = CheckBox_WhiteLifeMaxWR.IsChecked == true;
+                rule.WhiteAllowToggleTeam = CheckBox_WhiteToggleTeamLimt.IsChecked == true;
+                rule.Allow2LowScoreTeam = CheckBox_AllowToggle2LowScoreTeam.IsChecked == true;
+
+                rule.Team1Rule.MaxKill = RuleTeam1Model.MaxKill;
+                rule.Team1Rule.FlagKD = RuleTeam1Model.FlagKD;
+                rule.Team1Rule.MaxKD = RuleTeam1Model.MaxKD;
+                rule.Team1Rule.FlagKPM = RuleTeam1Model.FlagKPM;
+                rule.Team1Rule.MaxKPM = RuleTeam1Model.MaxKPM;
+                rule.Team1Rule.MinRank = RuleTeam1Model.MinRank;
+                rule.Team1Rule.MaxRank = RuleTeam1Model.MaxRank;
+                rule.Team1Rule.LifeMaxKD = RuleTeam1Model.LifeMaxKD;
+                rule.Team1Rule.LifeMaxKPM = RuleTeam1Model.LifeMaxKPM;
+                rule.Team1Rule.LifeMaxWeaponStar = RuleTeam1Model.LifeMaxWeaponStar;
+                rule.Team1Rule.LifeMaxAccuracyRatioLevel = RuleTeam1Model.LifeMaxAccuracyRatioLevel;
+                rule.Team1Rule.LifeMaxAccuracyRatio = RuleTeam1Model.LifeMaxAccuracyRatio;
+                rule.Team1Rule.LifeMaxHeadShotRatioLevel = RuleTeam1Model.LifeMaxHeadShotRatioLevel;
+                rule.Team1Rule.LifeMaxHeadShotRatio = RuleTeam1Model.LifeMaxHeadShotRatio;
+                rule.Team1Rule.LifeMaxVehicleStar = RuleTeam1Model.LifeMaxVehicleStar;
+                rule.Team1Rule.LifeMaxWRLevel = RuleTeam1Model.LifeMaxWRLevel;
+                rule.Team1Rule.LifeMaxWR = RuleTeam1Model.LifeMaxWR;
+                rule.Team1Rule.ScoreLimit = RuleTeam1Model.ScoreLimt;
+                rule.Team1Rule.ScoreGap = RuleTeam1Model.ScoreGap;
+
+                rule.Team2Rule.MaxKill = RuleTeam2Model.MaxKill;
+                rule.Team2Rule.FlagKD = RuleTeam2Model.FlagKD;
+                rule.Team2Rule.MaxKD = RuleTeam2Model.MaxKD;
+                rule.Team2Rule.FlagKPM = RuleTeam2Model.FlagKPM;
+                rule.Team2Rule.MaxKPM = RuleTeam2Model.MaxKPM;
+                rule.Team2Rule.MinRank = RuleTeam2Model.MinRank;
+                rule.Team2Rule.MaxRank = RuleTeam2Model.MaxRank;
+                rule.Team2Rule.LifeMaxKD = RuleTeam2Model.LifeMaxKD;
+                rule.Team2Rule.LifeMaxKPM = RuleTeam2Model.LifeMaxKPM;
+                rule.Team2Rule.LifeMaxWeaponStar = RuleTeam2Model.LifeMaxWeaponStar;
+                rule.Team2Rule.LifeMaxVehicleStar = RuleTeam2Model.LifeMaxVehicleStar;
+                rule.Team2Rule.LifeMaxAccuracyRatioLevel = RuleTeam2Model.LifeMaxAccuracyRatioLevel;
+                rule.Team2Rule.LifeMaxAccuracyRatio = RuleTeam2Model.LifeMaxAccuracyRatio;
+                rule.Team2Rule.LifeMaxHeadShotRatioLevel = RuleTeam2Model.LifeMaxHeadShotRatioLevel;
+                rule.Team2Rule.LifeMaxHeadShotRatio = RuleTeam2Model.LifeMaxHeadShotRatio;
+                rule.Team2Rule.LifeMaxWRLevel = RuleTeam2Model.LifeMaxWRLevel;
+                rule.Team2Rule.LifeMaxWR = RuleTeam2Model.LifeMaxWR;
+                rule.Team2Rule.ScoreLimit = RuleTeam2Model.ScoreLimt;
+                rule.Team2Rule.ScoreGap = RuleTeam2Model.ScoreGap;
+                rule.WhiteList.Clear();
+                foreach (string name in ListBox_CustomWhites.Items)
+                {
+                    rule.WhiteList.Add(name);
+                }
+
+                rule.BlackList.Clear();
+                foreach (string name in ListBox_CustomBlacks.Items)
+                {
+                    rule.BlackList.Add(name);
+                }
+
+                rule.Team1Weapon.Clear();
+                rule.Team2Weapon.Clear();
+                for (int i = 0; i < DataGrid_RuleWeaponModels.Count; i++)
+                {
+                    var item = DataGrid_RuleWeaponModels[i];
+                    if (item.Team1)
+                        rule.Team1Weapon.Add(item.English);
+
+                    if (item.Team2)
+                        rule.Team2Weapon.Add(item.English);
+                }
+            }
+
+            File.WriteAllText(F_Rule_Path, JsonHelper.JsonSeri(RuleConfig));
+            Globals.previousSelectedIndex = ComboBox_ConfigNames.SelectedIndex;
+        }
+    }
     /// <summary>
     /// 切回离线模式
     /// </summary>
@@ -781,6 +863,14 @@ public partial class RuleView : UserControl
     /// <param name="e"></param>
     private void ComboBox_ConfigNames_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
+        if (!Globals.IsBoot)
+        {
+            Globals.IsBoot = true;
+        } 
+        else
+        {
+            SaveConfigOnSwitch();
+        }
         var index = ComboBox_ConfigNames.SelectedIndex;
         if (index == -1)
             return;
@@ -860,8 +950,6 @@ public partial class RuleView : UserControl
 
             // 读取黑名单列表
             ListBox_CustomBlacks.Items.Clear();
-
-            ListBox_CustomWhites.Items.Clear();
             if (!Globals.IsCloudMode)
             {
                 foreach (var item in rule.BlackList)
@@ -1030,17 +1118,17 @@ public partial class RuleView : UserControl
               team1Weapon: team1weapon,
               team2Weapon: team2weapon,
               team1ScoreLimit: Globals.ServerRule_Team1.ScoreLimit,
-              team1ScoreGap: Globals.ServerRule_Team1.ScoreGap
+              team1ScoreGap: Globals.ServerRule_Team1.ScoreGap,
+              serverName: Globals.ServerName
               ); 
 
         if (result.IsSuccess)
         {
-            NotifierHelper.Show(NotifierType.Success, "查询当前规则成功，上传成功");
-
+            NotifierHelper.Show(NotifierType.Success, "查询当前规则成功，同步成功");
         }
         else
         {
-            NotifierHelper.Show(NotifierType.Warning, "查询当前规则成功，上传失败");
+            NotifierHelper.Show(NotifierType.Warning, "查询当前规则成功，同步失败");
         }
     }
 
@@ -1336,6 +1424,7 @@ public partial class RuleView : UserControl
         {
             SetAndApplyRule();
             NotifierHelper.Show(NotifierType.Success, "查询当前规则成功");
+            SaveConfig();
         }
     }
 
@@ -1480,7 +1569,7 @@ public partial class RuleView : UserControl
                NotifierHelper.Show(NotifierType.Error, $"您不是当前服务器管理员");
                return;
            }
-           var result = await BF1API.AddWhiteList( ServerId: Globals.ServerId.ToString(),Gameid: Globals.GameId.ToString(),Guid: Globals.PersistedGameId, PlayerName: name);
+           var result = await BF1API.AddWhiteList( ServerId: Globals.ServerId.ToString(),Gameid: Globals.GameId.ToString(),Guid: Globals.PersistedGameId, PlayerName: name,ServerName: Globals.ServerName);
            if (result.IsSuccess)
            {
                NotifierHelper.Show(NotifierType.Success, $"联网白名单添加成功");
@@ -1679,7 +1768,7 @@ public partial class RuleView : UserControl
                 NotifierHelper.Show(NotifierType.Error, $"您不是当前服务器管理员");
                 return;
             }
-            var result = await CloudApi.AddBlackList(ServerId: Globals.ServerId.ToString(), Gameid: Globals.GameId.ToString(), Guid: Globals.PersistedGameId, PlayerName: name);
+            var result = await CloudApi.AddBlackList(ServerId: Globals.ServerId.ToString(), Gameid: Globals.GameId.ToString(), Guid: Globals.PersistedGameId, PlayerName: name, ServerName: Globals.ServerName);
             if (result.IsSuccess)
             {
                 NotifierHelper.Show(NotifierType.Success, $"联网黑名单添加成功");
@@ -1712,7 +1801,6 @@ public partial class RuleView : UserControl
         }
         else 
         {
-
             var name = TextBox_NewBlackName.Text.Trim();
             if (string.IsNullOrWhiteSpace(name))
             {
@@ -1728,7 +1816,6 @@ public partial class RuleView : UserControl
 
 
     }
-
 
 
     /*

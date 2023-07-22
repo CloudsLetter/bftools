@@ -64,6 +64,11 @@ public partial class MonitView : UserControl
     private const int CacheTime = 30;
 
     /// <summary>
+    /// 自定义踢出玩家CD限制
+    /// </summary>
+    public int KickTime { get; set; } = 10;
+
+    /// <summary>
     /// 生涯数据缓存
     /// </summary>
     private string F_LifeCache_Path = FileUtil.D_Data_Path + @"\LifeCache.json";
@@ -116,6 +121,14 @@ public partial class MonitView : UserControl
         File.WriteAllText(F_LifeCache_Path, JsonHelper.JsonSeri(Globals.LifePlayerCacheDatas));
     }
 
+    private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+    {
+        if (!char.IsDigit(e.Text[0]))
+        {
+            e.Handled = true; // 阻止非数字字符的输入
+        }
+    }
+
     /// <summary>
     /// 缓存玩家生涯数据
     /// </summary>
@@ -140,7 +153,7 @@ public partial class MonitView : UserControl
             // 移除踢人缓存CD超时玩家
             for (int i = Globals.KickCoolDownInfos.Count - 1; i >= 0; i--)
             {
-                if (MiscUtil.DiffMinutes(Globals.KickCoolDownInfos[i].Date, DateTime.Now) > CacheTime)
+                if (MiscUtil.DiffMinutes(Globals.KickCoolDownInfos[i].Date, DateTime.Now) > KickTime)
                 {
                     Globals.KickCoolDownInfos.RemoveAt(i);
                 }
@@ -319,7 +332,7 @@ public partial class MonitView : UserControl
                 {
                     if (item.PersonaId == Globals.KickCoolDownInfos[i].PersonaId)
                     {
-                        AddBreakRulePlayerInfo(item, BreakType.CD, "Server Kick CD 30 Minute");
+                        AddBreakRulePlayerInfo(item, BreakType.CD, $"Server Kick CD {KickTime} Minute");
                     }
                 }
 
@@ -543,7 +556,7 @@ public partial class MonitView : UserControl
                 }
             }
             //重开分数限制
-            if (Globals.ServerRule_Team1.ScoreLimit != 0 && Globals.ServerRule_Team1.ScoreGap != 0 && Globals.Team1Score !=0 && Globals.Team2Score != 0 && Globals.IsSetRuleOK && Globals.CurrentMapMode != "行动模式")
+            if (Globals.ServerRule_Team1.ScoreLimit != 0 && Globals.ServerRule_Team1.ScoreGap != 0 && Globals.Team1Score !=0 && Globals.Team2Score != 0 && Globals.IsSetRuleOK && Globals.CurrentMapMode != "行动模式" && Globals.CurrentMapMode != "战争信鸽")
             {
                 if (Globals.CurrentMapName != "索姆河" || Globals.CurrentMapName != "卡波雷托" || Globals.CurrentMapName != "泽布吕赫" || Globals.CurrentMapName != "黑尔戈兰湾")
                 {

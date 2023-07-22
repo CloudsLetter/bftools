@@ -122,7 +122,7 @@ public partial class LogView : UserControl
             });
             if (Globals.IsCloudMode)
             {
-                var _ = CloudApi.KickHIstory(Operator: Globals.PersonaId.ToString(),KickedOutPlayerRank: info.Rank.ToString(), KickedOutPlayerName: info.Name,KickedOutPersonaId: info.PersonaId.ToString(), Reason: info.Reason, State: info.State, ServerId: Globals.ServerId.ToString(), Guid: Globals.PersistedGameId,GameId: Globals.GameId.ToString(),Type: "Manual");
+                var _ = CloudApi.KickHIstory(Operator: Globals.PersonaId.ToString(),KickedOutPlayerRank: info.Rank.ToString(), KickedOutPlayerName: info.Name,KickedOutPersonaId: info.PersonaId.ToString(), Reason: info.Reason, State: info.State, ServerId: Globals.ServerId.ToString(), Guid: Globals.PersistedGameId,GameId: Globals.GameId.ToString(),Type: "Manual", ServerName: Globals.ServerName);
             }
             AddKickCDInfo(info);
         }
@@ -174,7 +174,7 @@ public partial class LogView : UserControl
             });
             if (Globals.IsCloudMode)
             {
-                var _ = CloudApi.KickHIstory(Operator: Globals.PersonaId.ToString(), KickedOutPlayerRank: info.Rank.ToString(), KickedOutPlayerName: info.Name, KickedOutPersonaId: info.PersonaId.ToString(), Reason: info.Reason, State: info.State, ServerId: Globals.ServerId.ToString(), Guid: Globals.PersistedGameId, GameId: Globals.GameId.ToString(), Type: "Success");
+                var _ = CloudApi.KickHIstory(Operator: Globals.PersonaId.ToString(), KickedOutPlayerRank: info.Rank.ToString(), KickedOutPlayerName: info.Name, KickedOutPersonaId: info.PersonaId.ToString(), Reason: info.Reason, State: info.State, ServerId: Globals.ServerId.ToString(), Guid: Globals.PersistedGameId, GameId: Globals.GameId.ToString(), Type: "Success", ServerName: Globals.ServerName);
             }
             AddKickCDInfo(info);
         }
@@ -226,7 +226,7 @@ public partial class LogView : UserControl
             });
             if (Globals.IsCloudMode)
             { 
-                var _ = CloudApi.KickHIstory(Operator: Globals.PersonaId.ToString(), KickedOutPlayerRank: info.Rank.ToString(), KickedOutPlayerName: info.Name, KickedOutPersonaId: info.PersonaId.ToString(), Reason: info.Reason, State: info.State, ServerId: Globals.ServerId.ToString(), Guid: Globals.PersistedGameId, GameId: Globals.GameId.ToString(), Type: "Fail");
+                var _ = CloudApi.KickHIstory(Operator: Globals.PersonaId.ToString(), KickedOutPlayerRank: info.Rank.ToString(), KickedOutPlayerName: info.Name, KickedOutPersonaId: info.PersonaId.ToString(), Reason: info.Reason, State: info.State, ServerId: Globals.ServerId.ToString(), Guid: Globals.PersistedGameId, GameId: Globals.GameId.ToString(), Type: "Fail", ServerName: Globals.ServerName);
             }
         }
     }
@@ -279,7 +279,7 @@ public partial class LogView : UserControl
             RobotView.ActionSendChangeTeamLogToQQ(info);
             if (Globals.IsCloudMode)
             {
-            var _ = CloudApi.PushToggleHistory(PlayerRank: info.Rank.ToString(), PlayerName: info.Name, PersonaId: info.PersonaId.ToString(), GameMode: info.GameMode,MapName: info.MapName,Team1Name: info.Team1Name, Team2Name: info.Team2Name, State: info.State, ServerId: Globals.ServerId.ToString(), Guid: Globals.PersistedGameId, GameId: Globals.GameId.ToString());
+            var _ = CloudApi.PushToggleHistory(PlayerRank: info.Rank.ToString(), PlayerName: info.Name, PersonaId: info.PersonaId.ToString(), GameMode: info.GameMode,MapName: info.MapName,Team1Name: info.Team1Name, Team2Name: info.Team2Name, State: info.State, ServerId: Globals.ServerId.ToString(), Guid: Globals.PersistedGameId, GameId: Globals.GameId.ToString(), ServerName: Globals.ServerName);
             }
         }
 
