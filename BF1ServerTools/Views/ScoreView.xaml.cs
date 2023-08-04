@@ -228,7 +228,12 @@ public partial class ScoreView : UserControl
                         data.GameId = Globals.GameId;
                         data.Guid = Globals.PersistedGameId;
                     }
-                
+                    foreach (var data in PlayerList_Team2)
+                    {
+                        data.ServerId = Globals.ServerId;
+                        data.GameId = Globals.GameId;
+                        data.Guid = Globals.PersistedGameId;
+                    }
                     var _ = await CloudApi.PushPlayGamingData(PlayerList_Team1);
                     var _r = await CloudApi.PushPlayGamingData(PlayerList_Team2);
                 }

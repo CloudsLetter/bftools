@@ -339,11 +339,15 @@ public static class Globals
 
     public static bool IsBoot = false;
 
-    public static string Version = "3.0.2.3";
+    public static string Version = "3.0.2.4";
 
     public static string ServerName = string.Empty;
 
     public static bool NeedUpdate = false;
+
+    public static bool AllowAutoChangeMap = true;
+
+    public static List<string> WaitList = new();
     /*    /// <summary>
         /// 使用云功能
         /// </summary>

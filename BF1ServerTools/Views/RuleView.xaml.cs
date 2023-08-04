@@ -558,6 +558,10 @@ public partial class RuleView : UserControl
                     {
                         Globals.SystemAutoBalance = false;
                     }
+                    if (!Globals.AllowAutoChangeMap)
+                    {
+                        Globals.AllowAutoChangeMap = true;
+                    }
                 }
             }
             else
@@ -574,10 +578,6 @@ public partial class RuleView : UserControl
                 {
                     Globals.ISetRule = true;
                     Globals.OffileModeSet = true;
-                    if (Globals.IsBoot)
-                    {
-                        SaveConfig();
-                    }
                     SetRuleFromLocalHost();
                 }
 
@@ -705,7 +705,6 @@ public partial class RuleView : UserControl
         File.WriteAllText(F_Rule_Path, JsonHelper.JsonSeri(RuleConfig));
         }
     }
-
 
     private void SaveConfigOnSwitch()
     {
