@@ -211,6 +211,7 @@ public partial class RuleView : UserControl
 
     private async Task<bool> SetRuleFromCloud()
     {
+        Globals.IsRefreshRule = true;
         var result = await BF1API.RefreshWhiteList(ServerId: Globals.ServerId.ToString());
         if (result.IsSuccess)
         {
@@ -238,9 +239,14 @@ public partial class RuleView : UserControl
                     )
                 );
             }
+            Globals.IsRefreshRule = false;
+            NotifierHelper.Show(NotifierType.Success, "获取数据成功");
         }
         else
         {
+            Globals.IsRefreshRule = false;
+            NotifierHelper.Show(NotifierType.Success, "获取数据失败,请检查网络问题");
+
             return false;
         }
 
@@ -1127,7 +1133,7 @@ public partial class RuleView : UserControl
         }
         else
         {
-            NotifierHelper.Show(NotifierType.Warning, "查询当前规则成功，同步失败");
+            NotifierHelper.Show(NotifierType.Warning, "查询当前规则失败，同步失败");
         }
     }
 
@@ -1144,7 +1150,6 @@ public partial class RuleView : UserControl
         {
 
 
-
         if (Globals.ServerId != 0)
         {
             if (Globals.LoginPlayerIsAdmin)
@@ -1152,12 +1157,12 @@ public partial class RuleView : UserControl
                    bool ok = await SetRuleFromCloud();
                     if (ok)
                     {
-                        NotifierHelper.Show(NotifierType.Success, "刷新成功");
-                    }
+/*                        NotifierHelper.Show(NotifierType.Success, "刷新成功");
+*/                    }
                     else
                     {
-                        NotifierHelper.Show(NotifierType.Error, "刷新失败，请检查服务端或客户端网络问题");
-                    }
+/*                        NotifierHelper.Show(NotifierType.Error, "刷新失败，请检查服务端或客户端网络问题");
+*/                    }
 
                 }
                 else
@@ -1397,6 +1402,11 @@ public partial class RuleView : UserControl
     /// <param name="e"></param>
     private void Button_ApplyAndQueryCurrentRule_Click(object sender, RoutedEventArgs e)
     {
+        if (Globals.IsRefreshRule)
+        {
+            NotifierHelper.Show(NotifierType.Warning, "正在获取规则，请稍后再试");
+            return;
+        }
         ClearRuleLog();
         if (Globals.IsCloudMode)
         {

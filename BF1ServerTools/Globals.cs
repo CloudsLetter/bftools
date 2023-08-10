@@ -347,7 +347,15 @@ public static class Globals
 
     public static bool AllowAutoChangeMap = true;
 
-    public static List<string> WaitList = new();
+    public static List<string> Team1WaitList = new();
+
+    public static List<string> Team2WaitList = new();
+
+    public static int Team1Count = 0;
+
+    public static int Team2Count = 0;
+
+    public static bool IsRefreshRule = false;
     /*    /// <summary>
         /// 使用云功能
         /// </summary>

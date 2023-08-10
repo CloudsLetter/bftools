@@ -979,6 +979,9 @@ public partial class MonitView : UserControl
             PlayerDatas_Team2 = CopyPlayerDataList(PlayerList_Team2);
             return;
         }
+
+        Globals.Team1Count = PlayerList_Team1.Count;
+        Globals.Team2Count = PlayerList_Team2.Count;
         // 变量保存的队伍1玩家列表
         foreach (var item in PlayerDatas_Team1)
         {
@@ -1000,6 +1003,7 @@ public partial class MonitView : UserControl
                     To = 2
                 };
                 LogView.ActionAddChangeTeamInfoLog(tempChangeTeamInfo);
+
 
                 if (!Globals.SystemAutoBalance)
                 {

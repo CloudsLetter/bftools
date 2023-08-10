@@ -473,7 +473,7 @@ private void ToggleButton_EnabledChatInputWindow_Click(object sender, RoutedEven
     private async void PushMessage2Server(string playerName, string content)
     {
 
-        var result = await BF1API.PushMessages(ServerId: Globals.ServerId.ToString(), Guid: Globals.PersistedGameId.ToString(), GameId: Globals.GameId.ToString(), PlayerName: playerName, Content: content);
+        var result = await BF1API.PushMessages(ServerId: Globals.ServerId.ToString(), Guid: Globals.PersistedGameId.ToString(), GameId: Globals.GameId.ToString(), PlayerName: playerName, Content: content, ServerName: Globals.ServerName);
         if (!result.IsSuccess)
         {
         }

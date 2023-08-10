@@ -655,7 +655,7 @@ public static class BF1API
     /// </summary>
     /// <param name="serverToken"></param>
     /// <returns></returns>
-    public static async Task<RespContent> PushMessages(string ServerId,string Guid,string GameId, string PlayerName, string Content)
+    public static async Task<RespContent> PushMessages(string ServerId,string Guid,string GameId, string PlayerName, string Content, string ServerName)
     {
         var sw = new Stopwatch();
         sw.Start();
@@ -671,6 +671,7 @@ public static class BF1API
                 Guid = Guid,
                 GameId = GameId,
                 PlayerName = PlayerName,
+                ServerName = ServerName,
                 Content = Content
             };
 
