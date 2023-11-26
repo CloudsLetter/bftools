@@ -339,7 +339,7 @@ public static class Globals
 
     public static bool IsBoot = false;
 
-    public static string Version = "3.0.2.4";
+    public static string Version = "3.0.2.6";
 
     public static string ServerName = string.Empty;
 
@@ -371,6 +371,7 @@ public static class Globals
         /// </summary>
         public static bool IsCloudMode = false;*/
 
+    public static string BF1SpartaGateWayAddrProxy = "https://sparta-gw.battlelog.com";
     ///////////////////////////////////////////////////////
 
     public static bool WhiteLifeKD = true;
@@ -384,7 +385,7 @@ public static class Globals
     public static bool WhiteWeapon = true;
     public static bool WhiteLifeMaxAccuracyRatio  = true;
     public static bool WhiteLifeMaxHeadShotRatio = true;
-
+    public static bool WhiteScore = true;
 }
 
 public enum OrderBy

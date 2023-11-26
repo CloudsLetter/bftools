@@ -21,6 +21,7 @@ public class RuleConfig
         public bool WhiteLifeMaxHeadShotRatio { get; set; }
         public bool WhiteMaxWR { get; set; }
         public bool WhiteAllowToggleTeam { get; set; }
+        public bool WhiteScore { get; set; }
         public Rule Team1Rule { get; set; }
         public Rule Team2Rule { get; set; }
         public List<string> Team1Weapon { get; set; }
@@ -48,6 +49,11 @@ public class RuleConfig
             public int LifeMaxVehicleStar { get; set; }
             public int ScoreLimit { get; set; }
             public int ScoreGap { get; set; }
+            public int MaxScore { get; set; }
+            public int FlagKDPro { get; set; }
+            public float MaxKDPro { get; set; }
+            public int FlagKPMPro { get; set; }
+            public float MaxKPMPro { get; set; }
         }
     }
 }

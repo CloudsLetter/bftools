@@ -484,6 +484,35 @@ public partial class MonitView : UserControl
             playerData.Rank = -1;
             AddBreakRulePlayerInfo(playerData, BreakType.Spectator, "Server BAN Spectator");
         }
+        //重开分数限制 待优化
+        if (Globals.ServerRule_Team1.ScoreLimit != 0 && Globals.ServerRule_Team1.ScoreGap != 0 && Globals.Team1Score != 0 && Globals.Team2Score != 0 && Globals.IsSetRuleOK && Globals.CurrentMapMode != "行动模式" && Globals.CurrentMapMode != "战争信鸽" && Globals.AllowAutoChangeMap)
+        {
+            if (Globals.CurrentMapName != "索姆河" || Globals.CurrentMapName != "卡波雷托" || Globals.CurrentMapName != "泽布吕赫" || Globals.CurrentMapName != "黑尔戈兰湾")
+            {
+                double scoreLimit = (double)Globals.ServerRule_Team1.ScoreLimit / Globals.TeamMaxScore;
+
+                double scoreGap = (double)Globals.ServerRule_Team1.ScoreGap / Globals.TeamMaxScore;
+
+                int newScoreLimit = (int)(Globals.TeamMaxScore * scoreLimit);
+
+                int newscoreGap = (int)(Globals.TeamMaxScore * scoreGap);
+
+                if (Globals.Team1Score + Globals.Team2Score <= newScoreLimit)
+                {
+                    if (Globals.Team1Score - Globals.Team2Score >= newscoreGap)
+                    {
+                        ChangeMap();
+                        Globals.AllowAutoChangeMap = false;
+                    }
+                    if (Globals.Team2Score - Globals.Team1Score >= newscoreGap)
+                    {
+                        ChangeMap();
+                        Globals.AllowAutoChangeMap = false;
+                    }
+                }
+            }
+
+        }
     }
 
     /// <summary>
@@ -555,35 +584,7 @@ public partial class MonitView : UserControl
 
                 }
             }
-            //重开分数限制
-            if (Globals.ServerRule_Team1.ScoreLimit != 0 && Globals.ServerRule_Team1.ScoreGap != 0 && Globals.Team1Score !=0 && Globals.Team2Score != 0 && Globals.IsSetRuleOK && Globals.CurrentMapMode != "行动模式" && Globals.CurrentMapMode != "战争信鸽" && Globals.AllowAutoChangeMap)
-            {
-                if (Globals.CurrentMapName != "索姆河" || Globals.CurrentMapName != "卡波雷托" || Globals.CurrentMapName != "泽布吕赫" || Globals.CurrentMapName != "黑尔戈兰湾")
-                {
-                double scoreLimit = (double)Globals.ServerRule_Team1.ScoreLimit / Globals.TeamMaxScore;
 
-                double scoreGap = (double)Globals.ServerRule_Team1.ScoreGap / Globals.TeamMaxScore;
-
-                int newScoreLimit = (int)(Globals.TeamMaxScore * scoreLimit);
-
-                int newscoreGap = (int)(Globals.TeamMaxScore * scoreGap);
-
-                if (Globals.Team1Score + Globals.Team2Score <= newScoreLimit)
-                {
-                    if (Globals.Team1Score - Globals.Team2Score >= newscoreGap)
-                    {
-                        ChangeMap();
-                        Globals.AllowAutoChangeMap = false;
-                    }
-                    if (Globals.Team2Score - Globals.Team1Score >= newscoreGap)
-                    {
-                        ChangeMap();
-                        Globals.AllowAutoChangeMap = false;
-                        }
-                }
-                }
-
-            }
 
             var tempData = new List<string>
             {
@@ -638,9 +639,20 @@ public partial class MonitView : UserControl
             AddBreakRulePlayerInfo(playerData, BreakType.Kill, $"Kill Limit {serverRule.MaxKill:0}");
         }
 
+        bool _KDPro = false;
+        if (playerData.Rank == 150 && serverRule.FlagKDPro != 0)
+        {
+            _KDPro = true;
+        }
+
+        bool _KPMPro = false;
+        if (playerData.Rank == 150 && serverRule.FlagKPMPro != 0)
+        {
+            _KPMPro = true;
+        }
         // 计算玩家KD最低击杀数
         if (playerData.Kill > serverRule.FlagKD &&
-            serverRule.FlagKD != 0)
+            serverRule.FlagKD != 0 && !_KDPro)
         {
             // 限制玩家KD
             if (playerData.Kd > serverRule.MaxKD &&
@@ -649,10 +661,18 @@ public partial class MonitView : UserControl
                 AddBreakRulePlayerInfo(playerData, BreakType.KD, $"KD Limit {serverRule.MaxKD:0.00}");
             }
         }
+        else if (playerData.Kill > serverRule.FlagKDPro && _KDPro) 
+        {
+            if (playerData.Kd > serverRule.MaxKDPro &&
+                serverRule.MaxKDPro != 0.00f)
+            {
+                AddBreakRulePlayerInfo(playerData, BreakType.KDPro, $"Pro KD Limit {serverRule.MaxKD:0.00}");
+            }
+        }
 
         // 计算玩家KPM比条件
         if (playerData.Kill > serverRule.FlagKPM &&
-            serverRule.FlagKPM != 0)
+            serverRule.FlagKPM != 0 && !_KPMPro)
         {
             // 限制玩家KPM
             if (playerData.Kpm > serverRule.MaxKPM &&
@@ -661,7 +681,39 @@ public partial class MonitView : UserControl
                 AddBreakRulePlayerInfo(playerData, BreakType.KPM, $"KPM Limit {serverRule.MaxKPM:0.00}");
             }
         }
+        else if (playerData.Kill > serverRule.FlagKPMPro && _KPMPro)
+        {
+            if (playerData.Kpm > serverRule.MaxKPMPro &&
+                serverRule.MaxKPMPro != 0.00f)
+            {
+                AddBreakRulePlayerInfo(playerData, BreakType.KPMPro, $"Pro KPM Limit {serverRule.MaxKD:0.00}");
+            }
+        }
 
+        if (playerData.Score > serverRule.MaxScore && serverRule.MaxScore != 0)
+        {
+/*            if (playerData.TeamId == 1)
+            {
+                if (Globals.Team2PlayerCount < 64)
+                {
+
+                }
+            }
+
+            if (playerData.TeamId == 2)
+            {
+                if (Globals.Team1PlayerCount < 64)
+                {
+
+                }
+            }*/
+
+
+
+
+            AddBreakRulePlayerInfo(playerData, BreakType.Score, $"Socre Limit {serverRule.MaxScore:0.00}");
+
+        }
         // 限制玩家最低等级
         if (playerData.Rank < serverRule.MinRank &&
             serverRule.MinRank != 0 &&
@@ -1235,6 +1287,39 @@ public partial class MonitView : UserControl
                     return false;
                 }
             }
+            if (item.BreakType == BreakType.Score)
+            {
+                if (Globals.WhiteScore)
+                    continue;
+                else
+                {
+                    breakRuleInfo.Reason = item.Reason;
+                    return false;
+                }
+            }
+
+            if (item.BreakType == BreakType.KDPro)
+            {
+                if (Globals.WhiteKD)
+                    continue;
+                else
+                {
+                    breakRuleInfo.Reason = item.Reason;
+                    return false;
+                }
+            }
+
+            if (item.BreakType == BreakType.KPMPro)
+            {
+                if (Globals.WhiteKPM)
+                    continue;
+                else
+                {
+                    breakRuleInfo.Reason = item.Reason;
+                    return false;
+                }
+            }
+
         }
 
         return true;

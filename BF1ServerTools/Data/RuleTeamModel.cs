@@ -116,4 +116,32 @@ public partial class RuleTeamModel : ObservableObject
     [ObservableProperty]
     private int scoreGap;
 
+
+    /// <summary>
+    /// 最大生涯胜率
+    /// </summary>
+    [ObservableProperty]
+    private int maxScore;
+
+    /// <summary>
+    /// 最大生涯胜率
+    /// </summary>
+    [ObservableProperty]
+    private int flagKDPro;
+
+    /// <summary>
+    /// 最大生涯胜率
+    /// </summary>
+    [ObservableProperty]
+    private float maxKDPro;    
+    /// <summary>                                   
+    /// 最大生涯胜率
+    /// </summary>
+    [ObservableProperty]
+    private int flagKPMPro;   
+    /// <summary>           
+    /// 最大生涯胜率            
+    /// </summary>
+    [ObservableProperty]
+    private float maxKPMPro;
 }

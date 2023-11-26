@@ -27,4 +27,10 @@ public class ServerRule
     public float LifeMaxWR { get; set; } = 0.00f;
     public int ScoreLimit { get; set; } = 0;
     public int ScoreGap { get; set; } = 0;
+
+    public int MaxScore { get; set; }
+    public int FlagKDPro { get; set; }
+    public float MaxKDPro { get; set; }
+    public int FlagKPMPro { get; set; }
+    public float MaxKPMPro { get; set; }
 }

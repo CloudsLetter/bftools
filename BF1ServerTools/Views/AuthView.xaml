@@ -73,7 +73,7 @@
                 Content="[模式2] 需要玩家登录账号获取Cookies，支持多账号切换"
                 Foreground="#008000"
                 GroupName="Mode" />
-            <ui:UiLabelIcon Content="Cookies获取" />
+            <ui:UiLabelIcon Content="Cookies 获取" />
             <Button
                 x:Name="Button_GetPlayerCookies"
                 Click="Button_GetPlayerCookies_Click"
@@ -143,12 +143,48 @@
                     Content="正反序输出日志和聊天记录" />
         </StackPanel>
         <!--  ******************************  -->
-        <RichTextBox
+        <StackPanel            
             Grid.Column="2"
-            Margin="5"
+            >
+            <ui:UiLabelIcon Content=" Sparta Gateway 代理" />
+            <DockPanel>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                    <ui:UiTextBoxHint x:Name="EAGatewayProxyAddr" Hint="请输入Sparta Gateway代理地址"  />
+                 <Button Grid.Column="1" Width="70" Click="Button_ADD_EAGatewayProxyAddr">添加</Button>
+            </Grid>
+        </DockPanel>
+        <DockPanel>
+            <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <ComboBox x:Name="SelectdEAGatewayAddrProxy"/>
+
+                    <Button Grid.Column="1" Width="70" Click="Button_Remove_EAGatewayProxyAddr">删除</Button>
+            </Grid>
+        </DockPanel>
+            <Button Click="Button_Set_EAGatewayProxyAddr">应用</Button>
+            <RichTextBox
+                Margin="5"
             Style="{StaticResource RichTextBoxStyle_Normal}">
             <FlowDocument>
-                <Paragraph Style="{StaticResource ParagraphStyle_H18}">
+                    <Paragraph Style="{StaticResource ParagraphStyle_H18}">
+                        更新日志及使用说明
+                    </Paragraph>
+                    <Paragraph Style="{StaticResource ParagraphStyle_Content}">
+                        <Hyperlink
+                        Click="Hyperlink_Click"
+                        NavigateUri="https://blog.cloudyi.xyz/posts/modified-version-bfservertools"
+                        Style="{StaticResource HyperlinkStyle_Base}">
+                            重要: 如使该工具请点我查看注意事项以及更新日志以及服务器维护时间以及获取最新版本下载地址，注意事项一定要看！！！，不然谁会知道发生什么有趣的事情呢
+                        </Hyperlink>
+                    </Paragraph>
+                    <Paragraph Style="{StaticResource ParagraphStyle_H18}">
                     网络优化指南
                 </Paragraph>
 
@@ -203,19 +239,10 @@
                         UsbEAm Hosts Editor [多平台hosts修改] V3.63
                     </Hyperlink>
                 </Paragraph>
-                <Paragraph Style="{StaticResource ParagraphStyle_H18}">
-                    更新日志及使用说明
-                </Paragraph>
-                <Paragraph Style="{StaticResource ParagraphStyle_Content}">
-                    <Hyperlink
-                        Click="Hyperlink_Click"
-                        NavigateUri="https://blog.cloudyi.xyz/posts/modified-version-bfservertools"
-                        Style="{StaticResource HyperlinkStyle_Base}">
-                        重要: 如使该工具请点我查看注意事项以及更新日志以及服务器维护时间以及获取最新版本下载地址，否则后果自负，注意事项一定要看！！！
-                    </Hyperlink>
-                </Paragraph>
+
             </FlowDocument>
         </RichTextBox>
+        </StackPanel>
     </Grid>
 
 </UserControl>

@@ -6,6 +6,8 @@ public class AuthConfig
     public int SelectedIndex { get; set; }
     public bool ReverseOrder { get; set; }
     public List<AuthInfo> AuthInfos { get; set; }
+    public List<string> BF1SpartaGatewayProxyAddr { get; set; }
+    public string CurrentBF1SpartaGatewayProxyAddr { get; set; }
     public class AuthInfo
     {
         public string Avatar2 { get; set; }

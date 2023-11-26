@@ -23,8 +23,6 @@ public class RepsoneData
 
 public static class CloudUtil
 {
-
-
     private async static void KickPlayer(bool toggleTeam, bool IsAdmin, bool whitelistToggle, bool isToggle, ChangeTeamInfo info)
     {
         if (!toggleTeam && !IsAdmin && !whitelistToggle && !isToggle)

@@ -111,7 +111,7 @@
                             <Slider
                                 Maximum="1000"
                                 Minimum="0"
-                                Value="{Binding RuleTeam1Model.ScoreGap, Mode=TwoWay}" />     
+                                Value="{Binding RuleTeam1Model.ScoreGap, Mode=TwoWay}" />
                             <TextBlock Style="{StaticResource TextBlockStyle_Hint}">
                                 说明：设置为0代表忽略该规则
                             </TextBlock>
@@ -205,7 +205,7 @@
                                 Maximum="1000"
                                 Minimum="0"
                                 Value="{Binding RuleTeam1Model.ScoreGap, Mode=TwoWay}" />
-                            
+
                         </StackPanel>
                     </StackPanel>
                 </UniformGrid>
@@ -240,6 +240,7 @@
                                 Minimum="0"
                                 TickFrequency="0.1"
                                 Value="{Binding RuleTeam1Model.LifeMaxKPM, Mode=TwoWay}" />
+                            <TextBlock />
                             <DockPanel>
                                 <TextBlock Text="计算最高生涯命中率等级" />
                                 <TextBlock HorizontalAlignment="Right" Text="{Binding RuleTeam1Model.LifeMaxAccuracyRatioLevel, StringFormat={}{0:0}}" />
@@ -276,6 +277,8 @@
                                 Minimum="0"
                                 TickFrequency="0.1"
                                 Value="{Binding RuleTeam1Model.LifeMaxHeadShotRatio, Mode=TwoWay}" />
+                            <TextBlock />
+
                             <DockPanel>
                                 <TextBlock Text="计算最高生涯胜率等级" />
                                 <TextBlock HorizontalAlignment="Right" Text="{Binding RuleTeam1Model.LifeMaxWRLevel, StringFormat={}{0:0}}" />
@@ -340,6 +343,7 @@
                                 Minimum="0"
                                 TickFrequency="0.1"
                                 Value="{Binding RuleTeam2Model.LifeMaxKPM, Mode=TwoWay}" />
+                            <TextBlock />
                             <DockPanel>
                                 <TextBlock Text="计算最高生涯命中率等级" />
                                 <TextBlock HorizontalAlignment="Right" Text="{Binding RuleTeam2Model.LifeMaxAccuracyRatioLevel, StringFormat={}{0:0}}" />
@@ -376,6 +380,8 @@
                                 Minimum="0"
                                 TickFrequency="0.1"
                                 Value="{Binding RuleTeam2Model.LifeMaxHeadShotRatio, Mode=TwoWay}" />
+                            <TextBlock />
+
                             <DockPanel>
                                 <TextBlock Text="计算最高生涯胜率等级" />
                                 <TextBlock HorizontalAlignment="Right" Text="{Binding RuleTeam2Model.LifeMaxWRLevel, StringFormat={}{0:0}}" />
@@ -395,7 +401,7 @@
                                 TickFrequency="0.1"
                                 Value="{Binding RuleTeam2Model.LifeMaxWR, Mode=TwoWay}" />
                             <TextBlock />
-                            
+
                             <DockPanel>
                                 <TextBlock Text="最高生涯武器星数" />
                                 <TextBlock HorizontalAlignment="Right" Text="{Binding RuleTeam2Model.LifeMaxWeaponStar, StringFormat={}{0:0}}" />
@@ -419,6 +425,125 @@
                 </UniformGrid>
             </ui:UiTabItemIcon>
             <!--  **************************  -->
+            <ui:UiTabItemIcon Header="扩展规则">
+                <UniformGrid Columns="2">
+                    <UniformGrid.Resources>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="Margin" Value="5" />
+                        </Style>
+                    </UniformGrid.Resources>
+                    <StackPanel>
+                        <ui:UiLabelIcon Content="队伍1（进攻方）" />
+                        <StackPanel Margin="5">
+                            <DockPanel>
+                                <TextBlock Text="最高分数" />
+                                <TextBlock HorizontalAlignment="Right" Text="{Binding RuleTeam1Model.MaxScore, StringFormat={}{0:0}}" />
+                            </DockPanel>
+                            <Slider
+                                Maximum="50000"
+                                Minimum="0"
+                                TickFrequency="1000"
+                                Value="{Binding RuleTeam1Model.MaxScore, Mode=TwoWay}" />
+                            <TextBlock />
+                            <DockPanel>
+                                <TextBlock Text="计算KD的最低击杀数（150级）" />
+                                <TextBlock HorizontalAlignment="Right" Text="{Binding  RuleTeam1Model.FlagKDPro, StringFormat={}{0:0}}" />
+                            </DockPanel>
+                            <Slider
+                                Maximum="100"
+                                Minimum="0"
+                                Value="{Binding RuleTeam1Model.FlagKDPro, Mode=TwoWay}" />
+                            <DockPanel>
+                            <TextBlock Text="最高KD（150级）" />
+                                <TextBlock HorizontalAlignment="Right" Text="{Binding  RuleTeam1Model.MaxKDPro, StringFormat={}{0:0.00}}" />
+                            </DockPanel>
+                            <Slider
+                                Maximum="10"
+                                Minimum="0"
+                                TickFrequency="0.1"
+                                Value="{Binding RuleTeam1Model.MaxKDPro, Mode=TwoWay}" />
+                            <TextBlock />
+                            <DockPanel>
+                                <TextBlock Text="计算KPM的最低击杀数（150级）" />
+                                <TextBlock HorizontalAlignment="Right" Text="{Binding  RuleTeam1Model.FlagKPMPro, StringFormat={}{0:0}}" />
+                            </DockPanel>
+                            <Slider
+                                Maximum="100"
+                                Minimum="0"
+                                Value="{Binding RuleTeam1Model.FlagKPMPro, Mode=TwoWay}" />
+                            <DockPanel>
+                                <TextBlock Text="最高KPM（150级）" />
+                                <TextBlock HorizontalAlignment="Right" Text="{Binding  RuleTeam1Model.MaxKPMPro, StringFormat={}{0:0.00}}" />
+                            </DockPanel>
+                            <Slider
+                                Maximum="10"
+                                Minimum="0"
+                                TickFrequency="0.1"
+                                Value="{Binding RuleTeam1Model.MaxKPMPro, Mode=TwoWay}" />
+                            <!--  ######################  -->
+                            <!--  ######################  -->
+                            <!--  ######################  -->
+                            <TextBlock Text="说明：如说" Style="{StaticResource TextBlockStyle_Hint}"></TextBlock>
+                        </StackPanel>
+                    </StackPanel>
+                    <!--  **************************  -->
+                    <StackPanel>
+                        <ui:UiLabelIcon Content="队伍2（防守方）" />
+                        <StackPanel Margin="5">
+                            <DockPanel>
+                                <TextBlock Text="最高分数" />
+                                <TextBlock HorizontalAlignment="Right" Text="{Binding RuleTeam2Model.MaxScore, StringFormat={}{0:0}}" />
+                            </DockPanel>
+                            <Slider
+                                Maximum="50000"
+                                Minimum="0"
+                                TickFrequency="1000"
+                                Value="{Binding RuleTeam2Model.MaxScore, Mode=TwoWay}" />
+                            <TextBlock />
+                            <DockPanel>
+                                <TextBlock Text="计算KD的最低击杀数（150级）" />
+                                <TextBlock HorizontalAlignment="Right" Text="{Binding  RuleTeam2Model.FlagKDPro, StringFormat={}{0:0}}" />
+                            </DockPanel>
+                            <Slider
+                                Maximum="100"
+                                Minimum="0"
+                                Value="{Binding RuleTeam2Model.FlagKDPro, Mode=TwoWay}" />
+                            <DockPanel>
+                                <TextBlock Text="最高KD（150级）" />
+                                <TextBlock HorizontalAlignment="Right" Text="{Binding  RuleTeam2Model.MaxKDPro, StringFormat={}{0:0.00}}" />
+                            </DockPanel>
+                            <Slider
+                                Maximum="10"
+                                Minimum="0"
+                                TickFrequency="0.1"
+                                Value="{Binding RuleTeam2Model.MaxKDPro, Mode=TwoWay}" />
+                            <TextBlock />
+                            <DockPanel>
+                                <TextBlock Text="计算KPM的最低击杀数（150级）" />
+                                <TextBlock HorizontalAlignment="Right" Text="{Binding  RuleTeam2Model.FlagKPMPro, StringFormat={}{0:0}}" />
+                            </DockPanel>
+                            <Slider
+                                Maximum="100"
+                                Minimum="0"
+                                Value="{Binding RuleTeam2Model.FlagKPMPro, Mode=TwoWay}" />
+                            <DockPanel>
+                                <TextBlock Text="最高KPM（150级）" />
+                                <TextBlock HorizontalAlignment="Right" Text="{Binding  RuleTeam2Model.MaxKPMPro, StringFormat={}{0:0.00}}" />
+                            </DockPanel>
+                            <Slider
+                                Maximum="10"
+                                Minimum="0"
+                                TickFrequency="0.1"
+                                Value="{Binding RuleTeam2Model.MaxKPMPro, Mode=TwoWay}" />
+                            <!--  ######################  -->
+                            <!--  ######################  -->
+                            <!--  ######################  -->
+
+                        </StackPanel>
+                    </StackPanel>
+                </UniformGrid>
+            </ui:UiTabItemIcon>
+
             <ui:UiTabItemIcon Header="限制武器">
                 <DataGrid
                     x:Name="DataGrid_RuleWeapon"
@@ -622,12 +747,12 @@
                             FontWeight="Bold"
                             Text="玩家索引" />
                         <TextBlock Margin="20,5,5,5" Text="{Binding ElementName=ListBox_CustomBlacks, Path=SelectedIndex}" />
-                            <Button
+                        <Button
                             x:Name="Button_RefreshBlackList"
                             Click="Button_RefreshBlack_Click"
                             Content="刷新黑名单">
-                            </Button>
-                            <Button
+                        </Button>
+                        <Button
                             x:Name="Button_RemoveSelectedBlack"
                             Click="Button_RemoveSelectedBlack_Click"
                             Content="从黑名单列表移除选中玩家">
@@ -730,17 +855,36 @@
             <CheckBox x:Name="CheckBox_WhiteRank" Content="免疫等级限制" />
             <CheckBox x:Name="CheckBox_WhiteWeapon" Content="免疫武器限制" />
             <CheckBox x:Name="CheckBox_WhiteToggleTeamLimt" Content="免疫更换队伍限制" />
+            <CheckBox x:Name="CheckBox_WhiteScore" Content="免疫分数限制" />
+
             <!--  *************  -->
             <ui:UiLabelIcon Content="应用 刷新 允许换边抗压" />
             <CheckBox x:Name="CheckBox_AllowToggle2LowScoreTeam" Content="允许换边抗压" />
-            <Button
+            <DockPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+
+                </Grid>
+            </DockPanel>
+
+            <DockPanel>
+                <Button
                 x:Name="Refresh_Rule"
                 Click="Buttonn_Refresh_Rule"
-                Content="刷新规则" />
-            <Button
+                Content="刷新规则" 
+                DockPanel.Dock="Left"/>
+                <Button
                 x:Name="Button_ApplyAndQueryCurrentRule"
                 Click="Button_ApplyAndQueryCurrentRule_Click"
-                Content="同步并应用当前规则" />
+                Margin="0,5,5,5"
+                Content="同步并应用当前规则" 
+                DockPanel.Dock="Right"/>
+            </DockPanel>
+
             <TextBlock Style="{StaticResource TextBlockStyle_Hint}">
                 说明：每次修改规则，都必须重新应用规则才会生效。
             </TextBlock>

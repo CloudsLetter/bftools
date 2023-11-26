@@ -103,6 +103,7 @@ public partial class RuleView : UserControl
                     WhiteLifeMaxHeadShotRatio = true,
                     WhiteMaxWR = true,
                     WhiteAllowToggleTeam = true,
+                    WhiteScore = true,
                     Team1Rule = new(),
                     Team2Rule = new(),
                     Team1Weapon = new(),
@@ -159,6 +160,7 @@ public partial class RuleView : UserControl
             CheckBox_WhiteWeapon.IsChecked = false;
             CheckBox_WhiteToggleTeamLimt.IsChecked = false;
             CheckBox_AllowToggle2LowScoreTeam.IsChecked = false;
+            CheckBox_WhiteScore.IsChecked = false;
             // 应用队伍1规则
             RuleTeam1Model.ScoreLimt = 0;
             RuleTeam1Model.ScoreGap = 0;
@@ -179,6 +181,11 @@ public partial class RuleView : UserControl
             RuleTeam1Model.LifeMaxHeadShotRatio = 0;
             RuleTeam1Model.LifeMaxWRLevel = 0;
             RuleTeam1Model.LifeMaxWR = 0;
+            RuleTeam1Model.MaxScore = 0;
+            RuleTeam1Model.FlagKDPro = 0;
+            RuleTeam1Model.MaxKDPro = 0.00f;
+            RuleTeam1Model.FlagKPMPro = 0;
+            RuleTeam1Model.MaxKPMPro = 0.00f;
             // 应用队伍2规则
             RuleTeam2Model.MaxKill = 0;
             RuleTeam2Model.FlagKD = 0;
@@ -197,7 +204,11 @@ public partial class RuleView : UserControl
             RuleTeam2Model.LifeMaxHeadShotRatio = 0;
             RuleTeam2Model.LifeMaxWRLevel = 0;
             RuleTeam2Model.LifeMaxWR = 0;
-
+            RuleTeam2Model.MaxScore = 0;
+            RuleTeam2Model.FlagKDPro = 0;
+            RuleTeam2Model.MaxKDPro = 0.00f;
+            RuleTeam2Model.FlagKPMPro = 0;
+            RuleTeam2Model.MaxKPMPro = 0.00f;
             for (int i = 0; i < DataGrid_RuleWeaponModels.Count; i++)
             {
                 var item = DataGrid_RuleWeaponModels[i];
@@ -308,6 +319,7 @@ public partial class RuleView : UserControl
                           CheckBox_WhiteLifeMaxWR.IsChecked = data.WhiteLifeMaxWR;
                           CheckBox_WhiteToggleTeamLimt.IsChecked = data.WhiteAllowToggleTeam;
                           CheckBox_AllowToggle2LowScoreTeam.IsChecked = data.Allow2LowScoreTeam;
+                          CheckBox_WhiteScore.IsChecked = data.WhiteScore;
                           // 应用队伍1规则
                           RuleTeam1Model.ScoreLimt = data.Team1ScoreLimit;
                           RuleTeam1Model.ScoreGap = data.Team1ScoreGap;
@@ -328,6 +340,12 @@ public partial class RuleView : UserControl
                           RuleTeam1Model.LifeMaxHeadShotRatio = data.Team1LifeMaxHeadShotRatio;
                           RuleTeam1Model.LifeMaxWRLevel = data.Team1LifeMaxWRLevel;
                           RuleTeam1Model.LifeMaxWR = data.Team1LifeMaxWR;
+                          RuleTeam1Model.MaxScore = data.Team1MaxScore;
+                          RuleTeam1Model.FlagKDPro = data.Team1FlagKDPro;
+                          RuleTeam1Model.MaxKDPro = data.Team1MaxKDPro;
+                          RuleTeam1Model.FlagKPMPro = data.Team1FlagKPMPro;
+                          RuleTeam1Model.MaxKPMPro = data.Team1MaxKPMPro;
+
                           // 应用队伍2规则
                           RuleTeam2Model.MaxKill = data.Team2MaxKill;
                           RuleTeam2Model.FlagKD = data.Team2FlagKD;
@@ -346,7 +364,11 @@ public partial class RuleView : UserControl
                           RuleTeam2Model.LifeMaxHeadShotRatio = data.Team2LifeMaxHeadShotRatio;
                           RuleTeam2Model.LifeMaxWRLevel = data.Team2LifeMaxWRLevel;
                           RuleTeam2Model.LifeMaxWR = data.Team2LifeMaxWR;
-
+                          RuleTeam2Model.MaxScore = data.Team2MaxScore;
+                          RuleTeam2Model.FlagKDPro = data.Team2FlagKDPro;
+                          RuleTeam2Model.MaxKDPro = data.Team2MaxKDPro;
+                          RuleTeam2Model.FlagKPMPro = data.Team2FlagKPMPro;
+                          RuleTeam2Model.MaxKPMPro = data.Team2MaxKPMPro;
                           List<string> list = new List<string>(data.Team1WeaponLimit.Split(','));
                           List<string> list2 = new List<string>(data.Team2WeaponLimit.Split(','));
 
@@ -405,6 +427,7 @@ public partial class RuleView : UserControl
             CheckBox_WhiteLifeMaxWR.IsChecked = rule.WhiteMaxWR;
             CheckBox_WhiteToggleTeamLimt.IsChecked = rule.WhiteAllowToggleTeam;
             CheckBox_AllowToggle2LowScoreTeam.IsChecked = rule.Allow2LowScoreTeam;
+            CheckBox_WhiteScore.IsChecked = rule.WhiteScore;
             // 应用队伍1规则
             RuleTeam1Model.ScoreLimt = rule.Team1Rule.ScoreLimit;
             RuleTeam1Model.ScoreGap = rule.Team1Rule.ScoreGap;
@@ -425,6 +448,12 @@ public partial class RuleView : UserControl
             RuleTeam1Model.LifeMaxWR = rule.Team1Rule.LifeMaxWR;
             RuleTeam1Model.LifeMaxWeaponStar = rule.Team1Rule.LifeMaxWeaponStar;
             RuleTeam1Model.LifeMaxVehicleStar = rule.Team1Rule.LifeMaxVehicleStar;
+            RuleTeam1Model.MaxScore = rule.Team1Rule.MaxScore;
+            RuleTeam1Model.FlagKDPro = rule.Team1Rule.FlagKDPro;
+            RuleTeam1Model.MaxKDPro = rule.Team1Rule.MaxKDPro;
+            RuleTeam1Model.FlagKPMPro = rule.Team1Rule.FlagKPMPro;
+            RuleTeam1Model.MaxKPMPro = rule.Team1Rule.MaxKPMPro;
+
             // 应用队伍2规则
             RuleTeam2Model.MaxKill = rule.Team2Rule.MaxKill;
             RuleTeam2Model.FlagKD = rule.Team2Rule.FlagKD;
@@ -443,7 +472,11 @@ public partial class RuleView : UserControl
             RuleTeam2Model.LifeMaxWR = rule.Team2Rule.LifeMaxWR;
             RuleTeam2Model.LifeMaxWeaponStar = rule.Team2Rule.LifeMaxWeaponStar;
             RuleTeam2Model.LifeMaxVehicleStar = rule.Team2Rule.LifeMaxVehicleStar;
-
+            RuleTeam2Model.MaxScore = rule.Team2Rule.MaxScore;
+            RuleTeam2Model.FlagKDPro = rule.Team2Rule.FlagKDPro;
+            RuleTeam2Model.MaxKDPro = rule.Team2Rule.MaxKDPro;
+            RuleTeam2Model.FlagKPMPro = rule.Team2Rule.FlagKPMPro;
+            RuleTeam2Model.MaxKPMPro = rule.Team2Rule.MaxKPMPro;
             // 白名单特权
 
             // 读取白名单列表
@@ -643,6 +676,7 @@ public partial class RuleView : UserControl
             rule.WhiteMaxWR = CheckBox_WhiteLifeMaxWR.IsChecked == true;
             rule.WhiteAllowToggleTeam = CheckBox_WhiteToggleTeamLimt.IsChecked == true;
             rule.Allow2LowScoreTeam = CheckBox_AllowToggle2LowScoreTeam.IsChecked == true;
+            rule.WhiteScore =CheckBox_WhiteScore.IsChecked == true;
 
             rule.Team1Rule.MaxKill = RuleTeam1Model.MaxKill;
             rule.Team1Rule.FlagKD = RuleTeam1Model.FlagKD;
@@ -663,6 +697,11 @@ public partial class RuleView : UserControl
             rule.Team1Rule.LifeMaxWR = RuleTeam1Model.LifeMaxWR;
             rule.Team1Rule.ScoreLimit = RuleTeam1Model.ScoreLimt;
             rule.Team1Rule.ScoreGap = RuleTeam1Model.ScoreGap;
+            rule.Team1Rule.MaxScore = RuleTeam1Model.MaxScore;
+            rule.Team1Rule.FlagKDPro = RuleTeam1Model.FlagKDPro;
+            rule.Team1Rule.MaxKDPro = RuleTeam1Model.MaxKDPro;
+            rule.Team1Rule.FlagKPMPro = RuleTeam1Model.FlagKPMPro;
+            rule.Team1Rule.MaxKPMPro = RuleTeam1Model.MaxKPMPro;
 
             rule.Team2Rule.MaxKill = RuleTeam2Model.MaxKill;
             rule.Team2Rule.FlagKD = RuleTeam2Model.FlagKD;
@@ -683,6 +722,11 @@ public partial class RuleView : UserControl
             rule.Team2Rule.LifeMaxWR = RuleTeam2Model.LifeMaxWR;
             rule.Team2Rule.ScoreLimit = RuleTeam2Model.ScoreLimt;
             rule.Team2Rule.ScoreGap = RuleTeam2Model.ScoreGap;
+            rule.Team2Rule.MaxScore = RuleTeam2Model.MaxScore;
+            rule.Team2Rule.FlagKDPro = RuleTeam2Model.FlagKDPro;
+            rule.Team2Rule.MaxKDPro = RuleTeam2Model.MaxKDPro;
+            rule.Team2Rule.FlagKPMPro = RuleTeam2Model.FlagKPMPro;
+            rule.Team2Rule.MaxKPMPro = RuleTeam2Model.MaxKPMPro;
             rule.WhiteList.Clear();
             foreach (string name in ListBox_CustomWhites.Items)
             {
@@ -735,6 +779,7 @@ public partial class RuleView : UserControl
                 rule.WhiteMaxWR = CheckBox_WhiteLifeMaxWR.IsChecked == true;
                 rule.WhiteAllowToggleTeam = CheckBox_WhiteToggleTeamLimt.IsChecked == true;
                 rule.Allow2LowScoreTeam = CheckBox_AllowToggle2LowScoreTeam.IsChecked == true;
+                rule.WhiteScore =CheckBox_WhiteScore.IsChecked == true;
 
                 rule.Team1Rule.MaxKill = RuleTeam1Model.MaxKill;
                 rule.Team1Rule.FlagKD = RuleTeam1Model.FlagKD;
@@ -755,6 +800,11 @@ public partial class RuleView : UserControl
                 rule.Team1Rule.LifeMaxWR = RuleTeam1Model.LifeMaxWR;
                 rule.Team1Rule.ScoreLimit = RuleTeam1Model.ScoreLimt;
                 rule.Team1Rule.ScoreGap = RuleTeam1Model.ScoreGap;
+                rule.Team1Rule.MaxScore = RuleTeam1Model.MaxScore;
+                rule.Team1Rule.FlagKDPro = RuleTeam1Model.FlagKDPro;
+                rule.Team1Rule.MaxKDPro = RuleTeam1Model.MaxKDPro;
+                rule.Team1Rule.FlagKPMPro = RuleTeam1Model.FlagKPMPro;
+                rule.Team1Rule.MaxKPMPro = RuleTeam1Model.MaxKPMPro;
 
                 rule.Team2Rule.MaxKill = RuleTeam2Model.MaxKill;
                 rule.Team2Rule.FlagKD = RuleTeam2Model.FlagKD;
@@ -775,6 +825,11 @@ public partial class RuleView : UserControl
                 rule.Team2Rule.LifeMaxWR = RuleTeam2Model.LifeMaxWR;
                 rule.Team2Rule.ScoreLimit = RuleTeam2Model.ScoreLimt;
                 rule.Team2Rule.ScoreGap = RuleTeam2Model.ScoreGap;
+                rule.Team2Rule.MaxScore = RuleTeam2Model.MaxScore;
+                rule.Team2Rule.FlagKDPro = RuleTeam2Model.FlagKDPro;
+                rule.Team2Rule.MaxKDPro = RuleTeam2Model.MaxKDPro;
+                rule.Team2Rule.FlagKPMPro = RuleTeam2Model.FlagKPMPro;
+                rule.Team2Rule.MaxKPMPro = RuleTeam2Model.MaxKPMPro;
                 rule.WhiteList.Clear();
                 foreach (string name in ListBox_CustomWhites.Items)
                 {
@@ -898,7 +953,7 @@ public partial class RuleView : UserControl
             CheckBox_WhiteLifeMaxWR.IsChecked = rule.WhiteMaxWR;
             CheckBox_WhiteToggleTeamLimt.IsChecked = rule.WhiteAllowToggleTeam;
             CheckBox_AllowToggle2LowScoreTeam.IsChecked = rule.Allow2LowScoreTeam;
-
+            CheckBox_WhiteScore.IsChecked = rule.WhiteScore;
             // 应用队伍1规则
             RuleTeam1Model.ScoreLimt = rule.Team1Rule.ScoreLimit;
             RuleTeam1Model.ScoreGap = rule.Team1Rule.ScoreGap;
@@ -921,6 +976,11 @@ public partial class RuleView : UserControl
             RuleTeam1Model.LifeMaxVehicleStar = rule.Team1Rule.LifeMaxVehicleStar;
             RuleTeam1Model.ScoreLimt = rule.Team1Rule.ScoreLimit;
             RuleTeam1Model.ScoreGap = rule.Team1Rule.ScoreGap;
+            RuleTeam1Model.MaxScore = rule.Team1Rule.MaxScore;
+            RuleTeam1Model.FlagKDPro = rule.Team1Rule.FlagKDPro;
+            RuleTeam1Model.MaxKDPro = rule.Team1Rule.MaxKDPro;
+            RuleTeam1Model.FlagKPMPro = rule.Team1Rule.FlagKPMPro;
+            RuleTeam1Model.MaxKPMPro = rule.Team1Rule.MaxKPMPro;
             // 应用队伍2规则
             RuleTeam2Model.MaxKill = rule.Team2Rule.MaxKill;
             RuleTeam2Model.FlagKD = rule.Team2Rule.FlagKD;
@@ -941,6 +1001,11 @@ public partial class RuleView : UserControl
             RuleTeam2Model.LifeMaxVehicleStar = rule.Team2Rule.LifeMaxVehicleStar;
             RuleTeam2Model.ScoreLimt = rule.Team2Rule.ScoreLimit;
             RuleTeam2Model.ScoreGap = rule.Team2Rule.ScoreGap;
+            RuleTeam2Model.MaxScore = rule.Team2Rule.MaxScore;
+            RuleTeam2Model.FlagKDPro = rule.Team2Rule.FlagKDPro;
+            RuleTeam2Model.MaxKDPro = rule.Team2Rule.MaxKDPro;
+            RuleTeam2Model.FlagKPMPro = rule.Team2Rule.FlagKPMPro;
+            RuleTeam2Model.MaxKPMPro = rule.Team2Rule.MaxKPMPro;
             // 白名单特权
 
             // 读取白名单列表
@@ -1082,6 +1147,7 @@ public partial class RuleView : UserControl
               whiteLifeMaxWR: Globals.WhiteLifeMaxWR,
               whiteAllowToggleTeam: Globals.IsAllowWhlistToggleTeam,
               allow2LowScoreTeam: Globals.Allow2LowScoreTeam,
+              whiteScore: Globals.WhiteScore,
               team1MaxKill: Globals.ServerRule_Team1.MaxKill,
               team1FlagKD: Globals.ServerRule_Team1.FlagKD,
               team1MaxKD: Globals.ServerRule_Team1.MaxKD,
@@ -1099,6 +1165,11 @@ public partial class RuleView : UserControl
               team1LifeMaxWR: Globals.ServerRule_Team1.LifeMaxWR,
               team1LifeMaxWeaponStar: Globals.ServerRule_Team1.LifeMaxWeaponStar,
               team1LifeMaxVehicleStar: Globals.ServerRule_Team1.LifeMaxVehicleStar,
+              team1MaxScore: Globals.ServerRule_Team1.MaxScore,
+              team1FlagKDPro: Globals.ServerRule_Team1.FlagKDPro,
+              team1MaxKDPro: Globals.ServerRule_Team1.MaxKDPro,
+              team1FlagKPMPro: Globals.ServerRule_Team1.FlagKPMPro,
+              team1MaxKPMPro: Globals.ServerRule_Team1.MaxKPMPro,
               team2MaxKill: Globals.ServerRule_Team2.MaxKill,
               team2FlagKD: Globals.ServerRule_Team2.FlagKD,
               team2MaxKD: Globals.ServerRule_Team2.MaxKD,
@@ -1116,6 +1187,11 @@ public partial class RuleView : UserControl
               team2LifeMaxWR: Globals.ServerRule_Team2.LifeMaxWR,
               team2LifeMaxWeaponStar: Globals.ServerRule_Team2.LifeMaxWeaponStar,
               team2LifeMaxVehicleStar: Globals.ServerRule_Team2.LifeMaxVehicleStar,
+              team2MaxScore: Globals.ServerRule_Team2.MaxScore,
+              team2FlagKDPro: Globals.ServerRule_Team2.FlagKDPro,
+              team2MaxKDPro: Globals.ServerRule_Team2.MaxKDPro,
+              team2FlagKPMPro: Globals.ServerRule_Team2.FlagKPMPro,
+              team2MaxKPMPro: Globals.ServerRule_Team2.MaxKPMPro,
               serverId: Globals.ServerId,
               gameId: Globals.GameId,
               guid: Globals.PersistedGameId,
@@ -1157,12 +1233,12 @@ public partial class RuleView : UserControl
                    bool ok = await SetRuleFromCloud();
                     if (ok)
                     {
-/*                        NotifierHelper.Show(NotifierType.Success, "刷新成功");
-*/                    }
+                        NotifierHelper.Show(NotifierType.Success, "刷新成功");
+                    }
                     else
                     {
-/*                        NotifierHelper.Show(NotifierType.Error, "刷新失败，请检查服务端或客户端网络问题");
-*/                    }
+                        NotifierHelper.Show(NotifierType.Error, "刷新失败，请检查服务端或客户端网络问题");
+                    }
 
                 }
                 else
@@ -1204,7 +1280,7 @@ public partial class RuleView : UserControl
         Globals.WhiteLifeMaxHeadShotRatio = CheckBox_WhiteLifeMaxHeadShotRatio.IsChecked == true;
         Globals.WhiteLifeMaxWR = CheckBox_WhiteLifeMaxWR.IsChecked == true;
         Globals.Allow2LowScoreTeam = CheckBox_AllowToggle2LowScoreTeam.IsChecked == true;
-
+        Globals.WhiteScore = CheckBox_WhiteScore.IsChecked == true;
         Globals.ServerRule_Team1.ScoreLimit = RuleTeam1Model.ScoreLimt;
         Globals.ServerRule_Team1.ScoreGap = RuleTeam1Model.ScoreGap;
         Globals.ServerRule_Team1.MaxKill = RuleTeam1Model.MaxKill;
@@ -1226,6 +1302,12 @@ public partial class RuleView : UserControl
         Globals.ServerRule_Team1.LifeMaxWeaponStar = RuleTeam1Model.LifeMaxWeaponStar;
         Globals.ServerRule_Team1.LifeMaxVehicleStar = RuleTeam1Model.LifeMaxVehicleStar;
 
+        Globals.ServerRule_Team1.MaxScore = RuleTeam1Model.MaxScore;
+        Globals.ServerRule_Team1.FlagKDPro = RuleTeam1Model.FlagKDPro;
+        Globals.ServerRule_Team1.MaxKDPro = RuleTeam1Model.MaxKDPro;
+        Globals.ServerRule_Team1.FlagKPMPro = RuleTeam1Model.FlagKPMPro;
+        Globals.ServerRule_Team1.MaxKPMPro = RuleTeam1Model.MaxKPMPro;
+
         Globals.ServerRule_Team2.MaxKill = RuleTeam2Model.MaxKill;
         Globals.ServerRule_Team2.FlagKD = RuleTeam2Model.FlagKD;
         Globals.ServerRule_Team2.MaxKD = RuleTeam2Model.MaxKD;
@@ -1245,7 +1327,11 @@ public partial class RuleView : UserControl
         Globals.ServerRule_Team2.LifeMaxWeaponStar = RuleTeam2Model.LifeMaxWeaponStar;
         Globals.ServerRule_Team2.LifeMaxVehicleStar = RuleTeam2Model.LifeMaxVehicleStar;
 
-
+        Globals.ServerRule_Team2.MaxScore = RuleTeam2Model.MaxScore;
+        Globals.ServerRule_Team2.FlagKDPro = RuleTeam2Model.FlagKDPro;
+        Globals.ServerRule_Team2.MaxKDPro = RuleTeam2Model.MaxKDPro;
+        Globals.ServerRule_Team2.FlagKPMPro = RuleTeam2Model.FlagKPMPro;
+        Globals.ServerRule_Team2.MaxKPMPro = RuleTeam2Model.MaxKPMPro;
         /////////////////////////////////////////////////////////////////////////////
 
         // 检查队伍1等级限制
@@ -1328,6 +1414,12 @@ public partial class RuleView : UserControl
         AddRuleLog("生涯胜率等级阈值", $"{Globals.ServerRule_Team1.LifeMaxWRLevel}", $"{Globals.ServerRule_Team2.LifeMaxWRLevel}");
         AddRuleLog("生涯胜率", $"{Globals.ServerRule_Team1.LifeMaxWR}", $"{Globals.ServerRule_Team2.LifeMaxWR}");
 
+        AddRuleLog("最高分数", $"{Globals.ServerRule_Team1.MaxScore}", $"{Globals.ServerRule_Team2.MaxScore}");
+        AddRuleLog("计算D的最低击杀数（150级）", $"{Globals.ServerRule_Team1.LifeMaxWR}", $"{Globals.ServerRule_Team2.LifeMaxWR}");
+        AddRuleLog("最高KD（150级）", $"{Globals.ServerRule_Team1.LifeMaxWR}", $"{Globals.ServerRule_Team2.LifeMaxWR}");
+        AddRuleLog("计算KPM的最低击杀数（150级）", $"{Globals.ServerRule_Team1.LifeMaxWR}", $"{Globals.ServerRule_Team2.LifeMaxWR}");
+        AddRuleLog("最高KPM（150级）", $"{Globals.ServerRule_Team1.LifeMaxWR}", $"{Globals.ServerRule_Team2.LifeMaxWR}");
+
 
         AddRuleLog("武器星数", $"{Globals.ServerRule_Team1.LifeMaxWeaponStar}", $"{Globals.ServerRule_Team2.LifeMaxWeaponStar}");
         AddRuleLog("载具星数", $"{Globals.ServerRule_Team1.LifeMaxVehicleStar}", $"{Globals.ServerRule_Team2.LifeMaxVehicleStar}");
@@ -1378,6 +1470,8 @@ public partial class RuleView : UserControl
             AddRuleLog("", "免疫生涯胜率限制");
         if (Globals.IsAllowWhlistToggleTeam)
             AddRuleLog("", "免疫更换队伍限制");
+        if (Globals.WhiteScore)
+            AddRuleLog("", "免疫分数限制");
         int index = 1;
         AddRuleLog("【白名单列表】");
         foreach (var item in Globals.CustomWhites_Name)

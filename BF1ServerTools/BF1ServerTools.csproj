@@ -7,8 +7,8 @@
 		<UseWPF>true</UseWPF>
 		<Platforms>x64</Platforms>
 		<StartupObject>BF1ServerTools.App</StartupObject>
-		<AssemblyVersion>3.0.2.4</AssemblyVersion>
-		<FileVersion>3.0.2.4</FileVersion>
+		<AssemblyVersion>3.0.2.6</AssemblyVersion>
+		<FileVersion>3.0.2.6</FileVersion>
 		<PublishSingleFile>true</PublishSingleFile>
 		<ApplicationManifest>Properties\app.manifest</ApplicationManifest>
 		<ApplicationIcon>Assets\Images\Favicon.ico</ApplicationIcon>
@@ -29,7 +29,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\BF1ServerTools.API\BF1ServerTools.API.csproj" />
 		<ProjectReference Include="..\BF1ServerTools.QQ\BF1ServerTools.QQ.csproj" />
 		<ProjectReference Include="..\BF1ServerTools.RES\BF1ServerTools.RES.csproj" />
 		<ProjectReference Include="..\BF1ServerTools.SDK\BF1ServerTools.SDK.csproj" />

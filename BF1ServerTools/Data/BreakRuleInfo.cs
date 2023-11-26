@@ -61,6 +61,9 @@ public enum BreakType
     Kill,
     KD,
     KPM,
+    KDPro,
+    KPMPro,
+    Score,
     Rank,
     Weapon
 }

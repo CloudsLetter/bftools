@@ -52,7 +52,9 @@ public partial class AuthView : UserControl
             AuthConfig.IsUseMode1 = true;
             AuthConfig.SelectedIndex = 0;
             AuthConfig.ReverseOrder = false;
+            AuthConfig.CurrentBF1SpartaGatewayProxyAddr = "https://sparta-gw.battlelog.com";
             AuthConfig.AuthInfos = new();
+            AuthConfig.BF1SpartaGatewayProxyAddr = new();
             // 初始化10个配置文件槽
             for (int i = 0; i < 10; i++)
             {
@@ -128,6 +130,17 @@ public partial class AuthView : UserControl
             AutoRefreshTimerModel1_Elapsed(null, null);
         else
             AutoRefreshTimerModel2_Elapsed(null, null);
+        SelectdEAGatewayAddrProxy.Text = AuthConfig.CurrentBF1SpartaGatewayProxyAddr;
+        int index = AuthConfig.BF1SpartaGatewayProxyAddr.FindIndex(Item => Item == "https://sparta-gw.battlelog.com");
+        if (index == -1)
+        {
+            AuthConfig.BF1SpartaGatewayProxyAddr.Add("https://sparta-gw.battlelog.com");
+            AuthConfig.CurrentBF1SpartaGatewayProxyAddr = "https://sparta-gw.battlelog.com";
+            SaveConfig();
+        }
+        SelectdEAGatewayAddrProxy.ItemsSource = AuthConfig.BF1SpartaGatewayProxyAddr;
+        SelectdEAGatewayAddrProxy.SelectedItem = AuthConfig.CurrentBF1SpartaGatewayProxyAddr;
+        Globals.BF1SpartaGateWayAddrProxy = AuthConfig.CurrentBF1SpartaGatewayProxyAddr;
     }
 
     /// <summary>
@@ -644,4 +657,73 @@ public partial class AuthView : UserControl
         }
     }
 
+    private void Button_ADD_EAGatewayProxyAddr(object sender, RoutedEventArgs e)
+    {
+        int index = AuthConfig.BF1SpartaGatewayProxyAddr.FindIndex(Item => Item == EAGatewayProxyAddr.Text.Trim());
+
+        if (index != -1)
+        {
+            EAGatewayProxyAddr.Clear();
+            NotifierHelper.Show(NotifierType.Error, "已存在相同Gateway地址");
+        }
+        else
+        {
+            string pattern = @"https?://\S+";
+            Regex regex = new Regex(pattern);
+            Match match = regex.Match(EAGatewayProxyAddr.Text.Trim());
+            if (match.Success)
+            {
+                AuthConfig.BF1SpartaGatewayProxyAddr.Add(EAGatewayProxyAddr.Text.Trim().TrimEnd('/'));
+                SaveConfig();
+                EAGatewayProxyAddr.Clear();
+                NotifierHelper.Show(NotifierType.Success, "添加Gateway代理地址成功");
+                Dispatcher.Invoke(() =>
+                {
+                    SelectdEAGatewayAddrProxy.ItemsSource = AuthConfig.BF1SpartaGatewayProxyAddr;
+                    SelectdEAGatewayAddrProxy.Items.Refresh();
+
+                });
+            } else
+            {
+                NotifierHelper.Show(NotifierType.Error, "输入不合法");
+            }
+        }
+
+    }
+
+    private void Button_Remove_EAGatewayProxyAddr(object sender, RoutedEventArgs e)
+    {
+        if (SelectdEAGatewayAddrProxy.Text != "https://sparta-gw.battlelog.com")
+        {
+            if (Globals.BF1SpartaGateWayAddrProxy == SelectdEAGatewayAddrProxy.Text.Trim())
+            {
+                Globals.BF1SpartaGateWayAddrProxy = "https://sparta-gw.battlelog.com";
+                AuthConfig.CurrentBF1SpartaGatewayProxyAddr = "https://sparta-gw.battlelog.com";
+                BF1API.SetBF1BF1SpartaGateWayAddrProxy();
+            }
+            AuthConfig.BF1SpartaGatewayProxyAddr.Remove(SelectdEAGatewayAddrProxy.Text.Trim());
+            SaveConfig();
+            NotifierHelper.Show(NotifierType.Success, "删除Sparta Gateway代理地址成功");
+            Dispatcher.Invoke(() =>
+            {
+                SelectdEAGatewayAddrProxy.Text = "https://sparta-gw.battlelog.com";
+                SelectdEAGatewayAddrProxy.ItemsSource = AuthConfig.BF1SpartaGatewayProxyAddr;
+                SelectdEAGatewayAddrProxy.Items.Refresh();
+            });
+
+        }
+        else
+        {
+            NotifierHelper.Show(NotifierType.Error, "默认Sparta Gateway地址不允许删除");
+
+        }
+    }
+    private void Button_Set_EAGatewayProxyAddr(object sender, RoutedEventArgs e)
+    {
+        Globals.BF1SpartaGateWayAddrProxy = SelectdEAGatewayAddrProxy.Text.Trim();
+        AuthConfig.CurrentBF1SpartaGatewayProxyAddr = SelectdEAGatewayAddrProxy.Text.Trim();
+        BF1API.SetBF1BF1SpartaGateWayAddrProxy();
+        SaveConfig();
+        NotifierHelper.Show(NotifierType.Success, "应用当前Sparta Gateway代理地址");
+    }
 }
