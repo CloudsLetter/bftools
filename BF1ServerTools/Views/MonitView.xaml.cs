@@ -110,7 +110,14 @@ public partial class MonitView : UserControl
             Name = "CheckAutoKickStateThread",
             IsBackground = true
         }.Start();
+
+        new Thread(AutoEnableKickMethod)
+        {
+            Name = "AutoEnableKickMethod",
+            IsBackground = true
+        }.Start();
     }
+
 
     /// <summary>
     /// 主窗口关闭事件
@@ -1333,7 +1340,14 @@ public partial class MonitView : UserControl
     /// <param name="log"></param>
     private void AddRuleLog(string log = "")
     {
-        TextBox_RuleLogger.AppendText($"{log}\n");
+        Dispatcher.Invoke(
+    new Action(
+    delegate
+    {
+    TextBox_RuleLogger.AppendText($"{log}\n");
+    }
+    )
+    );
     }
 
     /// <summary>
@@ -1341,11 +1355,18 @@ public partial class MonitView : UserControl
     /// </summary>
     private void ClearRuleLog()
     {
-        TextBox_RuleLogger.Clear();
+        Dispatcher.Invoke(
+    new Action(
+    delegate
+    {
+    TextBox_RuleLogger.Clear();
 
-        AddRuleLog("【操作时间】");
-        AddRuleLog($"{DateTime.Now:yyyy/MM/dd HH:mm:ss}");
-        AddRuleLog();
+    AddRuleLog("【操作时间】");
+    AddRuleLog($"{DateTime.Now:yyyy/MM/dd HH:mm:ss}");
+    AddRuleLog();
+    }
+    )
+    );
     }
 
     /////////////////////////////////////////////////////////////////////////////
@@ -1366,7 +1387,10 @@ public partial class MonitView : UserControl
         if (!Globals.IsSetRuleOK)
         {
             AddRuleLog("❌ 玩家没有应用当前规则");
-            NotifierHelper.Show(NotifierType.Warning, "环境检查未通过，操作取消");
+            if (Globals.IsCloudMode)
+            {
+                NotifierHelper.Show(NotifierType.Warning, "环境检查未通过，操作取消");
+            }
             return false;
         }
         else
@@ -1661,6 +1685,89 @@ public partial class MonitView : UserControl
             };
             LogView.ActionScoreKickLog(info);
             NotifierHelper.Show(NotifierType.Error, $"[{result.ExecTime:0.00} 秒]  踢出玩家 {displayName} 失败\n{result.Content}");
+        }
+    }
+
+    private async void AutoEnableKickMethod()
+    {
+        while (MainWindow.IsAppRunning)
+        {
+            if (Globals.AutoApplyRule && Globals.IsSetRuleOK)
+            {
+
+                if (!Globals.IsCloudMode && Globals.ServerId != 0 && !Globals.AutoKick)
+                {
+                    // 检查自动踢人环境
+                    if (await CheckAutoKickEnv())
+                    {
+                        AddRuleLog();
+                        AddRuleLog("环境检查完毕，自动踢人开启成功");
+
+                        Globals.AutoKickBreakRulePlayer = true;
+                        Dispatcher.Invoke(
+                        new Action(
+                        delegate
+                        {
+                            ToggleButton_RunAutoKick.IsChecked = true;
+                        }
+                        )
+                        );
+                        NotifierHelper.Show(NotifierType.Success, "自动踢人开启成功");
+                        Globals.AutoKick = true;
+                    }
+                    else
+                    {
+                        Globals.AutoKickBreakRulePlayer = false;
+                        Dispatcher.Invoke(
+                        new Action(
+                        delegate
+                        {
+                            ToggleButton_RunAutoKick.IsChecked = false;
+                        }
+                        )
+                        );
+/*                        NotifierHelper.Show(NotifierType.Warning, "自动踢人环境检查未通过");
+*/                    }
+                }
+
+                if (Globals.IsCloudMode && Globals.AutoRuleApplyOk && !Globals.AutoKick)
+                {
+
+                        // 检查自动踢人环境
+                        if (await CheckAutoKickEnv())
+                        {
+                            AddRuleLog();
+                            AddRuleLog("环境检查完毕，自动踢人开启成功");
+
+                            Globals.AutoKickBreakRulePlayer = true;
+                            Dispatcher.Invoke(
+                            new Action(
+                            delegate
+                            {
+                                ToggleButton_RunAutoKick.IsChecked = true;
+                            }
+                            )
+                            );
+                            NotifierHelper.Show(NotifierType.Success, "自动踢人开启成功");
+                            Globals.AutoKick = true;
+                        }
+                        else
+                        {
+                            Globals.AutoKickBreakRulePlayer = false;
+                            Dispatcher.Invoke(
+                            new Action(
+                            delegate
+                            {
+                                ToggleButton_RunAutoKick.IsChecked = false;
+                            }
+                            )
+                            );
+                            NotifierHelper.Show(NotifierType.Warning, "自动踢人环境检查未通过");
+                        }
+
+                }
+            }
+                Thread.Sleep(5000);
         }
     }
 

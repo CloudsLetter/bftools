@@ -132,8 +132,11 @@
                     Content="编辑Host文件" />
             </WrapPanel>
             <!--  ###############  -->
-            <ui:UiLabelIcon Content="其他" />
+            <ui:UiLabelIcon                     
+                Margin="5,5,0,0"
+                Content="其他" />
             <Button
+                Margin="5,5,0,0"
                 x:Name="Button_OpenConfigFolder"
                 Click="Button_OpenConfigFolder_Click"
                 Content="打开配置文件夹" />
@@ -141,6 +144,10 @@
                     Margin="5,5,0,0"
                     Click="Button_ReverseOrder_Click"
                     Content="正反序输出日志和聊天记录" />
+            <Button
+                    Margin="5,5,0,0"
+                    Click="Button_AutoAutoAndApplyModeSwitch"
+                    Content="自动验证玩家SessionId并应用规则 在线/离线/关闭" />
         </StackPanel>
         <!--  ******************************  -->
         <StackPanel            

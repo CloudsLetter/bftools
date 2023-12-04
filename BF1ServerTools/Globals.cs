@@ -372,6 +372,18 @@ public static class Globals
         public static bool IsCloudMode = false;*/
 
     public static string BF1SpartaGateWayAddrProxy = "https://sparta-gw.battlelog.com";
+
+    public static bool AutoApplyRule = false;
+    public static bool AutoRuleApplyOk = false;
+    public static bool AutoKick = false;
+
+    public static bool AutoApplyRuleOffline = false;
+
+    public static bool AutoApplyRuleOnline = false;
+
+    public static bool AutoApplyRuleOfflineView = false;
+
+    public static bool IsAuth = false;
     ///////////////////////////////////////////////////////
 
     public static bool WhiteLifeKD = true;

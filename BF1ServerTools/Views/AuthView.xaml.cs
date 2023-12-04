@@ -38,7 +38,6 @@ public partial class AuthView : UserControl
     /// 配置文件名称动态集合
     /// </summary>
     public ObservableCollection<string> ConfigNames { get; set; } = new();
-
     public AuthView()
     {
         InitializeComponent();
@@ -53,6 +52,8 @@ public partial class AuthView : UserControl
             AuthConfig.SelectedIndex = 0;
             AuthConfig.ReverseOrder = false;
             AuthConfig.CurrentBF1SpartaGatewayProxyAddr = "https://sparta-gw.battlelog.com";
+            AuthConfig.AutoApplyRuleOffline = false;
+            AuthConfig.AutoApplyRuleOnline = false;
             AuthConfig.AuthInfos = new();
             AuthConfig.BF1SpartaGatewayProxyAddr = new();
             // 初始化10个配置文件槽
@@ -85,7 +86,6 @@ public partial class AuthView : UserControl
             ComboBox_ConfigNames.SelectedIndex = AuthConfig.SelectedIndex;
         }
         #endregion
-
         /////////////////////////////////////////////////////////////////////
 
         // 用于接收WebView2传回的数据
@@ -141,6 +141,188 @@ public partial class AuthView : UserControl
         SelectdEAGatewayAddrProxy.ItemsSource = AuthConfig.BF1SpartaGatewayProxyAddr;
         SelectdEAGatewayAddrProxy.SelectedItem = AuthConfig.CurrentBF1SpartaGatewayProxyAddr;
         Globals.BF1SpartaGateWayAddrProxy = AuthConfig.CurrentBF1SpartaGatewayProxyAddr;
+
+        Globals.AutoApplyRuleOffline = AuthConfig.AutoApplyRuleOffline;
+        Globals.AutoApplyRuleOnline = AuthConfig.AutoApplyRuleOnline;
+
+        if (Globals.AutoApplyRuleOffline || Globals.AutoApplyRuleOnline)
+        {
+            Globals.AutoApplyRule = true;
+            RefreshAuthInfo();
+        }
+    }
+
+    private void Button_AutoAutoAndApplyModeSwitch(object sender, RoutedEventArgs e)
+    {
+        if (!Globals.AutoApplyRuleOnline && !Globals.AutoApplyRuleOffline)
+        {
+            Globals.AutoApplyRuleOnline = true;
+            NotifierHelper.Show(NotifierType.Success, "开启自动验证SessionId并自动设置规则为在线规则");
+            AuthConfig.AutoApplyRuleOnline = true;
+            SaveConfig();
+            return;
+        }
+
+        if (Globals.AutoApplyRuleOnline)
+        {
+            Globals.AutoApplyRuleOffline = true;
+            Globals.AutoApplyRuleOnline = false;
+            NotifierHelper.Show(NotifierType.Success, "开启自动验证SessionId并自动设置规则为离线规则");
+            AuthConfig.AutoApplyRuleOnline = false;
+            AuthConfig.AutoApplyRuleOffline = true;
+
+            SaveConfig();
+
+            return;
+        }
+
+        if (Globals.AutoApplyRuleOffline)
+        {
+            Globals.AutoApplyRuleOffline = false;
+            Globals.AutoApplyRuleOnline = false;
+            NotifierHelper.Show(NotifierType.Success, "关闭自动验证SessionId与自动设置规则");
+            AuthConfig.AutoApplyRuleOnline = false;
+            AuthConfig.AutoApplyRuleOffline = false;
+            SaveConfig();
+
+            return;
+        }
+
+
+    }
+
+    private async void AutoAuthSession()
+    {
+        if (Globals.AutoApplyRuleOffline)
+        {
+            if (string.IsNullOrEmpty(Globals.SessionId))
+            {
+                NotifierHelper.Show(NotifierType.Warning, "玩家SessionId为空，请先获取玩家SessionId");
+                return;
+            }
+
+            TextBlock_SessionIdState.Text = "正在验证中，请稍后...";
+            Border_SessionIdState.Background = Brushes.Gray;
+            NotifierHelper.Show(NotifierType.Information, "正在验证中，请稍后...");
+
+            _ = BF1API.SetAPILocale(Globals.SessionId);
+
+            var result = await BF1API.GetWelcomeMessage(Globals.SessionId);
+            if (result.IsSuccess)
+            {
+                var welcomeMsg = JsonHelper.JsonDese<WelcomeMsg>(result.Content);
+                var firstMessage = ChsUtil.ToSimplified(welcomeMsg.result.firstMessage);
+
+                TextBlock_SessionIdState.Text = firstMessage;
+                Border_SessionIdState.Background = Brushes.Green;
+
+                if (Globals.IsCloudMode)
+                {
+                    var ress = await CloudApi.RemoveAllToggleTeambeForeKick(Globals.TempGameId.ToString());
+                    if (!ress.IsSuccess)
+                    {
+                        if (Globals.AlreadyToggleTeamPlayer.Count != 0)
+                        {
+                            if (Globals.AlreadyToggleTeamPlayer.Count != 0)
+                            {
+                                Globals.AlreadyToggleTeamPlayer.Clear();
+                            }
+                            if (Globals.TempToggleTeamList.Count != 0)
+                            {
+                                Globals.TempToggleTeamList.Clear();
+                            }
+                            if (Globals.AllowTempAloowToggleTeamList1.Count != 0)
+                            {
+                                Globals.AllowTempAloowToggleTeamList1.Clear();
+                            }
+                            if (Globals.AllowTempAloowToggleTeamList2.Count != 0)
+                            {
+                                Globals.AllowTempAloowToggleTeamList2.Clear();
+                            }
+                        }
+                    }
+                }
+                Globals.IsAuth = true;
+                NotifierHelper.Show(NotifierType.Success, $"[{result.ExecTime:0.00} 秒]  验证成功\n{firstMessage}");
+                if (Globals.IsCloudMode)
+                {
+                    Globals.IsCloudMode = false;
+                    NotifierHelper.Show(NotifierType.Success, "已切回离线模式");
+                }
+            }
+            else
+            {
+                TextBlock_SessionIdState.Text = "验证失败";
+                Border_SessionIdState.Background = Brushes.OrangeRed;
+                NotifierHelper.Show(NotifierType.Error, $"[{result.ExecTime:0.00} 秒]  验证失败\n{result.Content}");
+            }
+        }
+
+        if (Globals.AutoApplyRuleOnline)
+        {
+            if (string.IsNullOrEmpty(Globals.SessionId))
+            {
+                NotifierHelper.Show(NotifierType.Warning, "玩家SessionId为空，请先获取玩家SessionId");
+                return;
+            }
+
+            TextBlock_SessionIdState.Text = "正在验证中，请稍后...";
+            Border_SessionIdState.Background = Brushes.Gray;
+            NotifierHelper.Show(NotifierType.Information, "正在验证中，请稍后...");
+
+            _ = BF1API.SetAPILocale(Globals.SessionId);
+
+            var result = await BF1API.GetWelcomeMessage(Globals.SessionId);
+            if (result.IsSuccess)
+            {
+                var welcomeMsg = JsonHelper.JsonDese<WelcomeMsg>(result.Content);
+                var firstMessage = ChsUtil.ToSimplified(welcomeMsg.result.firstMessage);
+
+                TextBlock_SessionIdState.Text = firstMessage;
+                Border_SessionIdState.Background = Brushes.Green;
+
+                if (!Globals.IsCloudMode)
+                {
+                    if (Globals.AlreadyToggleTeamPlayer.Count != 0)
+                    {
+                        Globals.AlreadyToggleTeamPlayer.Clear();
+                    }
+                    if (Globals.TempToggleTeamList.Count != 0)
+                    {
+                        Globals.TempToggleTeamList.Clear();
+                    }
+                    if (Globals.AllowTempAloowToggleTeamList1.Count != 0)
+                    {
+                        Globals.AllowTempAloowToggleTeamList1.Clear();
+                    }
+                    if (Globals.AllowTempAloowToggleTeamList2.Count != 0)
+                    {
+                        Globals.AllowTempAloowToggleTeamList2.Clear();
+                    }
+                }
+
+                var result1 = await CloudApi.CheckAlive();
+                if (result1.IsSuccess)
+                {
+                    Globals.IsAuth = true;
+                    Globals.IsCloudMode = true;
+                    Globals.ISetRule = false;
+                    NotifierHelper.Show(NotifierType.Success, $"[{result.ExecTime:0.00} 秒]  验证成功\n{firstMessage}在线模式");
+
+                }
+                else
+                {
+                    Globals.IsCloudMode = false;
+                    NotifierHelper.Show(NotifierType.Warning, $"[{result.ExecTime:0.00} 秒]  验证成功\n{firstMessage}服务器无响应回退到离线模式");
+                }
+            }
+            else
+            {
+                TextBlock_SessionIdState.Text = "验证失败";
+                Border_SessionIdState.Background = Brushes.OrangeRed;
+                NotifierHelper.Show(NotifierType.Error, $"[{result.ExecTime:0.00} 秒]  验证失败\n{result.Content}");
+            }
+        }
     }
 
     /// <summary>
@@ -449,6 +631,99 @@ public partial class AuthView : UserControl
         }
     }
 
+
+
+    private async void RefreshAuthInfo()
+    {
+        if (Globals.IsUseMode1)
+        {
+            NotifierHelper.Show(NotifierType.Information, "正在内存扫描中，请稍后...");
+
+            var sessionId = await Scan.GetGatewaySession();
+            if (sessionId != string.Empty)
+            {
+                Globals.SessionId1 = sessionId;
+                NotifierHelper.Show(NotifierType.Information, $"内存扫描SessionId成功 {Globals.SessionId1}");
+            }
+            else
+            {
+                NotifierHelper.Show(NotifierType.Information, "内存扫描SessionId失败");
+            }
+        }
+        else
+        {
+            if (string.IsNullOrEmpty(Globals.Remid) || string.IsNullOrEmpty(Globals.Sid))
+            {
+                NotifierHelper.Show(NotifierType.Warning, "玩家Remid或Sid为空，请先获取玩家Cookies");
+                return;
+            }
+
+            NotifierHelper.Show(NotifierType.Information, "正在刷新中，请稍后...");
+
+            var respAuth = await EA1API.GetAuthCode(Globals.Remid, Globals.Sid);
+            if (respAuth.IsSuccess)
+            {
+                if (!string.IsNullOrEmpty(respAuth.Remid))
+                    Globals.Remid = respAuth.Remid;
+                if (!string.IsNullOrEmpty(respAuth.Sid))
+                    Globals.Sid = respAuth.Sid;
+
+                var result = await EA2API.GetAccessToken(Globals.Remid, Globals.Sid);
+                if (result.IsSuccess)
+                {
+                    var jNode = JsonNode.Parse(result.Content);
+                    Globals.AccessToken = jNode["access_token"].GetValue<string>();
+                    AuthModel.AccessToken = Globals.AccessToken;
+                    NotifierHelper.Show(NotifierType.Success, "刷新玩家access_token成功");
+                }
+
+                result = await BF1API.GetEnvIdViaAuthCode(respAuth.Code);
+                if (result.IsSuccess)
+                {
+                    var envIdViaAuthCode = JsonHelper.JsonDese<EnvIdViaAuthCode>(result.Content);
+                    Globals.SessionId2 = envIdViaAuthCode.result.sessionId;
+                    Globals.PersonaId2 = long.Parse(envIdViaAuthCode.result.personaId);
+
+                    result = await BF1API.GetPersonasByIds(Globals.SessionId2, Globals.PersonaId);
+                    if (result.IsSuccess)
+                    {
+                        var jNode = JsonNode.Parse(result.Content);
+                        var personas = jNode["result"]![$"{Globals.PersonaId}"];
+                        if (personas != null)
+                        {
+                            Globals.Avatar2 = personas!["avatar"].GetValue<string>();
+                            Globals.DisplayName2 = personas!["displayName"].GetValue<string>();
+
+                            AuthModel.Avatar2 = Globals.Avatar2;
+                            AuthModel.DisplayName2 = Globals.DisplayName2;
+                            AuthModel.PersonaId2 = Globals.PersonaId2;
+
+                            AuthModel.Sid = Globals.Sid;
+                            AuthModel.Remid = Globals.Remid;
+                            AuthModel.SessionId2 = Globals.SessionId2;
+
+                            NotifierHelper.Show(NotifierType.Success, "刷新玩家Cookies数据成功");
+                        }
+                    }
+                    else
+                    {
+                        NotifierHelper.Show(NotifierType.Error, $"刷新失败\n{result.Content}");
+                    }
+                }
+                else
+                {
+                    NotifierHelper.Show(NotifierType.Error, $"刷新失败\n{result.Content}");
+                }
+            }
+            else
+            {
+                NotifierHelper.Show(NotifierType.Error, "刷新失败，玩家Remid或Sid可能已过期");
+            }
+        }
+        AutoAuthSession();
+    }
+
+
     /// <summary>
     /// 验证玩家SessionId有效性，默认离线版本
     /// </summary>
@@ -503,7 +778,7 @@ public partial class AuthView : UserControl
                     }
                 }
             }
-
+            Globals.IsAuth = true;
             NotifierHelper.Show(NotifierType.Success, $"[{result.ExecTime:0.00} 秒]  验证成功\n{firstMessage}");
             if (Globals.IsCloudMode)
             {
@@ -573,6 +848,7 @@ public partial class AuthView : UserControl
             {
                 Globals.IsCloudMode = true;
                 Globals.ISetRule = false;
+                Globals.IsAuth = true;
                 NotifierHelper.Show(NotifierType.Success, $"[{result.ExecTime:0.00} 秒]  验证成功\n{firstMessage}在线模式");
 
             }

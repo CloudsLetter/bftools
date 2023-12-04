@@ -8,6 +8,9 @@ public class AuthConfig
     public List<AuthInfo> AuthInfos { get; set; }
     public List<string> BF1SpartaGatewayProxyAddr { get; set; }
     public string CurrentBF1SpartaGatewayProxyAddr { get; set; }
+    public bool AutoApplyRuleOffline { get; set; }
+    public bool AutoApplyRuleOnline { get; set; }
+
     public class AuthInfo
     {
         public string Avatar2 { get; set; }

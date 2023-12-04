@@ -556,6 +556,10 @@ public partial class RuleView : UserControl
                             {
                                 Globals.CloudModeSet = true;
                                 Globals.ISetRule = true;
+                                if (Globals.AutoApplyRule)
+                                {
+                                    ApplyAndQueryCurrentRule();
+                                }
                             }
                         }
                         if (Globals.SystemAutoBalance && Globals.Team2PlayerCount - Globals.Team1PlayerCount <= 1 && Globals.Team2PlayerCount - Globals.Team1PlayerCount >= 0 || Globals.Team1PlayerCount - Globals.Team2PlayerCount <= 1 && Globals.Team1PlayerCount - Globals.Team2PlayerCount >= 0)
@@ -574,12 +578,12 @@ public partial class RuleView : UserControl
                             if (!result.IsSuccess)
                             {
                                 Globals.AlreadyToggleTeamPlayer.Clear();
-                                Globals.TempGameId= 0;
+                                Globals.TempGameId = 0;
                             }
                         }
-                        else{
+                        else {
                             Globals.AlreadyToggleTeamPlayer.Clear();
-                            Globals.TempGameId= 0;
+                            Globals.TempGameId = 0;
                         }
                     }
 
@@ -601,6 +605,15 @@ public partial class RuleView : UserControl
                     {
                         Globals.AllowAutoChangeMap = true;
                     }
+                    if (Globals.AutoKick)
+                    {
+                        Globals.AutoKick = false;
+                    }
+                    if (Globals.AutoRuleApplyOk)
+                    {
+                        Globals.AutoRuleApplyOk = false;
+                    }
+                    ClearRuleLog();
                 }
             }
             else
@@ -624,6 +637,12 @@ public partial class RuleView : UserControl
                 {
                     if (Globals.LoginPlayerIsAdmin)
                     {
+                        if (!Globals.AutoApplyRuleOfflineView  && Globals.AutoApplyRule && Globals.IsAuth)
+                        {
+                            //&& Globals.IsAuth
+                            Globals.AutoApplyRuleOfflineView = true;
+                            ApplyAndQueryCurrentRule();
+                        }
                         if (Globals.SystemAutoBalance && Globals.Team2PlayerCount - Globals.Team1PlayerCount <= 1 && Globals.Team2PlayerCount - Globals.Team1PlayerCount >= 0 || Globals.Team1PlayerCount - Globals.Team2PlayerCount <= 1 && Globals.Team1PlayerCount - Globals.Team2PlayerCount >= 0)
                         {
                             Globals.SystemAutoBalance = false;
@@ -632,11 +651,24 @@ public partial class RuleView : UserControl
                 }
                 else
                 {
+                    if (Globals.AutoApplyRuleOfflineView)
+                    {
+                        Globals.AutoApplyRuleOfflineView = false;
+                    }
                     if (Globals.SystemAutoBalance)
                     {
                         Globals.SystemAutoBalance = false;
                     }
+                    if (Globals.AutoKick)
+                    {
+                        Globals.AutoKick = false;
+                    }
+                    if (Globals.AutoRuleApplyOk)
+                    {
+                        Globals.AutoRuleApplyOk = false;
+                    }
                 }
+
             }
                 Thread.Sleep(2000);
         }
@@ -655,102 +687,110 @@ public partial class RuleView : UserControl
         // 更新当前授权信息
         if (!Globals.IsCloudMode)
         {
-
-        
-        var index = ComboBox_ConfigNames.SelectedIndex;
-        if (index != -1)
-        {
-            RuleConfig.SelectedIndex = index;
-            var rule = RuleConfig.RuleInfos[index];
-            rule.WhiteLifeKD = CheckBox_WhiteLifeKD.IsChecked == true;
-            rule.WhiteLifeKPM = CheckBox_WhiteLifeKPM.IsChecked == true;
-            rule.WhiteLifeWeaponStar = CheckBox_WhiteLifeWeaponStar.IsChecked == true;
-            rule.WhiteLifeVehicleStar = CheckBox_WhiteLifeVehicleStar.IsChecked == true;
-            rule.WhiteKill = CheckBox_WhiteKill.IsChecked == true;
-            rule.WhiteKD = CheckBox_WhiteKD.IsChecked == true;
-            rule.WhiteKPM = CheckBox_WhiteKPM.IsChecked == true;
-            rule.WhiteRank = CheckBox_WhiteRank.IsChecked == true;
-            rule.WhiteWeapon = CheckBox_WhiteWeapon.IsChecked == true;
-            rule.WhiteLifeMaxAccuracyRatio = CheckBox_WhiteLifeMaxAccuracyRatio.IsChecked == true;
-            rule.WhiteLifeMaxHeadShotRatio = CheckBox_WhiteLifeMaxHeadShotRatio.IsChecked == true;
-            rule.WhiteMaxWR = CheckBox_WhiteLifeMaxWR.IsChecked == true;
-            rule.WhiteAllowToggleTeam = CheckBox_WhiteToggleTeamLimt.IsChecked == true;
-            rule.Allow2LowScoreTeam = CheckBox_AllowToggle2LowScoreTeam.IsChecked == true;
-            rule.WhiteScore =CheckBox_WhiteScore.IsChecked == true;
-
-            rule.Team1Rule.MaxKill = RuleTeam1Model.MaxKill;
-            rule.Team1Rule.FlagKD = RuleTeam1Model.FlagKD;
-            rule.Team1Rule.MaxKD = RuleTeam1Model.MaxKD;
-            rule.Team1Rule.FlagKPM = RuleTeam1Model.FlagKPM;
-            rule.Team1Rule.MaxKPM = RuleTeam1Model.MaxKPM;
-            rule.Team1Rule.MinRank = RuleTeam1Model.MinRank;
-            rule.Team1Rule.MaxRank = RuleTeam1Model.MaxRank;
-            rule.Team1Rule.LifeMaxKD = RuleTeam1Model.LifeMaxKD;
-            rule.Team1Rule.LifeMaxKPM = RuleTeam1Model.LifeMaxKPM;
-            rule.Team1Rule.LifeMaxWeaponStar = RuleTeam1Model.LifeMaxWeaponStar;
-            rule.Team1Rule.LifeMaxAccuracyRatioLevel = RuleTeam1Model.LifeMaxAccuracyRatioLevel;
-            rule.Team1Rule.LifeMaxAccuracyRatio = RuleTeam1Model.LifeMaxAccuracyRatio;
-            rule.Team1Rule.LifeMaxHeadShotRatioLevel = RuleTeam1Model.LifeMaxHeadShotRatioLevel;
-            rule.Team1Rule.LifeMaxHeadShotRatio = RuleTeam1Model.LifeMaxHeadShotRatio;
-            rule.Team1Rule.LifeMaxVehicleStar = RuleTeam1Model.LifeMaxVehicleStar;
-            rule.Team1Rule.LifeMaxWRLevel = RuleTeam1Model.LifeMaxWRLevel;
-            rule.Team1Rule.LifeMaxWR = RuleTeam1Model.LifeMaxWR;
-            rule.Team1Rule.ScoreLimit = RuleTeam1Model.ScoreLimt;
-            rule.Team1Rule.ScoreGap = RuleTeam1Model.ScoreGap;
-            rule.Team1Rule.MaxScore = RuleTeam1Model.MaxScore;
-            rule.Team1Rule.FlagKDPro = RuleTeam1Model.FlagKDPro;
-            rule.Team1Rule.MaxKDPro = RuleTeam1Model.MaxKDPro;
-            rule.Team1Rule.FlagKPMPro = RuleTeam1Model.FlagKPMPro;
-            rule.Team1Rule.MaxKPMPro = RuleTeam1Model.MaxKPMPro;
-
-            rule.Team2Rule.MaxKill = RuleTeam2Model.MaxKill;
-            rule.Team2Rule.FlagKD = RuleTeam2Model.FlagKD;
-            rule.Team2Rule.MaxKD = RuleTeam2Model.MaxKD;
-            rule.Team2Rule.FlagKPM = RuleTeam2Model.FlagKPM;
-            rule.Team2Rule.MaxKPM = RuleTeam2Model.MaxKPM;
-            rule.Team2Rule.MinRank = RuleTeam2Model.MinRank;
-            rule.Team2Rule.MaxRank = RuleTeam2Model.MaxRank;
-            rule.Team2Rule.LifeMaxKD = RuleTeam2Model.LifeMaxKD;
-            rule.Team2Rule.LifeMaxKPM = RuleTeam2Model.LifeMaxKPM;
-            rule.Team2Rule.LifeMaxWeaponStar = RuleTeam2Model.LifeMaxWeaponStar;
-            rule.Team2Rule.LifeMaxVehicleStar = RuleTeam2Model.LifeMaxVehicleStar;
-            rule.Team2Rule.LifeMaxAccuracyRatioLevel = RuleTeam2Model.LifeMaxAccuracyRatioLevel;
-            rule.Team2Rule.LifeMaxAccuracyRatio = RuleTeam2Model.LifeMaxAccuracyRatio;
-            rule.Team2Rule.LifeMaxHeadShotRatioLevel = RuleTeam2Model.LifeMaxHeadShotRatioLevel;
-            rule.Team2Rule.LifeMaxHeadShotRatio = RuleTeam2Model.LifeMaxHeadShotRatio;
-            rule.Team2Rule.LifeMaxWRLevel = RuleTeam2Model.LifeMaxWRLevel;
-            rule.Team2Rule.LifeMaxWR = RuleTeam2Model.LifeMaxWR;
-            rule.Team2Rule.ScoreLimit = RuleTeam2Model.ScoreLimt;
-            rule.Team2Rule.ScoreGap = RuleTeam2Model.ScoreGap;
-            rule.Team2Rule.MaxScore = RuleTeam2Model.MaxScore;
-            rule.Team2Rule.FlagKDPro = RuleTeam2Model.FlagKDPro;
-            rule.Team2Rule.MaxKDPro = RuleTeam2Model.MaxKDPro;
-            rule.Team2Rule.FlagKPMPro = RuleTeam2Model.FlagKPMPro;
-            rule.Team2Rule.MaxKPMPro = RuleTeam2Model.MaxKPMPro;
-            rule.WhiteList.Clear();
-            foreach (string name in ListBox_CustomWhites.Items)
+            Dispatcher.Invoke(
+            new Action(
+            delegate
             {
-                rule.WhiteList.Add(name);
-            }
+                var index = ComboBox_ConfigNames.SelectedIndex;
+                if (index != -1)
+                {
+                    RuleConfig.SelectedIndex = index;
+                    var rule = RuleConfig.RuleInfos[index];
+                    rule.WhiteLifeKD = CheckBox_WhiteLifeKD.IsChecked == true;
+                    rule.WhiteLifeKPM = CheckBox_WhiteLifeKPM.IsChecked == true;
+                    rule.WhiteLifeWeaponStar = CheckBox_WhiteLifeWeaponStar.IsChecked == true;
+                    rule.WhiteLifeVehicleStar = CheckBox_WhiteLifeVehicleStar.IsChecked == true;
+                    rule.WhiteKill = CheckBox_WhiteKill.IsChecked == true;
+                    rule.WhiteKD = CheckBox_WhiteKD.IsChecked == true;
+                    rule.WhiteKPM = CheckBox_WhiteKPM.IsChecked == true;
+                    rule.WhiteRank = CheckBox_WhiteRank.IsChecked == true;
+                    rule.WhiteWeapon = CheckBox_WhiteWeapon.IsChecked == true;
+                    rule.WhiteLifeMaxAccuracyRatio = CheckBox_WhiteLifeMaxAccuracyRatio.IsChecked == true;
+                    rule.WhiteLifeMaxHeadShotRatio = CheckBox_WhiteLifeMaxHeadShotRatio.IsChecked == true;
+                    rule.WhiteMaxWR = CheckBox_WhiteLifeMaxWR.IsChecked == true;
+                    rule.WhiteAllowToggleTeam = CheckBox_WhiteToggleTeamLimt.IsChecked == true;
+                    rule.Allow2LowScoreTeam = CheckBox_AllowToggle2LowScoreTeam.IsChecked == true;
+                    rule.WhiteScore = CheckBox_WhiteScore.IsChecked == true;
 
-            rule.BlackList.Clear();
-            foreach (string name in ListBox_CustomBlacks.Items)
-            {
-                rule.BlackList.Add(name);
-            }
+                    rule.Team1Rule.MaxKill = RuleTeam1Model.MaxKill;
+                    rule.Team1Rule.FlagKD = RuleTeam1Model.FlagKD;
+                    rule.Team1Rule.MaxKD = RuleTeam1Model.MaxKD;
+                    rule.Team1Rule.FlagKPM = RuleTeam1Model.FlagKPM;
+                    rule.Team1Rule.MaxKPM = RuleTeam1Model.MaxKPM;
+                    rule.Team1Rule.MinRank = RuleTeam1Model.MinRank;
+                    rule.Team1Rule.MaxRank = RuleTeam1Model.MaxRank;
+                    rule.Team1Rule.LifeMaxKD = RuleTeam1Model.LifeMaxKD;
+                    rule.Team1Rule.LifeMaxKPM = RuleTeam1Model.LifeMaxKPM;
+                    rule.Team1Rule.LifeMaxWeaponStar = RuleTeam1Model.LifeMaxWeaponStar;
+                    rule.Team1Rule.LifeMaxAccuracyRatioLevel = RuleTeam1Model.LifeMaxAccuracyRatioLevel;
+                    rule.Team1Rule.LifeMaxAccuracyRatio = RuleTeam1Model.LifeMaxAccuracyRatio;
+                    rule.Team1Rule.LifeMaxHeadShotRatioLevel = RuleTeam1Model.LifeMaxHeadShotRatioLevel;
+                    rule.Team1Rule.LifeMaxHeadShotRatio = RuleTeam1Model.LifeMaxHeadShotRatio;
+                    rule.Team1Rule.LifeMaxVehicleStar = RuleTeam1Model.LifeMaxVehicleStar;
+                    rule.Team1Rule.LifeMaxWRLevel = RuleTeam1Model.LifeMaxWRLevel;
+                    rule.Team1Rule.LifeMaxWR = RuleTeam1Model.LifeMaxWR;
+                    rule.Team1Rule.ScoreLimit = RuleTeam1Model.ScoreLimt;
+                    rule.Team1Rule.ScoreGap = RuleTeam1Model.ScoreGap;
+                    rule.Team1Rule.MaxScore = RuleTeam1Model.MaxScore;
+                    rule.Team1Rule.FlagKDPro = RuleTeam1Model.FlagKDPro;
+                    rule.Team1Rule.MaxKDPro = RuleTeam1Model.MaxKDPro;
+                    rule.Team1Rule.FlagKPMPro = RuleTeam1Model.FlagKPMPro;
+                    rule.Team1Rule.MaxKPMPro = RuleTeam1Model.MaxKPMPro;
 
-            rule.Team1Weapon.Clear();
-            rule.Team2Weapon.Clear();
-            for (int i = 0; i < DataGrid_RuleWeaponModels.Count; i++)
-            {
-                var item = DataGrid_RuleWeaponModels[i];
-                if (item.Team1)
-                    rule.Team1Weapon.Add(item.English);
+                    rule.Team2Rule.MaxKill = RuleTeam2Model.MaxKill;
+                    rule.Team2Rule.FlagKD = RuleTeam2Model.FlagKD;
+                    rule.Team2Rule.MaxKD = RuleTeam2Model.MaxKD;
+                    rule.Team2Rule.FlagKPM = RuleTeam2Model.FlagKPM;
+                    rule.Team2Rule.MaxKPM = RuleTeam2Model.MaxKPM;
+                    rule.Team2Rule.MinRank = RuleTeam2Model.MinRank;
+                    rule.Team2Rule.MaxRank = RuleTeam2Model.MaxRank;
+                    rule.Team2Rule.LifeMaxKD = RuleTeam2Model.LifeMaxKD;
+                    rule.Team2Rule.LifeMaxKPM = RuleTeam2Model.LifeMaxKPM;
+                    rule.Team2Rule.LifeMaxWeaponStar = RuleTeam2Model.LifeMaxWeaponStar;
+                    rule.Team2Rule.LifeMaxVehicleStar = RuleTeam2Model.LifeMaxVehicleStar;
+                    rule.Team2Rule.LifeMaxAccuracyRatioLevel = RuleTeam2Model.LifeMaxAccuracyRatioLevel;
+                    rule.Team2Rule.LifeMaxAccuracyRatio = RuleTeam2Model.LifeMaxAccuracyRatio;
+                    rule.Team2Rule.LifeMaxHeadShotRatioLevel = RuleTeam2Model.LifeMaxHeadShotRatioLevel;
+                    rule.Team2Rule.LifeMaxHeadShotRatio = RuleTeam2Model.LifeMaxHeadShotRatio;
+                    rule.Team2Rule.LifeMaxWRLevel = RuleTeam2Model.LifeMaxWRLevel;
+                    rule.Team2Rule.LifeMaxWR = RuleTeam2Model.LifeMaxWR;
+                    rule.Team2Rule.ScoreLimit = RuleTeam2Model.ScoreLimt;
+                    rule.Team2Rule.ScoreGap = RuleTeam2Model.ScoreGap;
+                    rule.Team2Rule.MaxScore = RuleTeam2Model.MaxScore;
+                    rule.Team2Rule.FlagKDPro = RuleTeam2Model.FlagKDPro;
+                    rule.Team2Rule.MaxKDPro = RuleTeam2Model.MaxKDPro;
+                    rule.Team2Rule.FlagKPMPro = RuleTeam2Model.FlagKPMPro;
+                    rule.Team2Rule.MaxKPMPro = RuleTeam2Model.MaxKPMPro;
+                    rule.WhiteList.Clear();
+                    foreach (string name in ListBox_CustomWhites.Items)
+                    {
+                        rule.WhiteList.Add(name);
+                    }
 
-                if (item.Team2)
-                    rule.Team2Weapon.Add(item.English);
+                    rule.BlackList.Clear();
+                    foreach (string name in ListBox_CustomBlacks.Items)
+                    {
+                        rule.BlackList.Add(name);
+                    }
+
+                    rule.Team1Weapon.Clear();
+                    rule.Team2Weapon.Clear();
+                    for (int i = 0; i < DataGrid_RuleWeaponModels.Count; i++)
+                    {
+                        var item = DataGrid_RuleWeaponModels[i];
+                        if (item.Team1)
+                            rule.Team1Weapon.Add(item.English);
+
+                        if (item.Team2)
+                            rule.Team2Weapon.Add(item.English);
+                    }
+
+                }
+
             }
-        }
+            )
+            );
+   
 
         File.WriteAllText(F_Rule_Path, JsonHelper.JsonSeri(RuleConfig));
         }
@@ -1120,7 +1160,14 @@ public partial class RuleView : UserControl
     /// </summary>
     private void ClearRuleLog()
     {
-        DataGrid_RuleLogs.Clear();
+        Dispatcher.Invoke(
+        new Action(
+        delegate
+            {
+            DataGrid_RuleLogs.Clear();
+            }
+        )
+        );
     }
 
 
@@ -1262,232 +1309,241 @@ public partial class RuleView : UserControl
     /// </summary>
     private void SetAndApplyRule()
     {
-        // 重置状态
-        Globals.IsSetRuleOK = false;
-        Globals.AutoKickBreakRulePlayer = false;
-        #region 应用当前规则
-        Globals.WhiteLifeKD = CheckBox_WhiteLifeKD.IsChecked == true;
-        Globals.WhiteLifeKPM = CheckBox_WhiteLifeKPM.IsChecked == true;
-        Globals.WhiteLifeWeaponStar = CheckBox_WhiteLifeWeaponStar.IsChecked == true;
-        Globals.WhiteLifeVehicleStar = CheckBox_WhiteLifeVehicleStar.IsChecked == true;
-        Globals.WhiteKill = CheckBox_WhiteKill.IsChecked == true;
-        Globals.WhiteKD = CheckBox_WhiteKD.IsChecked == true;
-        Globals.WhiteKPM = CheckBox_WhiteKPM.IsChecked == true;
-        Globals.WhiteRank = CheckBox_WhiteRank.IsChecked == true;
-        Globals.WhiteWeapon = CheckBox_WhiteWeapon.IsChecked == true;
-        Globals.IsAllowWhlistToggleTeam = CheckBox_WhiteToggleTeamLimt.IsChecked == true;
-        Globals.WhiteLifeMaxAccuracyRatio = CheckBox_WhiteLifeMaxAccuracyRatio.IsChecked == true;
-        Globals.WhiteLifeMaxHeadShotRatio = CheckBox_WhiteLifeMaxHeadShotRatio.IsChecked == true;
-        Globals.WhiteLifeMaxWR = CheckBox_WhiteLifeMaxWR.IsChecked == true;
-        Globals.Allow2LowScoreTeam = CheckBox_AllowToggle2LowScoreTeam.IsChecked == true;
-        Globals.WhiteScore = CheckBox_WhiteScore.IsChecked == true;
-        Globals.ServerRule_Team1.ScoreLimit = RuleTeam1Model.ScoreLimt;
-        Globals.ServerRule_Team1.ScoreGap = RuleTeam1Model.ScoreGap;
-        Globals.ServerRule_Team1.MaxKill = RuleTeam1Model.MaxKill;
-        Globals.ServerRule_Team1.FlagKD = RuleTeam1Model.FlagKD;
-        Globals.ServerRule_Team1.MaxKD = RuleTeam1Model.MaxKD;
-        Globals.ServerRule_Team1.FlagKPM = RuleTeam1Model.FlagKPM;
-        Globals.ServerRule_Team1.MaxKPM = RuleTeam1Model.MaxKPM;
-        Globals.ServerRule_Team1.MinRank = RuleTeam1Model.MinRank;
-        Globals.ServerRule_Team1.MaxRank = RuleTeam1Model.MaxRank;
-
-        Globals.ServerRule_Team1.LifeMaxKD = RuleTeam1Model.LifeMaxKD;
-        Globals.ServerRule_Team1.LifeMaxKPM = RuleTeam1Model.LifeMaxKPM;
-        Globals.ServerRule_Team1.LifeMaxAccuracyRatioLevel = RuleTeam1Model.LifeMaxAccuracyRatioLevel;
-        Globals.ServerRule_Team1.LifeMaxAccuracyRatio = RuleTeam1Model.LifeMaxAccuracyRatio;
-        Globals.ServerRule_Team1.LifeMaxHeadShotRatioLevel = RuleTeam1Model.LifeMaxHeadShotRatioLevel;
-        Globals.ServerRule_Team1.LifeMaxHeadShotRatio = RuleTeam1Model.LifeMaxHeadShotRatio;
-        Globals.ServerRule_Team1.LifeMaxWRLevel = RuleTeam1Model.LifeMaxWRLevel;
-        Globals.ServerRule_Team1.LifeMaxWR = RuleTeam1Model.LifeMaxWR;
-        Globals.ServerRule_Team1.LifeMaxWeaponStar = RuleTeam1Model.LifeMaxWeaponStar;
-        Globals.ServerRule_Team1.LifeMaxVehicleStar = RuleTeam1Model.LifeMaxVehicleStar;
-
-        Globals.ServerRule_Team1.MaxScore = RuleTeam1Model.MaxScore;
-        Globals.ServerRule_Team1.FlagKDPro = RuleTeam1Model.FlagKDPro;
-        Globals.ServerRule_Team1.MaxKDPro = RuleTeam1Model.MaxKDPro;
-        Globals.ServerRule_Team1.FlagKPMPro = RuleTeam1Model.FlagKPMPro;
-        Globals.ServerRule_Team1.MaxKPMPro = RuleTeam1Model.MaxKPMPro;
-
-        Globals.ServerRule_Team2.MaxKill = RuleTeam2Model.MaxKill;
-        Globals.ServerRule_Team2.FlagKD = RuleTeam2Model.FlagKD;
-        Globals.ServerRule_Team2.MaxKD = RuleTeam2Model.MaxKD;
-        Globals.ServerRule_Team2.FlagKPM = RuleTeam2Model.FlagKPM;
-        Globals.ServerRule_Team2.MaxKPM = RuleTeam2Model.MaxKPM;
-        Globals.ServerRule_Team2.MinRank = RuleTeam2Model.MinRank;
-        Globals.ServerRule_Team2.MaxRank = RuleTeam2Model.MaxRank;
-
-        Globals.ServerRule_Team2.LifeMaxKD = RuleTeam2Model.LifeMaxKD;
-        Globals.ServerRule_Team2.LifeMaxKPM = RuleTeam2Model.LifeMaxKPM;
-        Globals.ServerRule_Team2.LifeMaxAccuracyRatioLevel = RuleTeam2Model.LifeMaxAccuracyRatioLevel;
-        Globals.ServerRule_Team2.LifeMaxAccuracyRatio = RuleTeam2Model.LifeMaxAccuracyRatio;
-        Globals.ServerRule_Team2.LifeMaxHeadShotRatioLevel = RuleTeam2Model.LifeMaxHeadShotRatioLevel;
-        Globals.ServerRule_Team2.LifeMaxHeadShotRatio = RuleTeam2Model.LifeMaxHeadShotRatio;
-        Globals.ServerRule_Team2.LifeMaxWRLevel = RuleTeam2Model.LifeMaxWRLevel;
-        Globals.ServerRule_Team2.LifeMaxWR = RuleTeam2Model.LifeMaxWR;
-        Globals.ServerRule_Team2.LifeMaxWeaponStar = RuleTeam2Model.LifeMaxWeaponStar;
-        Globals.ServerRule_Team2.LifeMaxVehicleStar = RuleTeam2Model.LifeMaxVehicleStar;
-
-        Globals.ServerRule_Team2.MaxScore = RuleTeam2Model.MaxScore;
-        Globals.ServerRule_Team2.FlagKDPro = RuleTeam2Model.FlagKDPro;
-        Globals.ServerRule_Team2.MaxKDPro = RuleTeam2Model.MaxKDPro;
-        Globals.ServerRule_Team2.FlagKPMPro = RuleTeam2Model.FlagKPMPro;
-        Globals.ServerRule_Team2.MaxKPMPro = RuleTeam2Model.MaxKPMPro;
-        /////////////////////////////////////////////////////////////////////////////
-
-        // 检查队伍1等级限制
-        if (Globals.ServerRule_Team1.MinRank >= Globals.ServerRule_Team1.MaxRank && Globals.ServerRule_Team1.MinRank != 0 && Globals.ServerRule_Team1.MaxRank != 0)
-        {
-            Globals.IsSetRuleOK = false;
-
-            NotifierHelper.Show(NotifierType.Warning, "队伍1 限制等级规则设置不正确");
-            return;
-        }
-        // 检查队伍2等级限制
-        if (Globals.ServerRule_Team2.MinRank >= Globals.ServerRule_Team2.MaxRank && Globals.ServerRule_Team2.MinRank != 0 && Globals.ServerRule_Team2.MaxRank != 0)
-        {
-            Globals.IsSetRuleOK = false;
-
-            NotifierHelper.Show(NotifierType.Warning, "队伍2 限制等级规则设置不正确");
-            return;
-        }
-        // 检查重开比分设置 
-        if (Globals.ServerRule_Team1.ScoreGap >= Globals.ServerRule_Team1.ScoreLimit && Globals.ServerRule_Team1.ScoreLimit != 0 && Globals.ServerRule_Team1.ScoreGap != 0)
-        {
-            Globals.IsSetRuleOK = false;
-            NotifierHelper.Show(NotifierType.Warning, "计算重开分差限制规则设置不正确");
-            return;
-        }
-        /////////////////////////////////////////////////////////////////////////////
-
-        // 清空限制武器列表
-        Globals.CustomWeapons_Team1.Clear();
-        Globals.CustomWeapons_Team2.Clear();
-        // 添加自定义限制武器
-        foreach (var item in DataGrid_RuleWeaponModels)
-        {
-            if (item.Team1)
-                Globals.CustomWeapons_Team1.Add(item.English);
-
-            if (item.Team2)
-                Globals.CustomWeapons_Team2.Add(item.English);
-        }
-
-        // 清空白名单列表
-        Globals.CustomWhites_Name.Clear();
-        // 添加自定义白名单列表
-        foreach (string name in ListBox_CustomWhites.Items)
-        {
-            Globals.CustomWhites_Name.Add(name);
-        }
-
-        // 清空黑名单列表
-        Globals.CustomBlacks_Name.Clear();
-        // 添加自定义黑名单列表
-        foreach (string name in ListBox_CustomBlacks.Items)
-        {
-            Globals.CustomBlacks_Name.Add(name);
-        }
-
-        Globals.IsSetRuleOK = true;
-        #endregion
-
-        AddRuleLog("【当局规则】");
-        AddRuleLog("最高击杀", $"{Globals.ServerRule_Team1.MaxKill}", $"{Globals.ServerRule_Team2.MaxKill}");
-
-        AddRuleLog("KD阈值", $"{Globals.ServerRule_Team1.FlagKD}", $"{Globals.ServerRule_Team2.FlagKD}");
-        AddRuleLog("最高KD", $"{Globals.ServerRule_Team1.MaxKD}", $"{Globals.ServerRule_Team2.MaxKD}");
-
-        AddRuleLog("KPM阈值", $"{Globals.ServerRule_Team1.FlagKPM}", $"{Globals.ServerRule_Team2.FlagKPM}");
-        AddRuleLog("最高KPM", $"{Globals.ServerRule_Team1.MaxKPM}", $"{Globals.ServerRule_Team2.MaxKPM}");
-
-        AddRuleLog("最低等级", $"{Globals.ServerRule_Team1.MinRank}", $"{Globals.ServerRule_Team2.MinRank}");
-        AddRuleLog("最高等级", $"{Globals.ServerRule_Team1.MaxRank}", $"{Globals.ServerRule_Team2.MaxRank}");
-
-        AddRuleLog("【生涯规则】");
-        AddRuleLog("生涯KD", $"{Globals.ServerRule_Team1.LifeMaxKD}", $"{Globals.ServerRule_Team2.LifeMaxKD}");
-        AddRuleLog("生涯KPM", $"{Globals.ServerRule_Team1.LifeMaxKPM}", $"{Globals.ServerRule_Team2.LifeMaxKPM}");
-
-        AddRuleLog("生涯命中率等级阈值", $"{Globals.ServerRule_Team1.LifeMaxAccuracyRatioLevel}", $"{Globals.ServerRule_Team2.LifeMaxAccuracyRatioLevel}");
-        AddRuleLog("生涯命中率", $"{Globals.ServerRule_Team1.LifeMaxAccuracyRatio}", $"{Globals.ServerRule_Team2.LifeMaxAccuracyRatio}");
-        AddRuleLog("生涯爆头率等级阈值", $"{Globals.ServerRule_Team1.LifeMaxHeadShotRatioLevel}", $"{Globals.ServerRule_Team2.LifeMaxHeadShotRatioLevel}");
-        AddRuleLog("生涯爆头率", $"{Globals.ServerRule_Team1.LifeMaxHeadShotRatio}", $"{Globals.ServerRule_Team2.LifeMaxHeadShotRatio}");
-        AddRuleLog("生涯胜率等级阈值", $"{Globals.ServerRule_Team1.LifeMaxWRLevel}", $"{Globals.ServerRule_Team2.LifeMaxWRLevel}");
-        AddRuleLog("生涯胜率", $"{Globals.ServerRule_Team1.LifeMaxWR}", $"{Globals.ServerRule_Team2.LifeMaxWR}");
-
-        AddRuleLog("最高分数", $"{Globals.ServerRule_Team1.MaxScore}", $"{Globals.ServerRule_Team2.MaxScore}");
-        AddRuleLog("计算D的最低击杀数（150级）", $"{Globals.ServerRule_Team1.LifeMaxWR}", $"{Globals.ServerRule_Team2.LifeMaxWR}");
-        AddRuleLog("最高KD（150级）", $"{Globals.ServerRule_Team1.LifeMaxWR}", $"{Globals.ServerRule_Team2.LifeMaxWR}");
-        AddRuleLog("计算KPM的最低击杀数（150级）", $"{Globals.ServerRule_Team1.LifeMaxWR}", $"{Globals.ServerRule_Team2.LifeMaxWR}");
-        AddRuleLog("最高KPM（150级）", $"{Globals.ServerRule_Team1.LifeMaxWR}", $"{Globals.ServerRule_Team2.LifeMaxWR}");
-
-
-        AddRuleLog("武器星数", $"{Globals.ServerRule_Team1.LifeMaxWeaponStar}", $"{Globals.ServerRule_Team2.LifeMaxWeaponStar}");
-        AddRuleLog("载具星数", $"{Globals.ServerRule_Team1.LifeMaxVehicleStar}", $"{Globals.ServerRule_Team2.LifeMaxVehicleStar}");
-
-        AddRuleLog("【禁用武器】");
-        int team1 = Globals.CustomWeapons_Team1.Count;
-        int team2 = Globals.CustomWeapons_Team2.Count;
-        for (int i = 0; i < Math.Max(team1, team2); i++)
-        {
-            if (i < team1 && i < team2)
+        Dispatcher.Invoke(
+            new Action(
+            delegate
             {
-                AddRuleLog($"武器名称 {i + 1}", $"{ClientHelper.GetWeaponChsName(Globals.CustomWeapons_Team1[i])}", $"{ClientHelper.GetWeaponChsName(Globals.CustomWeapons_Team2[i])}");
-            }
-            else if (i < team1)
-            {
-                AddRuleLog($"武器名称 {i + 1}", $"{ClientHelper.GetWeaponChsName(Globals.CustomWeapons_Team1[i])}");
-            }
-            else if (i < team2)
-            {
-                AddRuleLog($"武器名称 {i + 1}", "", $"{ClientHelper.GetWeaponChsName(Globals.CustomWeapons_Team2[i])}");
-            }
-        }
+                // 重置状态
+                Globals.IsSetRuleOK = false;
+                Globals.AutoKickBreakRulePlayer = false;
+                Globals.AutoRuleApplyOk = true;
+                #region 应用当前规则
+                Globals.WhiteLifeKD = CheckBox_WhiteLifeKD.IsChecked == true;
+                Globals.WhiteLifeKPM = CheckBox_WhiteLifeKPM.IsChecked == true;
+                Globals.WhiteLifeWeaponStar = CheckBox_WhiteLifeWeaponStar.IsChecked == true;
+                Globals.WhiteLifeVehicleStar = CheckBox_WhiteLifeVehicleStar.IsChecked == true;
+                Globals.WhiteKill = CheckBox_WhiteKill.IsChecked == true;
+                Globals.WhiteKD = CheckBox_WhiteKD.IsChecked == true;
+                Globals.WhiteKPM = CheckBox_WhiteKPM.IsChecked == true;
+                Globals.WhiteRank = CheckBox_WhiteRank.IsChecked == true;
+                Globals.WhiteWeapon = CheckBox_WhiteWeapon.IsChecked == true;
+                Globals.IsAllowWhlistToggleTeam = CheckBox_WhiteToggleTeamLimt.IsChecked == true;
+                Globals.WhiteLifeMaxAccuracyRatio = CheckBox_WhiteLifeMaxAccuracyRatio.IsChecked == true;
+                Globals.WhiteLifeMaxHeadShotRatio = CheckBox_WhiteLifeMaxHeadShotRatio.IsChecked == true;
+                Globals.WhiteLifeMaxWR = CheckBox_WhiteLifeMaxWR.IsChecked == true;
+                Globals.Allow2LowScoreTeam = CheckBox_AllowToggle2LowScoreTeam.IsChecked == true;
+                Globals.WhiteScore = CheckBox_WhiteScore.IsChecked == true;
+                Globals.ServerRule_Team1.ScoreLimit = RuleTeam1Model.ScoreLimt;
+                Globals.ServerRule_Team1.ScoreGap = RuleTeam1Model.ScoreGap;
+                Globals.ServerRule_Team1.MaxKill = RuleTeam1Model.MaxKill;
+                Globals.ServerRule_Team1.FlagKD = RuleTeam1Model.FlagKD;
+                Globals.ServerRule_Team1.MaxKD = RuleTeam1Model.MaxKD;
+                Globals.ServerRule_Team1.FlagKPM = RuleTeam1Model.FlagKPM;
+                Globals.ServerRule_Team1.MaxKPM = RuleTeam1Model.MaxKPM;
+                Globals.ServerRule_Team1.MinRank = RuleTeam1Model.MinRank;
+                Globals.ServerRule_Team1.MaxRank = RuleTeam1Model.MaxRank;
 
-        AddRuleLog("【白名单特权】");
-        if (Globals.WhiteLifeKD)
-            AddRuleLog("", "免疫生涯KD限制");
-        if (Globals.WhiteLifeKPM)
-            AddRuleLog("", "免疫生涯KPM限制");
-        if (Globals.WhiteLifeWeaponStar)
-            AddRuleLog("", "免疫生涯武器星数限制");
-        if (Globals.WhiteLifeVehicleStar)
-            AddRuleLog("", "免疫生涯载具星数限制");
-        if (Globals.WhiteKill)
-            AddRuleLog("", "免疫击杀限制");
-        if (Globals.WhiteKD)
-            AddRuleLog("", "免疫KD限制");
-        if (Globals.WhiteKPM)
-            AddRuleLog("", "免疫KPM限制");
-        if (Globals.WhiteRank)
-            AddRuleLog("", "免疫等级限制");
-        if (Globals.WhiteWeapon)
-            AddRuleLog("", "免疫武器限制");
-        if (Globals.WhiteLifeMaxAccuracyRatio)
-            AddRuleLog("", "免疫生涯命中率限制");
-        if (Globals.WhiteLifeMaxHeadShotRatio)
-            AddRuleLog("", "免疫生涯爆头率限制");
-        if (Globals.WhiteLifeMaxWR)
-            AddRuleLog("", "免疫生涯胜率限制");
-        if (Globals.IsAllowWhlistToggleTeam)
-            AddRuleLog("", "免疫更换队伍限制");
-        if (Globals.WhiteScore)
-            AddRuleLog("", "免疫分数限制");
-        int index = 1;
-        AddRuleLog("【白名单列表】");
-        foreach (var item in Globals.CustomWhites_Name)
-        {
-            AddRuleLog($"玩家ID {index++}", $"{item}");
-        }
+                Globals.ServerRule_Team1.LifeMaxKD = RuleTeam1Model.LifeMaxKD;
+                Globals.ServerRule_Team1.LifeMaxKPM = RuleTeam1Model.LifeMaxKPM;
+                Globals.ServerRule_Team1.LifeMaxAccuracyRatioLevel = RuleTeam1Model.LifeMaxAccuracyRatioLevel;
+                Globals.ServerRule_Team1.LifeMaxAccuracyRatio = RuleTeam1Model.LifeMaxAccuracyRatio;
+                Globals.ServerRule_Team1.LifeMaxHeadShotRatioLevel = RuleTeam1Model.LifeMaxHeadShotRatioLevel;
+                Globals.ServerRule_Team1.LifeMaxHeadShotRatio = RuleTeam1Model.LifeMaxHeadShotRatio;
+                Globals.ServerRule_Team1.LifeMaxWRLevel = RuleTeam1Model.LifeMaxWRLevel;
+                Globals.ServerRule_Team1.LifeMaxWR = RuleTeam1Model.LifeMaxWR;
+                Globals.ServerRule_Team1.LifeMaxWeaponStar = RuleTeam1Model.LifeMaxWeaponStar;
+                Globals.ServerRule_Team1.LifeMaxVehicleStar = RuleTeam1Model.LifeMaxVehicleStar;
 
-        index = 1;
-        AddRuleLog("【黑名单列表】");
-        foreach (var item in Globals.CustomBlacks_Name)
-        {
-            AddRuleLog($"玩家ID {index++}", $"{item}");
-        }
-        AddRuleLog("【是否允许更换至劣势抗压】");
-        if (Globals.Allow2LowScoreTeam)
-            AddRuleLog("", "允许更换至劣势抗压");
+                Globals.ServerRule_Team1.MaxScore = RuleTeam1Model.MaxScore;
+                Globals.ServerRule_Team1.FlagKDPro = RuleTeam1Model.FlagKDPro;
+                Globals.ServerRule_Team1.MaxKDPro = RuleTeam1Model.MaxKDPro;
+                Globals.ServerRule_Team1.FlagKPMPro = RuleTeam1Model.FlagKPMPro;
+                Globals.ServerRule_Team1.MaxKPMPro = RuleTeam1Model.MaxKPMPro;
+
+                Globals.ServerRule_Team2.MaxKill = RuleTeam2Model.MaxKill;
+                Globals.ServerRule_Team2.FlagKD = RuleTeam2Model.FlagKD;
+                Globals.ServerRule_Team2.MaxKD = RuleTeam2Model.MaxKD;
+                Globals.ServerRule_Team2.FlagKPM = RuleTeam2Model.FlagKPM;
+                Globals.ServerRule_Team2.MaxKPM = RuleTeam2Model.MaxKPM;
+                Globals.ServerRule_Team2.MinRank = RuleTeam2Model.MinRank;
+                Globals.ServerRule_Team2.MaxRank = RuleTeam2Model.MaxRank;
+
+                Globals.ServerRule_Team2.LifeMaxKD = RuleTeam2Model.LifeMaxKD;
+                Globals.ServerRule_Team2.LifeMaxKPM = RuleTeam2Model.LifeMaxKPM;
+                Globals.ServerRule_Team2.LifeMaxAccuracyRatioLevel = RuleTeam2Model.LifeMaxAccuracyRatioLevel;
+                Globals.ServerRule_Team2.LifeMaxAccuracyRatio = RuleTeam2Model.LifeMaxAccuracyRatio;
+                Globals.ServerRule_Team2.LifeMaxHeadShotRatioLevel = RuleTeam2Model.LifeMaxHeadShotRatioLevel;
+                Globals.ServerRule_Team2.LifeMaxHeadShotRatio = RuleTeam2Model.LifeMaxHeadShotRatio;
+                Globals.ServerRule_Team2.LifeMaxWRLevel = RuleTeam2Model.LifeMaxWRLevel;
+                Globals.ServerRule_Team2.LifeMaxWR = RuleTeam2Model.LifeMaxWR;
+                Globals.ServerRule_Team2.LifeMaxWeaponStar = RuleTeam2Model.LifeMaxWeaponStar;
+                Globals.ServerRule_Team2.LifeMaxVehicleStar = RuleTeam2Model.LifeMaxVehicleStar;
+
+                Globals.ServerRule_Team2.MaxScore = RuleTeam2Model.MaxScore;
+                Globals.ServerRule_Team2.FlagKDPro = RuleTeam2Model.FlagKDPro;
+                Globals.ServerRule_Team2.MaxKDPro = RuleTeam2Model.MaxKDPro;
+                Globals.ServerRule_Team2.FlagKPMPro = RuleTeam2Model.FlagKPMPro;
+                Globals.ServerRule_Team2.MaxKPMPro = RuleTeam2Model.MaxKPMPro;
+                /////////////////////////////////////////////////////////////////////////////
+
+                // 检查队伍1等级限制
+                if (Globals.ServerRule_Team1.MinRank >= Globals.ServerRule_Team1.MaxRank && Globals.ServerRule_Team1.MinRank != 0 && Globals.ServerRule_Team1.MaxRank != 0)
+                {
+                    Globals.IsSetRuleOK = false;
+
+                    NotifierHelper.Show(NotifierType.Warning, "队伍1 限制等级规则设置不正确");
+                    return;
+                }
+                // 检查队伍2等级限制
+                if (Globals.ServerRule_Team2.MinRank >= Globals.ServerRule_Team2.MaxRank && Globals.ServerRule_Team2.MinRank != 0 && Globals.ServerRule_Team2.MaxRank != 0)
+                {
+                    Globals.IsSetRuleOK = false;
+
+                    NotifierHelper.Show(NotifierType.Warning, "队伍2 限制等级规则设置不正确");
+                    return;
+                }
+                // 检查重开比分设置 
+                if (Globals.ServerRule_Team1.ScoreGap >= Globals.ServerRule_Team1.ScoreLimit && Globals.ServerRule_Team1.ScoreLimit != 0 && Globals.ServerRule_Team1.ScoreGap != 0)
+                {
+                    Globals.IsSetRuleOK = false;
+                    NotifierHelper.Show(NotifierType.Warning, "计算重开分差限制规则设置不正确");
+                    return;
+                }
+                /////////////////////////////////////////////////////////////////////////////
+
+                // 清空限制武器列表
+                Globals.CustomWeapons_Team1.Clear();
+                Globals.CustomWeapons_Team2.Clear();
+                // 添加自定义限制武器
+                foreach (var item in DataGrid_RuleWeaponModels)
+                {
+                    if (item.Team1)
+                        Globals.CustomWeapons_Team1.Add(item.English);
+
+                    if (item.Team2)
+                        Globals.CustomWeapons_Team2.Add(item.English);
+                }
+
+                // 清空白名单列表
+                Globals.CustomWhites_Name.Clear();
+                // 添加自定义白名单列表
+                foreach (string name in ListBox_CustomWhites.Items)
+                {
+                    Globals.CustomWhites_Name.Add(name);
+                }
+
+                // 清空黑名单列表
+                Globals.CustomBlacks_Name.Clear();
+                // 添加自定义黑名单列表
+                foreach (string name in ListBox_CustomBlacks.Items)
+                {
+                    Globals.CustomBlacks_Name.Add(name);
+                }
+
+                Globals.IsSetRuleOK = true;
+                #endregion
+
+                AddRuleLog("【当局规则】");
+                AddRuleLog("最高击杀", $"{Globals.ServerRule_Team1.MaxKill}", $"{Globals.ServerRule_Team2.MaxKill}");
+
+                AddRuleLog("KD阈值", $"{Globals.ServerRule_Team1.FlagKD}", $"{Globals.ServerRule_Team2.FlagKD}");
+                AddRuleLog("最高KD", $"{Globals.ServerRule_Team1.MaxKD}", $"{Globals.ServerRule_Team2.MaxKD}");
+
+                AddRuleLog("KPM阈值", $"{Globals.ServerRule_Team1.FlagKPM}", $"{Globals.ServerRule_Team2.FlagKPM}");
+                AddRuleLog("最高KPM", $"{Globals.ServerRule_Team1.MaxKPM}", $"{Globals.ServerRule_Team2.MaxKPM}");
+
+                AddRuleLog("最低等级", $"{Globals.ServerRule_Team1.MinRank}", $"{Globals.ServerRule_Team2.MinRank}");
+                AddRuleLog("最高等级", $"{Globals.ServerRule_Team1.MaxRank}", $"{Globals.ServerRule_Team2.MaxRank}");
+
+                AddRuleLog("【生涯规则】");
+                AddRuleLog("生涯KD", $"{Globals.ServerRule_Team1.LifeMaxKD}", $"{Globals.ServerRule_Team2.LifeMaxKD}");
+                AddRuleLog("生涯KPM", $"{Globals.ServerRule_Team1.LifeMaxKPM}", $"{Globals.ServerRule_Team2.LifeMaxKPM}");
+
+                AddRuleLog("生涯命中率等级阈值", $"{Globals.ServerRule_Team1.LifeMaxAccuracyRatioLevel}", $"{Globals.ServerRule_Team2.LifeMaxAccuracyRatioLevel}");
+                AddRuleLog("生涯命中率", $"{Globals.ServerRule_Team1.LifeMaxAccuracyRatio}", $"{Globals.ServerRule_Team2.LifeMaxAccuracyRatio}");
+                AddRuleLog("生涯爆头率等级阈值", $"{Globals.ServerRule_Team1.LifeMaxHeadShotRatioLevel}", $"{Globals.ServerRule_Team2.LifeMaxHeadShotRatioLevel}");
+                AddRuleLog("生涯爆头率", $"{Globals.ServerRule_Team1.LifeMaxHeadShotRatio}", $"{Globals.ServerRule_Team2.LifeMaxHeadShotRatio}");
+                AddRuleLog("生涯胜率等级阈值", $"{Globals.ServerRule_Team1.LifeMaxWRLevel}", $"{Globals.ServerRule_Team2.LifeMaxWRLevel}");
+                AddRuleLog("生涯胜率", $"{Globals.ServerRule_Team1.LifeMaxWR}", $"{Globals.ServerRule_Team2.LifeMaxWR}");
+
+                AddRuleLog("【扩展规则】");
+                AddRuleLog("最高分数", $"{Globals.ServerRule_Team1.MaxScore}", $"{Globals.ServerRule_Team2.MaxScore}");
+                AddRuleLog("计算KD的最低击杀数（150级）", $"{Globals.ServerRule_Team1.FlagKDPro}", $"{Globals.ServerRule_Team2.FlagKDPro}");
+                AddRuleLog("最高KD（150级）", $"{Globals.ServerRule_Team1.MaxKDPro}", $"{Globals.ServerRule_Team2.MaxKDPro}");
+                AddRuleLog("计算KPM的最低击杀数（150级）", $"{Globals.ServerRule_Team1.FlagKPMPro}", $"{Globals.ServerRule_Team2.FlagKPMPro}");
+                AddRuleLog("最高KPM（150级）", $"{Globals.ServerRule_Team1.MaxKPMPro}", $"{Globals.ServerRule_Team2.MaxKPMPro}");
+
+
+                AddRuleLog("武器星数", $"{Globals.ServerRule_Team1.LifeMaxWeaponStar}", $"{Globals.ServerRule_Team2.LifeMaxWeaponStar}");
+                AddRuleLog("载具星数", $"{Globals.ServerRule_Team1.LifeMaxVehicleStar}", $"{Globals.ServerRule_Team2.LifeMaxVehicleStar}");
+
+                AddRuleLog("【禁用武器】");
+                int team1 = Globals.CustomWeapons_Team1.Count;
+                int team2 = Globals.CustomWeapons_Team2.Count;
+                for (int i = 0; i < Math.Max(team1, team2); i++)
+                {
+                    if (i < team1 && i < team2)
+                    {
+                        AddRuleLog($"武器名称 {i + 1}", $"{ClientHelper.GetWeaponChsName(Globals.CustomWeapons_Team1[i])}", $"{ClientHelper.GetWeaponChsName(Globals.CustomWeapons_Team2[i])}");
+                    }
+                    else if (i < team1)
+                    {
+                        AddRuleLog($"武器名称 {i + 1}", $"{ClientHelper.GetWeaponChsName(Globals.CustomWeapons_Team1[i])}");
+                    }
+                    else if (i < team2)
+                    {
+                        AddRuleLog($"武器名称 {i + 1}", "", $"{ClientHelper.GetWeaponChsName(Globals.CustomWeapons_Team2[i])}");
+                    }
+                }
+
+                AddRuleLog("【白名单特权】");
+                if (Globals.WhiteLifeKD)
+                    AddRuleLog("", "免疫生涯KD限制");
+                if (Globals.WhiteLifeKPM)
+                    AddRuleLog("", "免疫生涯KPM限制");
+                if (Globals.WhiteLifeWeaponStar)
+                    AddRuleLog("", "免疫生涯武器星数限制");
+                if (Globals.WhiteLifeVehicleStar)
+                    AddRuleLog("", "免疫生涯载具星数限制");
+                if (Globals.WhiteKill)
+                    AddRuleLog("", "免疫击杀限制");
+                if (Globals.WhiteKD)
+                    AddRuleLog("", "免疫KD限制");
+                if (Globals.WhiteKPM)
+                    AddRuleLog("", "免疫KPM限制");
+                if (Globals.WhiteRank)
+                    AddRuleLog("", "免疫等级限制");
+                if (Globals.WhiteWeapon)
+                    AddRuleLog("", "免疫武器限制");
+                if (Globals.WhiteLifeMaxAccuracyRatio)
+                    AddRuleLog("", "免疫生涯命中率限制");
+                if (Globals.WhiteLifeMaxHeadShotRatio)
+                    AddRuleLog("", "免疫生涯爆头率限制");
+                if (Globals.WhiteLifeMaxWR)
+                    AddRuleLog("", "免疫生涯胜率限制");
+                if (Globals.IsAllowWhlistToggleTeam)
+                    AddRuleLog("", "免疫更换队伍限制");
+                if (Globals.WhiteScore)
+                    AddRuleLog("", "免疫分数限制");
+                int index = 1;
+                AddRuleLog("【白名单列表】");
+                foreach (var item in Globals.CustomWhites_Name)
+                {
+                    AddRuleLog($"玩家ID {index++}", $"{item}");
+                }
+
+                index = 1;
+                AddRuleLog("【黑名单列表】");
+                foreach (var item in Globals.CustomBlacks_Name)
+                {
+                    AddRuleLog($"玩家ID {index++}", $"{item}");
+                }
+                AddRuleLog("【是否允许更换至劣势抗压】");
+                if (Globals.Allow2LowScoreTeam)
+                    AddRuleLog("", "允许更换至劣势抗压");
+            }
+            )
+            );
     }
     /// <summary>
     /// 应用并查询当前规则
@@ -1527,9 +1583,48 @@ public partial class RuleView : UserControl
         {
             SetAndApplyRule();
             NotifierHelper.Show(NotifierType.Success, "查询当前规则成功");
+            Globals.AutoRuleApplyOk = true;
+        }
+    }
+
+
+    private void ApplyAndQueryCurrentRule()
+    {
+        if (Globals.IsRefreshRule)
+        {
+            NotifierHelper.Show(NotifierType.Warning, "正在获取规则，请稍后再试");
+            return;
+        }
+        ClearRuleLog();
+        if (Globals.IsCloudMode)
+        {
+
+            if (Globals.ServerId == 0)
+            {
+                NotifierHelper.Show(NotifierType.Error, "请进入任意服务器");
+            }
+            else
+            {
+                if (Globals.LoginPlayerIsAdmin)
+                {
+                    SetAndApplyRule();
+                    PushRule2Cloud();
+                }
+                else
+                {
+                    NotifierHelper.Show(NotifierType.Error, "您不是当前服务器管理员");
+                }
+            }
+
+        }
+        else
+        {
+            SetAndApplyRule();
+            NotifierHelper.Show(NotifierType.Success, "查询当前规则成功");
             SaveConfig();
         }
     }
+
 
     /// <summary>
     /// 从白名单列表移除选中玩家
