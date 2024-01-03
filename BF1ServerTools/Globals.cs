@@ -339,7 +339,7 @@ public static class Globals
 
     public static bool IsBoot = false;
 
-    public static string Version = "3.0.2.6";
+    public static string Version = "3.0.2.7";
 
     public static string ServerName = string.Empty;
 
