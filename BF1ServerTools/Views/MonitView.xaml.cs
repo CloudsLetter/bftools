@@ -529,22 +529,26 @@ public partial class MonitView : UserControl
 
     }
 
-    private async void ScoreCheck (PlayerData playerData, ServerRule serverRule)
+    private async void ScoreCheck(PlayerData playerData, ServerRule serverRule)
     {
         if (playerData.Score > serverRule.MaxScore && serverRule.MaxScore != 0)
         {
 
             if (Globals.CurrentMapMode == "行动模式")
             {
-                if (Globals.IsCloudMode)
+                if (playerData.TeamId == 1 && Globals.Team2Count < 32)
                 {
-                    _ = await CloudApi.AddAutoToggleTeamList(playerData.PersonaId.ToString());
+
+                    if (Globals.IsCloudMode)
+                    {
+                        _ = await CloudApi.AddAutoToggleTeamList(playerData.PersonaId.ToString());
+
+                    }
+
+                    _ = await BF1API.RSPMovePlayer(Globals.SessionId, Globals.GameId, playerData.PersonaId, 1);
 
                 }
-
-                _ = await BF1API.RSPMovePlayer(Globals.SessionId, Globals.GameId, playerData.PersonaId, 2);
-
-            } 
+            }
             else
             {
                 AddBreakRulePlayerInfo(playerData, BreakType.Score, $"Socre Limit {serverRule.MaxScore:0.00}");
@@ -653,6 +657,8 @@ public partial class MonitView : UserControl
             }
         }
 
+        ScoreCheck(playerData, serverRule);
+
         ///////////////////////////////////////////////////////////////////////
 
         // 限制玩家击杀
@@ -713,7 +719,6 @@ public partial class MonitView : UserControl
             }
         }
 
-        ScoreCheck(playerData, serverRule);
         // 限制玩家最低等级
         if (playerData.Rank < serverRule.MinRank &&
             serverRule.MinRank != 0 &&
