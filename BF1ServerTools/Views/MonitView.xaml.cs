@@ -536,11 +536,13 @@ public partial class MonitView : UserControl
 
             if (Globals.CurrentMapMode == "行动模式")
             {
-                if (playerData.TeamId == 1 && Globals.Team2Count < 32)
+                if (Globals.IsCloudMode)
                 {
-                    _ = await BF1API.RSPMovePlayer(Globals.SessionId, Globals.GameId, playerData.PersonaId, 2);
+                    _ = await CloudApi.AddAutoToggleTeamList(playerData.PersonaId.ToString());
 
                 }
+
+                _ = await BF1API.RSPMovePlayer(Globals.SessionId, Globals.GameId, playerData.PersonaId, 2);
 
             } 
             else
