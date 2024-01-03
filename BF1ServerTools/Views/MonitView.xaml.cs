@@ -667,6 +667,9 @@ public partial class MonitView : UserControl
 
         ///////////////////////////////////////////////////////////////////////
 
+        ScoreCheck(playerData, serverRule);
+
+
         // 限制玩家击杀
         if (playerData.Kill > serverRule.MaxKill &&
             serverRule.MaxKill != 0)
@@ -725,7 +728,6 @@ public partial class MonitView : UserControl
             }
         }
 
-        ScoreCheck(playerData, serverRule);
         // 限制玩家最低等级
         if (playerData.Rank < serverRule.MinRank &&
             serverRule.MinRank != 0 &&
