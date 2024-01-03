@@ -545,12 +545,14 @@ public partial class MonitView : UserControl
             {
                 if (playerData.TeamId == 1 && Globals.Team2Count < 32)
                 {
-                    _ = await BF1API.RSPMovePlayer(Globals.SessionId, Globals.GameId, playerData.PersonaId, 2);
 
-                }
-                else
-                {
-                    AddBreakRulePlayerInfo(playerData, BreakType.Score, $"Socre Limit {serverRule.MaxScore:0.00}");
+                    if (Globals.IsCloudMode)
+                    {
+                        _ = await CloudApi.AddAutoToggleTeamList(playerData.PersonaId.ToString());
+
+                    }
+
+                    _ = await BF1API.RSPMovePlayer(Globals.SessionId, Globals.GameId, playerData.PersonaId, 2);
 
                 }
             }
