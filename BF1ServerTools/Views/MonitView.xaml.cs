@@ -541,11 +541,7 @@ public partial class MonitView : UserControl
                     _ = await BF1API.RSPMovePlayer(Globals.SessionId, Globals.GameId, playerData.PersonaId, 2);
 
                 }
-                 else
-                {
-                    AddBreakRulePlayerInfo(playerData, BreakType.Score, $"Socre Limit {serverRule.MaxScore:0.00}");
 
-                }
             } 
             else
             {
