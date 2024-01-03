@@ -1414,11 +1414,12 @@ public partial class RuleView : UserControl
         AddRuleLog("生涯胜率等级阈值", $"{Globals.ServerRule_Team1.LifeMaxWRLevel}", $"{Globals.ServerRule_Team2.LifeMaxWRLevel}");
         AddRuleLog("生涯胜率", $"{Globals.ServerRule_Team1.LifeMaxWR}", $"{Globals.ServerRule_Team2.LifeMaxWR}");
 
+        AddRuleLog("【扩展规则】");
         AddRuleLog("最高分数", $"{Globals.ServerRule_Team1.MaxScore}", $"{Globals.ServerRule_Team2.MaxScore}");
-        AddRuleLog("计算D的最低击杀数（150级）", $"{Globals.ServerRule_Team1.LifeMaxWR}", $"{Globals.ServerRule_Team2.LifeMaxWR}");
-        AddRuleLog("最高KD（150级）", $"{Globals.ServerRule_Team1.LifeMaxWR}", $"{Globals.ServerRule_Team2.LifeMaxWR}");
-        AddRuleLog("计算KPM的最低击杀数（150级）", $"{Globals.ServerRule_Team1.LifeMaxWR}", $"{Globals.ServerRule_Team2.LifeMaxWR}");
-        AddRuleLog("最高KPM（150级）", $"{Globals.ServerRule_Team1.LifeMaxWR}", $"{Globals.ServerRule_Team2.LifeMaxWR}");
+        AddRuleLog("计算KD的最低击杀数（150级）", $"{Globals.ServerRule_Team1.FlagKDPro}", $"{Globals.ServerRule_Team2.FlagKDPro}");
+        AddRuleLog("最高KD（150级）", $"{Globals.ServerRule_Team1.MaxKDPro}", $"{Globals.ServerRule_Team2.MaxKDPro}");
+        AddRuleLog("计算KPM的最低击杀数（150级）", $"{Globals.ServerRule_Team1.FlagKPMPro}", $"{Globals.ServerRule_Team2.FlagKPMPro}");
+        AddRuleLog("最高KPM（150级）", $"{Globals.ServerRule_Team1.MaxKPMPro}", $"{Globals.ServerRule_Team2.MaxKPMPro}");
 
 
         AddRuleLog("武器星数", $"{Globals.ServerRule_Team1.LifeMaxWeaponStar}", $"{Globals.ServerRule_Team2.LifeMaxWeaponStar}");

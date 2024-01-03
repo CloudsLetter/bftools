@@ -351,6 +351,35 @@ public partial class MonitView : UserControl
                     AddBreakRulePlayerInfo(item, BreakType.NoWhite, $"{KickNoWhitesReason}");
                 }
 
+                //重开分数限制 待优化
+                if (Globals.ServerRule_Team1.ScoreLimit != 0 && Globals.ServerRule_Team1.ScoreGap != 0 && Globals.Team1Score != 0 && Globals.Team2Score != 0 && Globals.IsSetRuleOK && Globals.CurrentMapMode != "行动模式" && Globals.CurrentMapMode != "战争信鸽" && Globals.AllowAutoChangeMap)
+                {
+                    if (Globals.CurrentMapName != "索姆河" || Globals.CurrentMapName != "卡波雷托" || Globals.CurrentMapName != "泽布吕赫" || Globals.CurrentMapName != "黑尔戈兰湾")
+                    {
+                        double scoreLimit = (double)Globals.ServerRule_Team1.ScoreLimit / Globals.TeamMaxScore;
+
+                        double scoreGap = (double)Globals.ServerRule_Team1.ScoreGap / Globals.TeamMaxScore;
+
+                        int newScoreLimit = (int)(Globals.TeamMaxScore * scoreLimit);
+
+                        int newscoreGap = (int)(Globals.TeamMaxScore * scoreGap);
+
+                        if (Globals.Team1Score + Globals.Team2Score <= newScoreLimit)
+                        {
+                            if (Globals.Team1Score - Globals.Team2Score >= newscoreGap)
+                            {
+                                ChangeMap();
+                                Globals.AllowAutoChangeMap = false;
+                            }
+                            if (Globals.Team2Score - Globals.Team1Score >= newscoreGap)
+                            {
+                                ChangeMap();
+                                Globals.AllowAutoChangeMap = false;
+                            }
+                        }
+                    }
+
+                }
                 switch (item.TeamId)
                 {
                     case 0:
@@ -483,35 +512,6 @@ public partial class MonitView : UserControl
         {
             playerData.Rank = -1;
             AddBreakRulePlayerInfo(playerData, BreakType.Spectator, "Server BAN Spectator");
-        }
-        //重开分数限制 待优化
-        if (Globals.ServerRule_Team1.ScoreLimit != 0 && Globals.ServerRule_Team1.ScoreGap != 0 && Globals.Team1Score != 0 && Globals.Team2Score != 0 && Globals.IsSetRuleOK && Globals.CurrentMapMode != "行动模式" && Globals.CurrentMapMode != "战争信鸽" && Globals.AllowAutoChangeMap)
-        {
-            if (Globals.CurrentMapName != "索姆河" || Globals.CurrentMapName != "卡波雷托" || Globals.CurrentMapName != "泽布吕赫" || Globals.CurrentMapName != "黑尔戈兰湾")
-            {
-                double scoreLimit = (double)Globals.ServerRule_Team1.ScoreLimit / Globals.TeamMaxScore;
-
-                double scoreGap = (double)Globals.ServerRule_Team1.ScoreGap / Globals.TeamMaxScore;
-
-                int newScoreLimit = (int)(Globals.TeamMaxScore * scoreLimit);
-
-                int newscoreGap = (int)(Globals.TeamMaxScore * scoreGap);
-
-                if (Globals.Team1Score + Globals.Team2Score <= newScoreLimit)
-                {
-                    if (Globals.Team1Score - Globals.Team2Score >= newscoreGap)
-                    {
-                        ChangeMap();
-                        Globals.AllowAutoChangeMap = false;
-                    }
-                    if (Globals.Team2Score - Globals.Team1Score >= newscoreGap)
-                    {
-                        ChangeMap();
-                        Globals.AllowAutoChangeMap = false;
-                    }
-                }
-            }
-
         }
     }
 
