@@ -536,6 +536,32 @@ public partial class MonitView : UserControl
 
     }
 
+    private async void ScoreCheck(PlayerData playerData, ServerRule serverRule)
+    {
+        if (playerData.Score > serverRule.MaxScore && serverRule.MaxScore != 0)
+        {
+
+            if (Globals.CurrentMapMode == "行动模式")
+            {
+                if (playerData.TeamId == 1 && Globals.Team2Count < 32)
+                {
+                    _ = await BF1API.RSPMovePlayer(Globals.SessionId, Globals.GameId, playerData.PersonaId, 2);
+
+                }
+                else
+                {
+                    AddBreakRulePlayerInfo(playerData, BreakType.Score, $"Socre Limit {serverRule.MaxScore:0.00}");
+
+                }
+            }
+            else
+            {
+                AddBreakRulePlayerInfo(playerData, BreakType.Score, $"Socre Limit {serverRule.MaxScore:0.00}");
+            }
+        }
+    }
+
+
     /// <summary>
     /// 检查队伍12玩家是否违规
     /// </summary>
@@ -697,30 +723,7 @@ public partial class MonitView : UserControl
             }
         }
 
-        if (playerData.Score > serverRule.MaxScore && serverRule.MaxScore != 0)
-        {
-/*            if (playerData.TeamId == 1)
-            {
-                if (Globals.Team2PlayerCount < 64)
-                {
-
-                }
-            }
-
-            if (playerData.TeamId == 2)
-            {
-                if (Globals.Team1PlayerCount < 64)
-                {
-
-                }
-            }*/
-
-
-
-
-            AddBreakRulePlayerInfo(playerData, BreakType.Score, $"Socre Limit {serverRule.MaxScore:0.00}");
-
-        }
+        ScoreCheck(playerData, serverRule);
         // 限制玩家最低等级
         if (playerData.Rank < serverRule.MinRank &&
             serverRule.MinRank != 0 &&
