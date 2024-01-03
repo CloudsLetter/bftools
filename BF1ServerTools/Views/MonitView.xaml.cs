@@ -551,10 +551,6 @@ public partial class MonitView : UserControl
             {
                 AddBreakRulePlayerInfo(playerData, BreakType.Score, $"Socre Limit {serverRule.MaxScore:0.00}");
             }
-
-
-
-
         }
     }
 
