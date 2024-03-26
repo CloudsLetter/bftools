@@ -155,7 +155,7 @@ public partial class RobotView : UserControl
         }
 
         var process = new Process();
-        process.StartInfo.FileName = FileUtil.D_Robot_Path + "\\go-cqhttp.exe";
+        process.StartInfo.FileName = FileUtil.D_Robot_Path + "\\lagrange.exe";
         process.StartInfo.CreateNoWindow = false;
         process.StartInfo.UseShellExecute = false;
         process.StartInfo.WorkingDirectory = FileUtil.D_Robot_Path;
@@ -172,10 +172,10 @@ public partial class RobotView : UserControl
     {
         SaveConfig();
 
-        if (!ProcessUtil.IsAppRun("go-cqhttp"))
+        if (!ProcessUtil.IsAppRun("lagrange"))
         {
-            AppendLogger("请先启动 go-cqhttp 程序");
-            NotifierHelper.Show(NotifierType.Warning, "请先启动 go-cqhttp 程序");
+            AppendLogger("请先启动 lagrange 程序");
+            NotifierHelper.Show(NotifierType.Warning, "请先启动 lagrange 程序");
             return;
         }
 
@@ -564,8 +564,8 @@ public partial class RobotView : UserControl
 
         FileUtil.DelectDir(FileUtil.D_Robot_Path);
 
-        FileUtil.ExtractResFile(FileUtil.Resource_Path + "config.yml", FileUtil.D_Robot_Path + "\\config.yml");
-        FileUtil.ExtractResFile(FileUtil.Resource_Path + "go-cqhttp.exe", FileUtil.D_Robot_Path + "\\go-cqhttp.exe");
+        FileUtil.ExtractResFile(FileUtil.Resource_Path + "appsettings.json", FileUtil.D_Robot_Path + "\\appsettings.json");
+        FileUtil.ExtractResFile(FileUtil.Resource_Path + "lagrange.exe", FileUtil.D_Robot_Path + "\\lagrange.exe");
 
         NotifierHelper.Show(NotifierType.Success, "操作成功，请重新启动QQ机器人服务");
     }

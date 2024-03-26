@@ -5,6 +5,7 @@ using Newtonsoft.Json.Linq;
 using BF1ServerTools.SDK.Data;
 using Newtonsoft.Json;
 using System.Text;
+using static BF1ServerTools.API.Requ.UpdateServer;
 
 public class CloudRespError
 {
@@ -43,6 +44,8 @@ public static class CloudApi
 
     private const string hostcv = "https://bf1.cloudyun.xyz/api/bf1/checkversion";
 
+    private const string hostcb = "https://ea-api.2788.pro/jsonrpc/pc/api";
+
     private static readonly RestClient clientpg;
 
     private static readonly RestClient clientaq;
@@ -68,6 +71,7 @@ public static class CloudApi
     private static readonly RestClient clientbkra;
 
     private static readonly RestClient clientcv;
+    private static readonly RestClient clientcb;
     static CloudApi()
     {
         if (clientpg == null)
@@ -241,6 +245,16 @@ public static class CloudApi
                 ThrowOnAnyError = true
             };
             clientcv = new RestClient(optionsss);
+        }
+
+        if (clientcb == null)
+        {
+            var optionssss = new RestClientOptions(hostcb)
+            {
+                MaxTimeout = 5000,
+                ThrowOnAnyError = true
+            };
+            clientcv = new RestClient(optionssss);
         }
     }
 
@@ -1219,6 +1233,198 @@ public static class CloudApi
                 .AddJsonBody(reqBody);
 
             var response = await clientbkra.ExecutePostAsync(request);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                respContent.IsSuccess = true;
+                respContent.Content = response.Content;
+            }
+            else if (response.StatusCode == HttpStatusCode.InternalServerError)
+            {
+                // 处理 HTTP 500 错误
+                respContent.IsSuccess = false;
+                respContent.Content = response.Content;
+            }
+            else if (response.StatusCode == HttpStatusCode.BadRequest)
+            {
+                // 处理 HTTP 400 错误
+                respContent.IsSuccess = false;
+                respContent.Content = response.Content;
+            }
+            else
+            {
+                // 处理其他状态码
+                respContent.IsSuccess = false;
+                respContent.Content = response.Content;
+            }
+        }
+        catch (Exception ex)
+        {
+            respContent.IsSuccess = false;
+            respContent.Content = ex.Message;
+        }
+
+        sw.Stop();
+        respContent.ExecTime = sw.Elapsed.TotalSeconds;
+
+        return respContent;
+
+    }
+
+
+    public static async Task<RespContent> CloudBanList(string sessionId,int serverId)
+    {
+        var sw = new Stopwatch();
+        sw.Start();
+        var respContent = new RespContent();
+
+        try
+        {
+            var reqBody = new
+            {
+                jsonrpc=  "2.0",
+	            method = "CloudBan.listServerBan",
+                @params = new
+                {
+                    game = "tunguska",
+                    serverId = serverId,
+
+                },
+                id = Guid.NewGuid()
+            };
+
+            var request = new RestRequest()
+                .AddHeader("X-GatewaySession", sessionId)
+                .AddJsonBody(reqBody);
+
+            var response = await clientcb.ExecutePostAsync(request);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                respContent.IsSuccess = true;
+                respContent.Content = response.Content;
+            }
+            else if (response.StatusCode == HttpStatusCode.InternalServerError)
+            {
+                // 处理 HTTP 500 错误
+                respContent.IsSuccess = false;
+                respContent.Content = response.Content;
+            }
+            else if (response.StatusCode == HttpStatusCode.BadRequest)
+            {
+                // 处理 HTTP 400 错误
+                respContent.IsSuccess = false;
+                respContent.Content = response.Content;
+            }
+            else
+            {
+                // 处理其他状态码
+                respContent.IsSuccess = false;
+                respContent.Content = response.Content;
+            }
+        }
+        catch (Exception ex)
+        {
+            respContent.IsSuccess = false;
+            respContent.Content = ex.Message;
+        }
+
+        sw.Stop();
+        respContent.ExecTime = sw.Elapsed.TotalSeconds;
+
+        return respContent;
+
+    }
+
+    public static async Task<RespContent> CloudBanAdd(string sessionId, string serverId, long personaName)
+    {
+        var sw = new Stopwatch();
+        sw.Start();
+        var respContent = new RespContent();
+
+        try
+        {
+            var reqBody = new
+            {
+                jsonrpc = "2.0",
+                method = "RSP.addServerBan",
+                @params = new
+                {
+                    game = "tunguska",
+                    serverId,
+                    personaName
+                },
+                id = Guid.NewGuid()
+            };
+
+            var request = new RestRequest()
+                .AddHeader("X-GatewaySession", sessionId)
+                .AddJsonBody(reqBody);
+
+            var response = await clientcb.ExecutePostAsync(request);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                respContent.IsSuccess = true;
+                respContent.Content = response.Content;
+            }
+            else if (response.StatusCode == HttpStatusCode.InternalServerError)
+            {
+                // 处理 HTTP 500 错误
+                respContent.IsSuccess = false;
+                respContent.Content = response.Content;
+            }
+            else if (response.StatusCode == HttpStatusCode.BadRequest)
+            {
+                // 处理 HTTP 400 错误
+                respContent.IsSuccess = false;
+                respContent.Content = response.Content;
+            }
+            else
+            {
+                // 处理其他状态码
+                respContent.IsSuccess = false;
+                respContent.Content = response.Content;
+            }
+        }
+        catch (Exception ex)
+        {
+            respContent.IsSuccess = false;
+            respContent.Content = ex.Message;
+        }
+
+        sw.Stop();
+        respContent.ExecTime = sw.Elapsed.TotalSeconds;
+
+        return respContent;
+
+    }
+
+
+    public static async Task<RespContent> CloudBanRemove(string sessionId, string serverId,long personaId)
+    {
+        var sw = new Stopwatch();
+        sw.Start();
+        var respContent = new RespContent();
+
+        try
+        {
+            var reqBody = new
+            {
+
+                jsonrpc = "2.0",
+                method = "RSP.removeServerBan",
+                @params = new
+                {
+                    game = "tunguska",
+                    serverId,
+                    personaId
+                },
+                id = Guid.NewGuid()
+            };
+
+            var request = new RestRequest()
+                .AddHeader("X-GatewaySession", sessionId)
+                .AddJsonBody(reqBody);
+
+            var response = await clientcb.ExecutePostAsync(request);
             if (response.StatusCode == HttpStatusCode.OK)
             {
                 respContent.IsSuccess = true;

@@ -113,11 +113,11 @@ public partial class LoadWindow
                 LoadModel.LoadState = "正在准备最后工作...";
 
                 // 释放必要文件
-                if (!File.Exists(FileUtil.D_Robot_Path + "\\config.yml"))
-                    FileUtil.ExtractResFile(FileUtil.Resource_Path + "config.yml", FileUtil.D_Robot_Path + "\\config.yml");
+                if (!File.Exists(FileUtil.D_Robot_Path + "\\appsettings.json"))
+                    FileUtil.ExtractResFile(FileUtil.Resource_Path + "appsettings.json", FileUtil.D_Robot_Path + "\\appsettings.json");
 
-                if (!File.Exists(FileUtil.D_Robot_Path + "\\go-cqhttp.exe"))
-                    FileUtil.ExtractResFile(FileUtil.Resource_Path + "go-cqhttp.exe", FileUtil.D_Robot_Path + "\\go-cqhttp.exe");
+                if (!File.Exists(FileUtil.D_Robot_Path + "\\lagrange.exe"))
+                    FileUtil.ExtractResFile(FileUtil.Resource_Path + "lagrange.exe", FileUtil.D_Robot_Path + "\\lagrange.exe");
 
                 Chat.AllocateMemory();
                 LoggerHelper.Info($"中文聊天指针分配成功 0x{Chat.AllocateMemAddress:x}");

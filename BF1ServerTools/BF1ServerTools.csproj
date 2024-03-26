@@ -24,9 +24,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<EmbeddedResource Include="Files\config.yml" />
-		<EmbeddedResource Include="Files\go-cqhttp.exe" />
-	</ItemGroup>
+		<EmbeddedResource Include="Files\appsettings.json" />
+		<EmbeddedResource Include="Files\lagrange.exe" />
+</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\BF1ServerTools.QQ\BF1ServerTools.QQ.csproj" />
