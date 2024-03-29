@@ -6,7 +6,9 @@
 namespace BF1ServerTools.Utils; 
 
 public class TranslateKeyUtils {
-    public static string calculateHash(string playerName) {
+    public static string calculateHash(string playerName)
+    {
+        // TODO unimplemented
         throw new NotImplementedException();
     }
 }
