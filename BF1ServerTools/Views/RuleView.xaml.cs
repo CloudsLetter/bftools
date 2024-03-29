@@ -6,7 +6,7 @@ using BF1ServerTools.Utils;
 using BF1ServerTools.Helper;
 using BF1ServerTools.Configs;
 using Newtonsoft.Json;
-using System.Runtime.CompilerServices;
+using NStandard;
 
 namespace BF1ServerTools.Views;
 
@@ -79,6 +79,9 @@ public partial class RuleView : UserControl
                 Team2 = false
             });
         }
+        // 初始化中文ID数据列表
+        TranslateKeyRules_Initialize();
+
         // 如果配置文件不存在就创建
         if (!File.Exists(F_Rule_Path))
         {
@@ -135,7 +138,6 @@ public partial class RuleView : UserControl
         }.Start();
 
     }
-
 
     private void SetRule2Zero()
     {
@@ -499,6 +501,9 @@ public partial class RuleView : UserControl
                 }
             }
 
+            // 读取中文ID规则列表
+            TranslateKeyRules_LoadFromList(rule.TranslateKeyRuleList);
+
 
             // 读取武器限制信息
             if (!Globals.IsCloudMode)
@@ -737,6 +742,11 @@ public partial class RuleView : UserControl
             foreach (string name in ListBox_CustomBlacks.Items)
             {
                 rule.BlackList.Add(name);
+            }
+            
+            rule.TranslateKeyRuleList.Clear();
+            foreach (string translateKey in ListBox_TranslateKeyRules.Items) {
+                rule.TranslateKeyRuleList.Add(translateKey);
             }
 
             rule.Team1Weapon.Clear();
@@ -1027,6 +1037,8 @@ public partial class RuleView : UserControl
                     ListBox_CustomBlacks.Items.Add(item);
                 }
             }
+
+            TranslateKeyRules_LoadFromList(rule.TranslateKeyRuleList);
 
 
             // 读取武器限制信息
@@ -2218,5 +2230,146 @@ public partial class RuleView : UserControl
         {
             NotifierHelper.Show(NotifierType.Error, "在线模式下无法使用该功能,未来将支持该功能");
         }
+    }
+
+    private void TranslateKeyRules_Unimplemented(object sender, RoutedEventArgs e)
+    {
+        NotifierHelper.Show(NotifierType.Error, "咕咕咕, 这个功能还没写, 但是先把菜单搁这免得咱忘了\n --SakuraKooi");
+    }
+
+    private void TranslateKeyRules_AddFromList(object sender, RoutedEventArgs routedEventArgs)
+    {
+        if (ListBox_TranslateKeyList.SelectedItems.Count == 0)
+        {
+            NotifierHelper.Show(NotifierType.Error, "请选择要添加到黑名单的翻译词条");
+            return;
+        }
+
+        var copiedList = new List<string>(ListBox_TranslateKeyList.SelectedItems.Cast<string>());
+        foreach (var selectedItem in copiedList)
+        {
+            ListBox_TranslateKeyRules.Items.Add(selectedItem);
+            ListBox_TranslateKeyList.Items.Remove(selectedItem);
+        }
+        TranslateKeyRules_Helper_ReorderList();
+    }
+
+    private void TranslateKeyRules_RemoveFromList(object sender, RoutedEventArgs routedEventArgs)
+    {
+        if (ListBox_TranslateKeyRules.SelectedItems.Count == 0)
+        {
+            NotifierHelper.Show(NotifierType.Error, "请选择要从黑名单删除的翻译词条");
+            return;
+        }
+
+        var copiedList = new List<string>(ListBox_TranslateKeyRules.SelectedItems.Cast<string>());
+        foreach (var selectedItem in copiedList)
+        {
+            ListBox_TranslateKeyList.Items.Add(selectedItem);
+            ListBox_TranslateKeyRules.Items.Remove(selectedItem);
+        }
+        TranslateKeyRules_Helper_ReorderList();
+    }
+
+    private void TranslateKeyRules_Clear(object sender, RoutedEventArgs e)
+    {
+        TranslateKeyRules_LoadFromList(new List<string>());
+    }
+    private void TranslateKeyRules_AddCustom(object sender, RoutedEventArgs e)
+    {
+        if (!Regex.IsMatch(TextBox_NewTranslateKeyRule.Text, @"^[\w\d]{8}$"))
+        {
+            NotifierHelper.Show(NotifierType.Error, "不合法的寒霜引擎翻译词条格式! (请输入8位十六进制哈希值)");
+            return;
+        }
+        ListBox_TranslateKeyRules.Items.Add(TextBox_NewTranslateKeyRule.Text + " 自定义词条");
+        foreach (string key in ListBox_TranslateKeyList.Items)
+        {
+            if (key.Split(' ')[0].Equals(TextBox_NewTranslateKeyRule.Text))
+            {
+                ListBox_TranslateKeyList.Items.Remove(key);
+                break;
+            }
+        }
+        TranslateKeyRules_Helper_ReorderList();
+    }
+
+    private void TranslateKeyRules_Preset_TooLong_Checked(object sender, RoutedEventArgs e)
+    {
+        TranslateKeyRules_Helper_ApplyPreset(TranslateKeyData.TranslateKeyFlag.TOO_LONG, CheckBox_TranslateKeyRulePresets_TooLong.IsChecked.Value);
+    }
+
+    private void TranslateKeyRules_Preset_Offensive_Checked(object sender, RoutedEventArgs e)
+    {
+        TranslateKeyRules_Helper_ApplyPreset(TranslateKeyData.TranslateKeyFlag.OFFENSIVE, CheckBox_TranslateKeyRulePresets_Offensive.IsChecked.Value);
+    }
+
+    private void TranslateKeyRules_Preset_Whitespace_Checked(object sender, RoutedEventArgs e)
+    {
+        TranslateKeyRules_Helper_ApplyPreset(TranslateKeyData.TranslateKeyFlag.WHITESPACE, CheckBox_TranslateKeyRulePresets_Whitespace.IsChecked.Value);
+    }
+
+    private void TranslateKeyRules_Preset_FakeEnglish_Checked(object sender, RoutedEventArgs e)
+    {
+        TranslateKeyRules_Helper_ApplyPreset(TranslateKeyData.TranslateKeyFlag.FAKE_ENGLISH, CheckBox_TranslateKeyRulePresets_FakeEnglish.IsChecked.Value);
+    }
+
+    private void TranslateKeyRules_Preset_Multiline_Checked(object sender, RoutedEventArgs e)
+    {
+        TranslateKeyRules_Helper_ApplyPreset(TranslateKeyData.TranslateKeyFlag.MULTILINE, CheckBox_TranslateKeyRulePresets_Multiline.IsChecked.Value);
+    }
+
+    private void TranslateKeyRules_Initialize()
+    {
+        TranslateKeyData.TranslateKeys.ForEach(key =>
+        {
+            ListBox_TranslateKeyList.Items.Add(key.ToRule());
+        });
+    }
+
+    private void TranslateKeyRules_LoadFromList(List<string> ruleTranslateKeyRuleList)
+    {
+        ListBox_TranslateKeyRules.Items.Clear();
+        ListBox_TranslateKeyList.Items.Clear();
+
+        TranslateKeyRules_Initialize();
+        ruleTranslateKeyRuleList.ForEach(key =>
+        {
+            ListBox_TranslateKeyRules.Items.Add(key);
+            ListBox_TranslateKeyList.Items.Remove(key);
+        });
+        TranslateKeyRules_Helper_ReorderList();
+    }
+
+    private void TranslateKeyRules_Helper_ApplyPreset(TranslateKeyData.TranslateKeyFlag flag, bool addOrRemove)
+    {
+        TranslateKeyData.TranslateKeys
+            .SkipWhile(key => key.Flag != flag)
+            .Select(key => key.ToRule())
+            .Each(key =>
+            {
+                if (addOrRemove)
+                {
+                    ListBox_TranslateKeyRules.Items.Add(key);
+                    ListBox_TranslateKeyList.Items.Remove(key);
+                }
+                else
+                {
+                    ListBox_TranslateKeyList.Items.Add(key);
+                    ListBox_TranslateKeyRules.Items.Remove(key);
+                }
+            });
+        TranslateKeyRules_Helper_ReorderList();
+    }
+
+    private void TranslateKeyRules_Helper_ReorderList()
+    {
+        var sortedList1 = ListBox_TranslateKeyRules.Items.Cast<string>().Distinct().OrderBy(t => t).ToList();
+        ListBox_TranslateKeyRules.Items.Clear();
+        sortedList1.ForEach(key => ListBox_TranslateKeyRules.Items.Add(key));
+
+        var sortedList2 = ListBox_TranslateKeyList.Items.Cast<string>().Distinct().OrderBy(t => t).ToList();
+        ListBox_TranslateKeyList.Items.Clear();
+        sortedList2.ForEach(key => ListBox_TranslateKeyList.Items.Add(key));
     }
 }
