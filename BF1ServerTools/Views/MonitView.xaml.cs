@@ -351,7 +351,7 @@ public partial class MonitView : UserControl
                 {
                     if (TranslateKeyUtils.calculateHash((item.Clan.IsNullOrEmpty() ? "[" + item.Clan + "]" : "") + item.Name).Equals(blacklistedTranslateKeyHash))
                     {
-                        AddBreakRulePlayerInfo(item, BreakType.Black, "Blacklisted Translate ID");
+                        AddBreakRulePlayerInfo(item, BreakType.TranslateKey, "Blacklisted Translate ID");
                     }
                 }
 
@@ -1327,6 +1327,17 @@ public partial class MonitView : UserControl
             if (item.BreakType == BreakType.KPMPro)
             {
                 if (Globals.WhiteKPM)
+                    continue;
+                else
+                {
+                    breakRuleInfo.Reason = item.Reason;
+                    return false;
+                }
+            }
+
+            if (item.BreakType == BreakType.TranslateKey)
+            {
+                if (true) // 默认遵守白名单 自己改.webp
                     continue;
                 else
                 {
