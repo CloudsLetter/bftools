@@ -12,6 +12,7 @@ using static System.Net.Mime.MediaTypeNames;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 using Newtonsoft.Json;
 using System;
+using NStandard;
 
 namespace BF1ServerTools.Views;
 
@@ -342,6 +343,15 @@ public partial class MonitView : UserControl
                     if (item.Name == Globals.CustomBlacks_Name[i])
                     {
                         AddBreakRulePlayerInfo(item, BreakType.Black, "Server Black List");
+                    }
+                }
+
+                // 中文ID黑名单
+                foreach (var blacklistedTranslateKeyHash in Globals.TranslateKeyRules)
+                {
+                    if (TranslateKeyUtils.calculateHash((item.Clan.IsNullOrEmpty() ? "[" + item.Clan + "]" : "") + item.Name).Equals(blacklistedTranslateKeyHash))
+                    {
+                        AddBreakRulePlayerInfo(item, BreakType.Black, "Blacklisted Translate ID");
                     }
                 }
 
