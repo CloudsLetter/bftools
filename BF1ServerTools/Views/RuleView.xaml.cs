@@ -1400,6 +1400,12 @@ public partial class RuleView : UserControl
             Globals.CustomBlacks_Name.Add(name);
         }
 
+        // 加载中文ID规则
+        Globals.TranslateKeyRules.Clear();
+        ListBox_TranslateKeyRules.Items.Cast<string>() // "Key DisplayText"
+            .Select(key => key.Split(" ")[0]) // Key
+            .Each(key => Globals.TranslateKeyRules.Add(key));
+
         Globals.IsSetRuleOK = true;
         #endregion
 
@@ -1498,6 +1504,10 @@ public partial class RuleView : UserControl
         {
             AddRuleLog($"玩家ID {index++}", $"{item}");
         }
+        
+        // 懒得逐条列了, 而且刷屏, 需要列的话自己改改 --SakuraKooi
+        AddRuleLog($"【中文ID屏蔽列表】已配置 {Globals.TranslateKeyRules.Count} 条黑名单");
+
         AddRuleLog("【是否允许更换至劣势抗压】");
         if (Globals.Allow2LowScoreTeam)
             AddRuleLog("", "允许更换至劣势抗压");
