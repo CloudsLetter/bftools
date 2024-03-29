@@ -192,6 +192,12 @@ public static class Globals
     /// </summary>
     public static List<string> CustomBlacks_Name = new();
 
+    /// <summary>
+    /// 中文ID黑名单规则列表
+    /// 这里只存放Hash
+    /// </summary>
+    public static List<string> TranslateKeyRules = new();
+
     ///////////////////////////////////////////////////////
 
     /// <summary>

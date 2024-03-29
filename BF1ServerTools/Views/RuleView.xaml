@@ -454,7 +454,7 @@
                                 Minimum="0"
                                 Value="{Binding RuleTeam1Model.FlagKDPro, Mode=TwoWay}" />
                             <DockPanel>
-                            <TextBlock Text="最高KD（150级）" />
+                                <TextBlock Text="最高KD（150级）" />
                                 <TextBlock HorizontalAlignment="Right" Text="{Binding  RuleTeam1Model.MaxKDPro, StringFormat={}{0:0.00}}" />
                             </DockPanel>
                             <Slider
@@ -540,6 +540,92 @@
                             <!--  ######################  -->
 
                         </StackPanel>
+                    </StackPanel>
+                </UniformGrid>
+            </ui:UiTabItemIcon>
+            <ui:UiTabItemIcon Header="中文ID规则">
+                <UniformGrid Columns="3">
+                    <DockPanel>
+                        <ui:UiLabelIcon Content="所有中文ID列表" DockPanel.Dock="Top" />
+                        <ListBox x:Name="ListBox_TranslateKeyList"
+                            Margin="5"
+                            MouseDoubleClick="TranslateKeyRules_AddFromList"
+                            Style="{StaticResource ListBoxStyle_CustomWhites}" SelectionMode="Multiple">
+                            <ListBox.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem
+                                        x:Name="MenuItem_AddTranslateKeyRule"
+                                        Click="TranslateKeyRules_AddFromList"
+                                        Header="添加到黑名单" />
+                                </ContextMenu>
+                            </ListBox.ContextMenu>
+                        </ListBox>
+                    </DockPanel>
+                    <DockPanel>
+                        <ui:UiLabelIcon Content="中文ID黑名单列表" DockPanel.Dock="Top" />
+                        <ListBox x:Name="ListBox_TranslateKeyRules"
+                            Margin="5"
+                            MouseDoubleClick="TranslateKeyRules_RemoveFromList"
+                            Style="{StaticResource ListBoxStyle_CustomWhites}" SelectionMode="Multiple">
+                            <ListBox.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem
+                                        x:Name="MenuItem_RemoveTranslateKeyRule"
+                                        Click="TranslateKeyRules_RemoveFromList"
+                                        Header="从黑名单移除" />
+                                    <Separator />
+                                    <MenuItem
+                                        x:Name="MenuItem_ImportTranslateKeyRules"
+                                        Click="TranslateKeyRules_Unimplemented"
+                                        Header="导入黑名单列表" />
+                                    <MenuItem
+                                        x:Name="MenuItem_ExportTranslateKeyRules"
+                                        Click="TranslateKeyRules_Unimplemented"
+                                        Header="导出黑名单列表" />
+                                    <Separator />
+                                    <MenuItem
+                                        x:Name="MenuItem_ClearTranslateKeyRules"
+                                        Click="TranslateKeyRules_Clear"
+                                        Header="清空黑名单列表" />
+                                </ContextMenu>
+                            </ListBox.ContextMenu>
+                        </ListBox>
+                    </DockPanel>
+                    <!--  ****************  -->
+                    <StackPanel>
+                        <ui:UiLabelIcon Content="快速预设" />
+                        <CheckBox x:Name="CheckBox_TranslateKeyRulePresets_TooLong" Content="屏蔽岁月史书 (超长ID)" Checked="TranslateKeyRules_Preset_TooLong_Checked"/>
+                        <CheckBox x:Name="CheckBox_TranslateKeyRulePresets_Offensive" Content="屏蔽含辱骂词汇" Checked="TranslateKeyRules_Preset_Offensive_Checked"/>
+                        <CheckBox x:Name="CheckBox_TranslateKeyRulePresets_Whitespace" Content="屏蔽空格" Checked="TranslateKeyRules_Preset_Whitespace_Checked" />
+                        <CheckBox x:Name="CheckBox_TranslateKeyRulePresets_Multiline" Content="屏蔽多行" Checked="TranslateKeyRules_Preset_Multiline_Checked"/>
+                        <CheckBox x:Name="CheckBox_TranslateKeyRulePresets_FakeEnglish" Content="屏蔽假英文" Checked="TranslateKeyRules_Preset_FakeEnglish_Checked"/>
+
+                        <!--  **************************  -->
+                        <ui:UiLabelIcon Content="自定义屏蔽 (高级功能)" />
+                        <ui:UiTextBoxHint x:Name="TextBox_NewTranslateKeyRule" Hint="输入8位十六进制键" />
+                        <Button
+                            x:Name="Button_AddNewTranslateKeyRule"
+                            Click="TranslateKeyRules_AddCustom"
+                            Content="添加到黑名单列表">
+                            <Button.Style>
+                                <Style BasedOn="{StaticResource ButtonStyle_Base}" TargetType="{x:Type Button}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Text, ElementName=TextBox_NewBlackName}" Value="">
+                                            <Setter Property="IsEnabled" Value="False" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                        <TextBlock TextWrapping="WrapWithOverflow">
+                            TODO: <LineBreak/>
+                            1. 待测试 <LineBreak/>
+                            2. 默认遵守白名单<LineBreak/>
+                            要开关的话你自己写x <LineBreak/>
+                            3. 咱只糊了个功能<LineBreak/>
+                            云同步你自己糊x<LineBreak/>
+                            (问就是懒awa -- SakuraKooi
+                        </TextBlock>
                     </StackPanel>
                 </UniformGrid>
             </ui:UiTabItemIcon>
@@ -786,6 +872,7 @@
                     </StackPanel>
                 </UniformGrid>
             </ui:UiTabItemIcon>
+            <!--  **************************  -->
         </TabControl>
         <!--  **************************  -->
         <DockPanel Grid.Column="1">

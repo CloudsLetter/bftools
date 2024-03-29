@@ -48,6 +48,7 @@ public enum BreakType
 {
     Spectator,
     Black,
+    TranslateKey,
     CD,
     NoWhite,
 

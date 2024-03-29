@@ -28,6 +28,7 @@ public class RuleConfig
         public List<string> Team2Weapon { get; set; }
         public List<string> BlackList { get; set; }
         public List<string> WhiteList { get; set; }
+        public List<string> TranslateKeyRuleList { get; set; }
         public class Rule
         {
             public int MaxKill { get; set; }
