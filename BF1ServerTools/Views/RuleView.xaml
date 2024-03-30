@@ -618,12 +618,6 @@
                             </Button.Style>
                         </Button>
                         <TextBlock TextWrapping="WrapWithOverflow">
-                            TODO: <LineBreak/>
-                            1. 待测试 <LineBreak/>
-                            2. 默认遵守白名单<LineBreak/>
-                            要开关的话你自己写x <LineBreak/>
-                            3. 咱只糊了个功能<LineBreak/>
-                            云同步你自己糊x<LineBreak/>
                             (问就是懒awa -- SakuraKooi
                         </TextBlock>
                     </StackPanel>
@@ -943,6 +937,8 @@
             <CheckBox x:Name="CheckBox_WhiteWeapon" Content="免疫武器限制" />
             <CheckBox x:Name="CheckBox_WhiteToggleTeamLimt" Content="免疫更换队伍限制" />
             <CheckBox x:Name="CheckBox_WhiteScore" Content="免疫分数限制" />
+            <CheckBox x:Name="CheckBox_WhiteTranslateKeyRuleList" Content="免疫中文ID限制" />
+
 
             <!--  *************  -->
             <ui:UiLabelIcon Content="应用 刷新 允许换边抗压" />

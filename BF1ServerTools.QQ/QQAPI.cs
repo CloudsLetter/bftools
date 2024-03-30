@@ -6,7 +6,7 @@ namespace BF1ServerTools.QQ;
 
 public static class QQAPI
 {
-    private const string host = "http://127.0.0.1:65501";
+    private const string host = "http://127.0.0.1:3000";
 
     private static readonly RestClient client;
 

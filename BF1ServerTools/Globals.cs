@@ -392,6 +392,14 @@ public static class Globals
     public static bool WhiteLifeMaxAccuracyRatio  = true;
     public static bool WhiteLifeMaxHeadShotRatio = true;
     public static bool WhiteScore = true;
+    public static bool WhiteTranslateKeyRuleList = true;
+
+    public static bool TranslateKeyRulePresets_TooLong = true;
+    public static bool TranslateKeyRulePresets_Offensive = true;
+    public static bool TranslateKeyRulePresets_Whitespace = true;
+    public static bool TranslateKeyRulePresets_Multiline = true;
+    public static bool TranslateKeyRulePresets_FakeEnglish = true;
+
 }
 
 public enum OrderBy

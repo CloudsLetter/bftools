@@ -36,7 +36,7 @@ public partial class RobotView : UserControl
 
     ////////////////////////////////////////////////////////
 
-    private readonly Uri url = new("ws://127.0.0.1:65502");
+    private readonly Uri url = new("ws://127.0.0.1:3001");
 
     private static WebsocketClient websocketClient = null;
 
@@ -172,10 +172,10 @@ public partial class RobotView : UserControl
     {
         SaveConfig();
 
-        if (!ProcessUtil.IsAppRun("lagrange"))
+        if (!ProcessUtil.IsAppRun("QQ"))
         {
-            AppendLogger("请先启动 lagrange 程序");
-            NotifierHelper.Show(NotifierType.Warning, "请先启动 lagrange 程序");
+            AppendLogger("请先启动 NTQQ 程序且安装了 LLOneBot");
+            NotifierHelper.Show(NotifierType.Warning, "请先启动 NTQQ 程序且安装了 LLOneBot");
             return;
         }
 
@@ -394,11 +394,11 @@ public partial class RobotView : UserControl
                 graphics.CopyFromScreen(new Point(windowData.Left, windowData.Top), new Point(0, 0), new Size(windowData.Width, windowData.Height));
 
                 var file = $"BF1#{DateTime.Now:yyyyMMdd_HH-mm-ss-ffff}.png";
-                var path = $"{FileUtil.D_Robot_Path}\\data\\images\\{file}";
+                var path = $"{FileUtil.D_Robot_Path}\\{file}";
                 bitmap.Save(path, ImageFormat.Png);
                 graphics.Dispose();
 
-                _ = QQAPI.SendGroupMsg(group_id, $"[CQ:image,file={file}]");
+                _ = QQAPI.SendGroupMsg(group_id, $"[CQ:image,file={path}]");
             }
             else
             {
@@ -426,11 +426,11 @@ public partial class RobotView : UserControl
                 graphics.CopyFromScreen(new Point(windowData.Left, windowData.Top), new Point(0, 0), new Size(windowData.Width, windowData.Height));
 
                 var file = $"BF1#{DateTime.Now:yyyyMMdd_HH-mm-ss-ffff}.png";
-                var path = $"{FileUtil.D_Robot_Path}\\data\\images\\{file}";
+                var path = $"{FileUtil.D_Robot_Path}\\{file}";
                 bitmap.Save(path, ImageFormat.Png);
                 graphics.Dispose();
 
-                _ = QQAPI.SendGroupMsg(group_id, $"[CQ:image,file={file}]");
+                _ = QQAPI.SendGroupMsg(group_id, $"[CQ:image,file={path}]");
             }
             else
             {
@@ -466,11 +466,11 @@ public partial class RobotView : UserControl
                 Win32.Keybd_Event(WinVK.TAB, Win32.MapVirtualKey(WinVK.TAB, 0), 2, 0);
 
                 var file = $"BF1#{DateTime.Now:yyyyMMdd_HH-mm-ss-ffff}.png";
-                var path = $"{FileUtil.D_Robot_Path}\\data\\images\\{file}";
+                var path = $"{FileUtil.D_Robot_Path}\\{file}";
                 bitmap.Save(path, ImageFormat.Png);
                 graphics.Dispose();
 
-                _ = QQAPI.SendGroupMsg(group_id, $"[CQ:image,file={file}]");
+                _ = QQAPI.SendGroupMsg(group_id, $"[CQ:image,file={path}]");
             }
             else
             {

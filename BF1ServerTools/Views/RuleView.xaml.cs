@@ -7,6 +7,7 @@ using BF1ServerTools.Helper;
 using BF1ServerTools.Configs;
 using Newtonsoft.Json;
 using NStandard;
+using System.Windows.Markup;
 
 namespace BF1ServerTools.Views;
 
@@ -107,6 +108,7 @@ public partial class RuleView : UserControl
                     WhiteMaxWR = true,
                     WhiteAllowToggleTeam = true,
                     WhiteScore = true,
+                    WhiteTranslateKeyRuleList = true,
                     Team1Rule = new(),
                     Team2Rule = new(),
                     Team1Weapon = new(),
@@ -114,6 +116,7 @@ public partial class RuleView : UserControl
                     BlackList = new(),
                     WhiteList = new(),
                     Allow2LowScoreTeam = false,
+                    TranslateKeyRuleList = new(),
                 }) ;
             }
             // 保存配置文件
@@ -163,6 +166,14 @@ public partial class RuleView : UserControl
             CheckBox_WhiteToggleTeamLimt.IsChecked = false;
             CheckBox_AllowToggle2LowScoreTeam.IsChecked = false;
             CheckBox_WhiteScore.IsChecked = false;
+            CheckBox_WhiteTranslateKeyRuleList.IsChecked = false;
+
+            CheckBox_TranslateKeyRulePresets_TooLong.IsChecked = false;
+            CheckBox_TranslateKeyRulePresets_Offensive.IsChecked = false;
+            CheckBox_TranslateKeyRulePresets_Whitespace.IsChecked = false;
+            CheckBox_TranslateKeyRulePresets_Multiline.IsChecked = false;
+            CheckBox_TranslateKeyRulePresets_FakeEnglish.IsChecked = false;
+
             // 应用队伍1规则
             RuleTeam1Model.ScoreLimt = 0;
             RuleTeam1Model.ScoreGap = 0;
@@ -322,6 +333,13 @@ public partial class RuleView : UserControl
                           CheckBox_WhiteToggleTeamLimt.IsChecked = data.WhiteAllowToggleTeam;
                           CheckBox_AllowToggle2LowScoreTeam.IsChecked = data.Allow2LowScoreTeam;
                           CheckBox_WhiteScore.IsChecked = data.WhiteScore;
+                          CheckBox_WhiteTranslateKeyRuleList.IsChecked = data.WhiteTranslateKeyRuleList;
+
+                          CheckBox_TranslateKeyRulePresets_TooLong.IsChecked = data.TranslateKeyRulePresets_TooLong;
+                          CheckBox_TranslateKeyRulePresets_Offensive.IsChecked = data.TranslateKeyRulePresets_Offensive;
+                          CheckBox_TranslateKeyRulePresets_Whitespace.IsChecked = data.TranslateKeyRulePresets_Whitespace;
+                          CheckBox_TranslateKeyRulePresets_Multiline.IsChecked = data.TranslateKeyRulePresets_Multiline;
+                          CheckBox_TranslateKeyRulePresets_FakeEnglish.IsChecked = data.TranslateKeyRulePresets_FakeEnglish;
                           // 应用队伍1规则
                           RuleTeam1Model.ScoreLimt = data.Team1ScoreLimit;
                           RuleTeam1Model.ScoreGap = data.Team1ScoreGap;
@@ -430,6 +448,12 @@ public partial class RuleView : UserControl
             CheckBox_WhiteToggleTeamLimt.IsChecked = rule.WhiteAllowToggleTeam;
             CheckBox_AllowToggle2LowScoreTeam.IsChecked = rule.Allow2LowScoreTeam;
             CheckBox_WhiteScore.IsChecked = rule.WhiteScore;
+            CheckBox_WhiteTranslateKeyRuleList.IsChecked = rule.WhiteTranslateKeyRuleList;
+            CheckBox_TranslateKeyRulePresets_TooLong.IsChecked = rule.TranslateKeyRulePresets_TooLong;
+            CheckBox_TranslateKeyRulePresets_Offensive.IsChecked = rule.TranslateKeyRulePresets_Offensive;
+            CheckBox_TranslateKeyRulePresets_Whitespace.IsChecked = rule.TranslateKeyRulePresets_Whitespace;
+            CheckBox_TranslateKeyRulePresets_Multiline.IsChecked = rule.TranslateKeyRulePresets_Multiline;
+            CheckBox_TranslateKeyRulePresets_FakeEnglish.IsChecked = rule.TranslateKeyRulePresets_FakeEnglish;
             // 应用队伍1规则
             RuleTeam1Model.ScoreLimt = rule.Team1Rule.ScoreLimit;
             RuleTeam1Model.ScoreGap = rule.Team1Rule.ScoreGap;
@@ -682,31 +706,13 @@ public partial class RuleView : UserControl
             rule.WhiteAllowToggleTeam = CheckBox_WhiteToggleTeamLimt.IsChecked == true;
             rule.Allow2LowScoreTeam = CheckBox_AllowToggle2LowScoreTeam.IsChecked == true;
             rule.WhiteScore =CheckBox_WhiteScore.IsChecked == true;
+            rule.WhiteTranslateKeyRuleList = CheckBox_WhiteTranslateKeyRuleList.IsChecked == true;
 
-            rule.Team1Rule.MaxKill = RuleTeam1Model.MaxKill;
-            rule.Team1Rule.FlagKD = RuleTeam1Model.FlagKD;
-            rule.Team1Rule.MaxKD = RuleTeam1Model.MaxKD;
-            rule.Team1Rule.FlagKPM = RuleTeam1Model.FlagKPM;
-            rule.Team1Rule.MaxKPM = RuleTeam1Model.MaxKPM;
-            rule.Team1Rule.MinRank = RuleTeam1Model.MinRank;
-            rule.Team1Rule.MaxRank = RuleTeam1Model.MaxRank;
-            rule.Team1Rule.LifeMaxKD = RuleTeam1Model.LifeMaxKD;
-            rule.Team1Rule.LifeMaxKPM = RuleTeam1Model.LifeMaxKPM;
-            rule.Team1Rule.LifeMaxWeaponStar = RuleTeam1Model.LifeMaxWeaponStar;
-            rule.Team1Rule.LifeMaxAccuracyRatioLevel = RuleTeam1Model.LifeMaxAccuracyRatioLevel;
-            rule.Team1Rule.LifeMaxAccuracyRatio = RuleTeam1Model.LifeMaxAccuracyRatio;
-            rule.Team1Rule.LifeMaxHeadShotRatioLevel = RuleTeam1Model.LifeMaxHeadShotRatioLevel;
-            rule.Team1Rule.LifeMaxHeadShotRatio = RuleTeam1Model.LifeMaxHeadShotRatio;
-            rule.Team1Rule.LifeMaxVehicleStar = RuleTeam1Model.LifeMaxVehicleStar;
-            rule.Team1Rule.LifeMaxWRLevel = RuleTeam1Model.LifeMaxWRLevel;
-            rule.Team1Rule.LifeMaxWR = RuleTeam1Model.LifeMaxWR;
-            rule.Team1Rule.ScoreLimit = RuleTeam1Model.ScoreLimt;
-            rule.Team1Rule.ScoreGap = RuleTeam1Model.ScoreGap;
-            rule.Team1Rule.MaxScore = RuleTeam1Model.MaxScore;
-            rule.Team1Rule.FlagKDPro = RuleTeam1Model.FlagKDPro;
-            rule.Team1Rule.MaxKDPro = RuleTeam1Model.MaxKDPro;
-            rule.Team1Rule.FlagKPMPro = RuleTeam1Model.FlagKPMPro;
-            rule.Team1Rule.MaxKPMPro = RuleTeam1Model.MaxKPMPro;
+            rule.TranslateKeyRulePresets_TooLong = CheckBox_TranslateKeyRulePresets_TooLong.IsChecked == true;
+            rule.TranslateKeyRulePresets_Offensive = CheckBox_TranslateKeyRulePresets_Offensive.IsChecked == true;
+            rule.TranslateKeyRulePresets_Whitespace  = CheckBox_TranslateKeyRulePresets_Whitespace.IsChecked == true;
+            rule.TranslateKeyRulePresets_Multiline = CheckBox_TranslateKeyRulePresets_Multiline.IsChecked == true;
+            rule.TranslateKeyRulePresets_FakeEnglish = CheckBox_TranslateKeyRulePresets_FakeEnglish.IsChecked == true;
 
             rule.Team2Rule.MaxKill = RuleTeam2Model.MaxKill;
             rule.Team2Rule.FlagKD = RuleTeam2Model.FlagKD;
@@ -738,31 +744,32 @@ public partial class RuleView : UserControl
                 rule.WhiteList.Add(name);
             }
 
-            rule.BlackList.Clear();
-            foreach (string name in ListBox_CustomBlacks.Items)
-            {
-                rule.BlackList.Add(name);
-            }
-            
-            rule.TranslateKeyRuleList.Clear();
-            foreach (string translateKey in ListBox_TranslateKeyRules.Items) {
-                rule.TranslateKeyRuleList.Add(translateKey);
+                rule.BlackList.Clear();
+                foreach (string name in ListBox_CustomBlacks.Items)
+                {
+                    rule.BlackList.Add(name);
+                }
+
+                rule.TranslateKeyRuleList.Clear();
+                foreach (string translateKey in ListBox_TranslateKeyRules.Items)
+                {
+                    rule.TranslateKeyRuleList.Add(translateKey);
+                }
+
+                rule.Team1Weapon.Clear();
+                rule.Team2Weapon.Clear();
+                for (int i = 0; i < DataGrid_RuleWeaponModels.Count; i++)
+                {
+                    var item = DataGrid_RuleWeaponModels[i];
+                    if (item.Team1)
+                        rule.Team1Weapon.Add(item.English);
+
+                    if (item.Team2)
+                        rule.Team2Weapon.Add(item.English);
+                }
             }
 
-            rule.Team1Weapon.Clear();
-            rule.Team2Weapon.Clear();
-            for (int i = 0; i < DataGrid_RuleWeaponModels.Count; i++)
-            {
-                var item = DataGrid_RuleWeaponModels[i];
-                if (item.Team1)
-                    rule.Team1Weapon.Add(item.English);
-
-                if (item.Team2)
-                    rule.Team2Weapon.Add(item.English);
-            }
-        }
-
-        File.WriteAllText(F_Rule_Path, JsonHelper.JsonSeri(RuleConfig));
+            File.WriteAllText(F_Rule_Path, JsonHelper.JsonSeri(RuleConfig));
         }
     }
 
@@ -789,8 +796,14 @@ public partial class RuleView : UserControl
                 rule.WhiteMaxWR = CheckBox_WhiteLifeMaxWR.IsChecked == true;
                 rule.WhiteAllowToggleTeam = CheckBox_WhiteToggleTeamLimt.IsChecked == true;
                 rule.Allow2LowScoreTeam = CheckBox_AllowToggle2LowScoreTeam.IsChecked == true;
-                rule.WhiteScore =CheckBox_WhiteScore.IsChecked == true;
+                rule.WhiteScore = CheckBox_WhiteScore.IsChecked == true;
+                rule.WhiteTranslateKeyRuleList = CheckBox_WhiteTranslateKeyRuleList.IsChecked == true;
 
+                rule.TranslateKeyRulePresets_TooLong = CheckBox_TranslateKeyRulePresets_TooLong.IsChecked == true;
+                rule.TranslateKeyRulePresets_Offensive = CheckBox_TranslateKeyRulePresets_Offensive.IsChecked == true;
+                rule.TranslateKeyRulePresets_Whitespace = CheckBox_TranslateKeyRulePresets_Whitespace.IsChecked == true;
+                rule.TranslateKeyRulePresets_Multiline = CheckBox_TranslateKeyRulePresets_Multiline.IsChecked == true;
+                rule.TranslateKeyRulePresets_FakeEnglish = CheckBox_TranslateKeyRulePresets_FakeEnglish.IsChecked == true;
                 rule.Team1Rule.MaxKill = RuleTeam1Model.MaxKill;
                 rule.Team1Rule.FlagKD = RuleTeam1Model.FlagKD;
                 rule.Team1Rule.MaxKD = RuleTeam1Model.MaxKD;
@@ -883,7 +896,7 @@ public partial class RuleView : UserControl
         ListBox_CustomWhites.Items.Clear();
         if (!Globals.IsCloudMode)
         {
-            foreach (var item in rule.WhiteList)
+            foreach (var item in CheckBox_WhiteList)
             {
                 ListBox_CustomWhites.Items.Add(item);
             }
@@ -895,7 +908,7 @@ public partial class RuleView : UserControl
         ListBox_CustomWhites.Items.Clear();
         if (!Globals.IsCloudMode)
         {
-            foreach (var item in rule.BlackList)
+            foreach (var item in CheckBox_BlackList)
             {
                 ListBox_CustomBlacks.Items.Add(item);
             }
@@ -909,13 +922,13 @@ public partial class RuleView : UserControl
             {
                 var item = DataGrid_RuleWeaponModels[i];
 
-                var v1 = rule.Team1Weapon.IndexOf(item.English);
+                var v1 = CheckBox_Team1Weapon.IndexOf(item.English);
                 if (v1 != -1)
                     item.Team1 = true;
                 else
                     item.Team1 = false;
 
-                var v2 = rule.Team2Weapon.IndexOf(item.English);
+                var v2 = CheckBox_Team2Weapon.IndexOf(item.English);
                 if (v2 != -1)
                     item.Team2 = true;
                 else
@@ -964,6 +977,14 @@ public partial class RuleView : UserControl
             CheckBox_WhiteToggleTeamLimt.IsChecked = rule.WhiteAllowToggleTeam;
             CheckBox_AllowToggle2LowScoreTeam.IsChecked = rule.Allow2LowScoreTeam;
             CheckBox_WhiteScore.IsChecked = rule.WhiteScore;
+            CheckBox_WhiteTranslateKeyRuleList.IsChecked = rule.WhiteTranslateKeyRuleList;
+
+            CheckBox_TranslateKeyRulePresets_TooLong.IsChecked = rule.TranslateKeyRulePresets_TooLong;
+            CheckBox_TranslateKeyRulePresets_Offensive.IsChecked = rule.TranslateKeyRulePresets_Offensive;
+            CheckBox_TranslateKeyRulePresets_Whitespace.IsChecked = rule.TranslateKeyRulePresets_Whitespace;
+            CheckBox_TranslateKeyRulePresets_Multiline.IsChecked = rule.TranslateKeyRulePresets_Multiline;
+            CheckBox_TranslateKeyRulePresets_FakeEnglish.IsChecked = rule.TranslateKeyRulePresets_FakeEnglish;
+
             // 应用队伍1规则
             RuleTeam1Model.ScoreLimt = rule.Team1Rule.ScoreLimit;
             RuleTeam1Model.ScoreGap = rule.Team1Rule.ScoreGap;
@@ -1143,6 +1164,7 @@ public partial class RuleView : UserControl
     {
         string team1weapon = string.Join(",", Globals.CustomWeapons_Team1);
         string team2weapon = string.Join(",", Globals.CustomWeapons_Team2);
+        string tmpTranslateKeyRules = string.Join(",", Globals.TranslateKeyRules);
         var result = await CloudApi.PushRule(
               whiteLifeKD: Globals.WhiteLifeKD,
               whiteLifeKPM: Globals.WhiteLifeKPM,
@@ -1160,6 +1182,13 @@ public partial class RuleView : UserControl
               whiteAllowToggleTeam: Globals.IsAllowWhlistToggleTeam,
               allow2LowScoreTeam: Globals.Allow2LowScoreTeam,
               whiteScore: Globals.WhiteScore,
+              whiteTranslateKeyRuleList :Globals.WhiteTranslateKeyRuleList,
+              translateKeyRules: tmpTranslateKeyRules,
+              translateKeyRulePresetsTooLong: Globals.TranslateKeyRulePresets_TooLong,
+              translateKeyRulePresetsOffensive: Globals.TranslateKeyRulePresets_Offensive,
+              translateKeyRulePresetsWhitespace: Globals.TranslateKeyRulePresets_Whitespace,
+              translateKeyRulePresetsMultiline: Globals.TranslateKeyRulePresets_Multiline,
+              translateKeyRulePresetsFakeEnglish: Globals.TranslateKeyRulePresets_FakeEnglish,
               team1MaxKill: Globals.ServerRule_Team1.MaxKill,
               team1FlagKD: Globals.ServerRule_Team1.FlagKD,
               team1MaxKD: Globals.ServerRule_Team1.MaxKD,
@@ -1293,6 +1322,16 @@ public partial class RuleView : UserControl
         Globals.WhiteLifeMaxWR = CheckBox_WhiteLifeMaxWR.IsChecked == true;
         Globals.Allow2LowScoreTeam = CheckBox_AllowToggle2LowScoreTeam.IsChecked == true;
         Globals.WhiteScore = CheckBox_WhiteScore.IsChecked == true;
+        Globals.WhiteTranslateKeyRuleList = CheckBox_WhiteTranslateKeyRuleList.IsChecked == true;
+
+
+        Globals.TranslateKeyRulePresets_TooLong = CheckBox_TranslateKeyRulePresets_TooLong.IsChecked ==  true;
+        Globals.TranslateKeyRulePresets_Offensive = CheckBox_TranslateKeyRulePresets_Offensive.IsChecked == true;
+        Globals.TranslateKeyRulePresets_Whitespace = CheckBox_TranslateKeyRulePresets_Whitespace.IsChecked == true;
+        Globals.TranslateKeyRulePresets_Multiline = CheckBox_TranslateKeyRulePresets_Multiline.IsChecked == true;
+        Globals.TranslateKeyRulePresets_FakeEnglish = CheckBox_TranslateKeyRulePresets_FakeEnglish.IsChecked == true;
+
+
         Globals.ServerRule_Team1.ScoreLimit = RuleTeam1Model.ScoreLimt;
         Globals.ServerRule_Team1.ScoreGap = RuleTeam1Model.ScoreGap;
         Globals.ServerRule_Team1.MaxKill = RuleTeam1Model.MaxKill;
@@ -1491,6 +1530,8 @@ public partial class RuleView : UserControl
             AddRuleLog("", "免疫更换队伍限制");
         if (Globals.WhiteScore)
             AddRuleLog("", "免疫分数限制");
+        if (Globals.WhiteTranslateKeyRuleList)
+            AddRuleLog("", "免疫中文ID限制");
         int index = 1;
         AddRuleLog("【白名单列表】");
         foreach (var item in Globals.CustomWhites_Name)
