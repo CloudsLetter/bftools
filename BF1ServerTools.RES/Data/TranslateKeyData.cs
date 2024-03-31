@@ -33,7 +33,7 @@ public class TranslateKeyData {
                 this.Flag = TranslateKeyFlag.MULTILINE;
             } else if (displayText.Length > 20) {
                 this.Flag = TranslateKeyFlag.TOO_LONG;
-            } else if (Regex.IsMatch(displayText, @"^[A-Za-z0-9\-\_ ]+$")) {
+            } else if (Regex.IsMatch(displayText, @"^[A-Za-z0-9\-_ ]+$")) {
                 this.Flag = TranslateKeyFlag.FAKE_ENGLISH;
             } else {
                 this.Flag = TranslateKeyFlag.NOTHING;
