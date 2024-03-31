@@ -627,9 +627,6 @@
                                 </Style>
                             </Button.Style>
                         </Button>
-                        <TextBlock TextWrapping="WrapWithOverflow">
-                            (问就是懒awa -- SakuraKooi
-                        </TextBlock>
                     </StackPanel>
                 </Grid>
             </ui:UiTabItemIcon>
