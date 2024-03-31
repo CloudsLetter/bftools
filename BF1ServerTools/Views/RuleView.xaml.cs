@@ -2376,6 +2376,7 @@ public partial class RuleView : UserControl
         {
             ListBox_TranslateKeyList.Items.Add(key.ToRule());
         });
+        // FIXME: lag due to too many items, try use something more performance friendly
     }
 
     private void TranslateKeyRules_LoadFromList(List<string> ruleTranslateKeyRuleList)
