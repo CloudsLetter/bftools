@@ -23,6 +23,12 @@ public class CloudRule
     public bool WhiteLifeMaxWR { get; set; }
     public bool Allow2LowSocre { get; set; }
     public bool WhiteScore { get; set; }
+    public bool WhiteTranslateKeyRuleList { get; set; }
+    public bool TranslateKeyRulePresets_TooLong { get; set; }
+    public bool TranslateKeyRulePresets_Offensive { get; set; }
+    public bool TranslateKeyRulePresets_Whitespace { get; set; }
+    public bool TranslateKeyRulePresets_Multiline { get; set; }
+    public bool TranslateKeyRulePresets_FakeEnglish { get; set; }
     public int Team1MaxKill { get; set; }
     public int Team1FlagKD { get; set; }
     public float Team1MaxKD { get; set; }

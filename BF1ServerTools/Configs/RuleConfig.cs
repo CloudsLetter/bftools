@@ -22,6 +22,8 @@ public class RuleConfig
         public bool WhiteMaxWR { get; set; }
         public bool WhiteAllowToggleTeam { get; set; }
         public bool WhiteScore { get; set; }
+
+        public bool WhiteTranslateKeyRuleList { get; set; }
         public Rule Team1Rule { get; set; }
         public Rule Team2Rule { get; set; }
         public List<string> Team1Weapon { get; set; }
@@ -29,6 +31,11 @@ public class RuleConfig
         public List<string> BlackList { get; set; }
         public List<string> WhiteList { get; set; }
         public List<string> TranslateKeyRuleList { get; set; }
+        public bool TranslateKeyRulePresets_TooLong { get; set; }
+        public bool TranslateKeyRulePresets_Offensive { get; set; }
+        public bool TranslateKeyRulePresets_Whitespace { get; set; }
+        public bool TranslateKeyRulePresets_Multiline { get; set; }
+        public bool TranslateKeyRulePresets_FakeEnglish { get; set; }
         public class Rule
         {
             public int MaxKill { get; set; }

@@ -23,10 +23,6 @@
         <!--  ************************************  -->
         <StackPanel Grid.Column="1">
             <ui:UiLabelIcon Content="功能开关" />
-            <Button
-                x:Name="Button_RunGoCqHttpServer"
-                Click="Button_RunGoCqHttpServer_Click"
-                Content="启动QQ机器人服务" />
             <UniformGrid Columns="2">
                 <Button
                     x:Name="Button_RunWebsocketServer"
@@ -94,11 +90,6 @@
             <!--  ********************  -->
             <ui:UiLabelIcon Content="高级功能" />
             <WrapPanel>
-                <Button
-                    x:Name="Button_ChangeGoCqHttpQQID"
-                    Margin="5,5,0,5"
-                    Click="Button_ChangeGoCqHttpQQID_Click"
-                    Content="更换QQ机器人账号" />
                 <Button
                     x:Name="Button_ClearImageCache"
                     Margin="5,5,0,5"

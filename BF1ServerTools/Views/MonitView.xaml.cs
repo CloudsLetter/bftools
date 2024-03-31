@@ -1337,7 +1337,7 @@ public partial class MonitView : UserControl
 
             if (item.BreakType == BreakType.TranslateKey)
             {
-                if (true) // 默认遵守白名单 自己改.webp
+                if (Globals.WhiteTranslateKeyRuleList)
                     continue;
                 else
                 {
