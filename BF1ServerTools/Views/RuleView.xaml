@@ -612,6 +612,8 @@
                                      VirtualizingStackPanel.VirtualizationMode="Recycling"
                                      ScrollViewer.VerticalScrollBarVisibility="Visible"
                                      ScrollViewer.CanContentScroll="True"
+                                     ScrollViewer.IsDeferredScrollingEnabled="True"
+                                     MaxHeight="114514"
                                      Style="{StaticResource ListBoxStyle_CustomWhites}" SelectionMode="Multiple">
                             </ListBox>
                         </DockPanel>
@@ -625,6 +627,8 @@
                                      VirtualizingStackPanel.VirtualizationMode="Recycling"
                                      ScrollViewer.VerticalScrollBarVisibility="Visible"
                                      ScrollViewer.CanContentScroll="True"
+                                     ScrollViewer.IsDeferredScrollingEnabled="True"
+                                     MaxHeight="114514"
                                      Style="{StaticResource ListBoxStyle_CustomWhites}" SelectionMode="Multiple">
                             </ListBox>
                         </DockPanel>
