@@ -2088,6 +2088,8 @@ public partial class RuleView : UserControl {
         ListTranslateKeyRules.Clear();
 
         ListTranslateKeys.AddRange(TranslateKeyData.TranslateKeys.Select(key => key.ToRule()));
+        ListBox_TranslateKeyList.ItemsSource = new List<string>();
+        ListBox_TranslateKeyRules.ItemsSource = new List<string>();
         ListBox_TranslateKeyList.ItemsSource = ListTranslateKeys;
         ListBox_TranslateKeyRules.ItemsSource = ListTranslateKeyRules;
     }

@@ -611,15 +611,8 @@
                                      VirtualizingStackPanel.IsVirtualizing="True"
                                      VirtualizingStackPanel.VirtualizationMode="Recycling"
                                      ScrollViewer.VerticalScrollBarVisibility="Visible"
+                                     ScrollViewer.CanContentScroll="True"
                                      Style="{StaticResource ListBoxStyle_CustomWhites}" SelectionMode="Multiple">
-                                <ListBox.ContextMenu>
-                                    <ContextMenu>
-                                        <MenuItem
-                                            x:Name="MenuItem_AddTranslateKeyRule"
-                                            Click="TranslateKeyRules_AddFromList"
-                                            Header="添加到黑名单" />
-                                    </ContextMenu>
-                                </ListBox.ContextMenu>
                             </ListBox>
                         </DockPanel>
                         <DockPanel Grid.Row="1">
@@ -631,29 +624,8 @@
                                      VirtualizingStackPanel.IsVirtualizing="True"
                                      VirtualizingStackPanel.VirtualizationMode="Recycling"
                                      ScrollViewer.VerticalScrollBarVisibility="Visible"
+                                     ScrollViewer.CanContentScroll="True"
                                      Style="{StaticResource ListBoxStyle_CustomWhites}" SelectionMode="Multiple">
-                                <ListBox.ContextMenu>
-                                    <ContextMenu>
-                                        <MenuItem
-                                            x:Name="MenuItem_RemoveTranslateKeyRule"
-                                            Click="TranslateKeyRules_RemoveFromList"
-                                            Header="从黑名单移除" />
-                                        <Separator />
-                                        <MenuItem
-                                            x:Name="MenuItem_ImportTranslateKeyRules"
-                                            Click="TranslateKeyRules_Unimplemented"
-                                            Header="导入黑名单列表" />
-                                        <MenuItem
-                                            x:Name="MenuItem_ExportTranslateKeyRules"
-                                            Click="TranslateKeyRules_Unimplemented"
-                                            Header="导出黑名单列表" />
-                                        <Separator />
-                                        <MenuItem
-                                            x:Name="MenuItem_ClearTranslateKeyRules"
-                                            Click="TranslateKeyRules_Clear"
-                                            Header="清空黑名单列表" />
-                                    </ContextMenu>
-                                </ListBox.ContextMenu>
                             </ListBox>
                         </DockPanel>
                     </Grid>
@@ -670,6 +642,21 @@
                                   Click="TranslateKeyRules_Preset_Offensive_Checked" />
                         <CheckBox x:Name="CheckBox_TranslateKeyRulePresets_Multiline" Content="屏蔽多行"
                                   Click="TranslateKeyRules_Preset_Multiline_Checked" />
+                        <Button
+                            x:Name="Button_TranslateKeyRuleClear"
+                            Click="TranslateKeyRules_Clear"
+                            Content="清空黑名单列表">
+                        </Button>
+                        <Button
+                            x:Name="Button_TranslateKeyRuleImport"
+                            Click="TranslateKeyRules_Unimplemented"
+                            Content="导入黑名单列表">
+                        </Button>
+                        <Button
+                            x:Name="Button_TranslateKeyRuleExport"
+                            Click="TranslateKeyRules_Unimplemented"
+                            Content="导出黑名单列表">
+                        </Button>
 
                         <!--  **************************  -->
                         <ui:UiLabelIcon Content="自定义屏蔽 (高级功能)" />
