@@ -608,6 +608,9 @@
                             <ListBox x:Name="ListBox_TranslateKeyList"
                                      Margin="5"
                                      MouseDoubleClick="TranslateKeyRules_AddFromList"
+                                     VirtualizingStackPanel.IsVirtualizing="True"
+                                     VirtualizingStackPanel.VirtualizationMode="Recycling"
+                                     ScrollViewer.VerticalScrollBarVisibility="Visible"
                                      Style="{StaticResource ListBoxStyle_CustomWhites}" SelectionMode="Multiple">
                                 <ListBox.ContextMenu>
                                     <ContextMenu>
@@ -625,6 +628,9 @@
                             <ListBox x:Name="ListBox_TranslateKeyRules"
                                      Margin="5"
                                      MouseDoubleClick="TranslateKeyRules_RemoveFromList"
+                                     VirtualizingStackPanel.IsVirtualizing="True"
+                                     VirtualizingStackPanel.VirtualizationMode="Recycling"
+                                     ScrollViewer.VerticalScrollBarVisibility="Visible"
                                      Style="{StaticResource ListBoxStyle_CustomWhites}" SelectionMode="Multiple">
                                 <ListBox.ContextMenu>
                                     <ContextMenu>
@@ -655,15 +661,15 @@
                     <StackPanel Grid.Column="1">
                         <ui:UiLabelIcon Content="快速预设" />
                         <CheckBox x:Name="CheckBox_TranslateKeyRulePresets_FakeEnglish" Content="屏蔽假英文"
-                                  Checked="TranslateKeyRules_Preset_FakeEnglish_Checked" FontWeight="Bold" />
+                                  Click="TranslateKeyRules_Preset_FakeEnglish_Checked" FontWeight="Bold" />
                         <CheckBox x:Name="CheckBox_TranslateKeyRulePresets_Whitespace" Content="屏蔽空格"
-                                  Checked="TranslateKeyRules_Preset_Whitespace_Checked" FontWeight="Bold" />
+                                  Click="TranslateKeyRules_Preset_Whitespace_Checked" FontWeight="Bold" />
                         <CheckBox x:Name="CheckBox_TranslateKeyRulePresets_TooLong" Content="屏蔽岁月史书 (超长ID)"
-                                  Checked="TranslateKeyRules_Preset_TooLong_Checked" FontWeight="Bold" />
+                                  Click="TranslateKeyRules_Preset_TooLong_Checked" FontWeight="Bold" />
                         <CheckBox x:Name="CheckBox_TranslateKeyRulePresets_Offensive" Content="屏蔽含辱骂词汇"
-                                  Checked="TranslateKeyRules_Preset_Offensive_Checked" />
+                                  Click="TranslateKeyRules_Preset_Offensive_Checked" />
                         <CheckBox x:Name="CheckBox_TranslateKeyRulePresets_Multiline" Content="屏蔽多行"
-                                  Checked="TranslateKeyRules_Preset_Multiline_Checked" />
+                                  Click="TranslateKeyRules_Preset_Multiline_Checked" />
 
                         <!--  **************************  -->
                         <ui:UiLabelIcon Content="自定义屏蔽 (高级功能)" />
