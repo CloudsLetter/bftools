@@ -2370,21 +2370,22 @@ public partial class RuleView : UserControl
         TranslateKeyRules_Helper_ApplyPreset(TranslateKeyData.TranslateKeyFlag.MULTILINE, CheckBox_TranslateKeyRulePresets_Multiline.IsChecked.Value);
     }
 
-    private void TranslateKeyRules_Initialize()
-    {
-        TranslateKeyData.TranslateKeys.ForEach(key =>
-        {
-            ListBox_TranslateKeyList.Items.Add(key.ToRule());
+    private Task TranslateKeyRules_Initialize() {
+        return Task.Run(() => {
+            TranslateKeyData.TranslateKeys.ForEach(key =>
+            {
+                ListBox_TranslateKeyList.Items.Add(key.ToRule());
+            });
+            // FIXME: might be buggy, needs more test
         });
-        // FIXME: lag due to too many items, try use something more performance friendly
     }
 
-    private void TranslateKeyRules_LoadFromList(List<string> ruleTranslateKeyRuleList)
+    private async void TranslateKeyRules_LoadFromList(List<string> ruleTranslateKeyRuleList)
     {
         ListBox_TranslateKeyRules.Items.Clear();
         ListBox_TranslateKeyList.Items.Clear();
 
-        TranslateKeyRules_Initialize();
+        await TranslateKeyRules_Initialize();
         ruleTranslateKeyRuleList.ForEach(key =>
         {
             ListBox_TranslateKeyRules.Items.Add(key);
