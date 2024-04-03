@@ -12,7 +12,7 @@
                 <ControlTemplate TargetType="{x:Type controls:UiLabelIcon}">
                     <Grid SnapsToDevicePixels="True">
                         <Border
-                            Background="#B3E19D"
+                            Background="{TemplateBinding BackgroundColor}"
                             BorderBrush="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Background}"
                             BorderThickness="1"
                             CornerRadius="2"
@@ -20,7 +20,7 @@
                         <Border
                             Padding="8"
                             Background="Transparent"
-                            BorderBrush="#67C23A"
+                            BorderBrush="{TemplateBinding BorderColor}"
                             BorderThickness="4,0,0,0"
                             CornerRadius="2"
                             SnapsToDevicePixels="True">
