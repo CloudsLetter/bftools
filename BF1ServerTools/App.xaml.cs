@@ -113,4 +113,5 @@ public partial class App : Application
 
         return builder.ToString();
     }
+
 }

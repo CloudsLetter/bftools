@@ -1063,7 +1063,7 @@ public partial class Robot : UserControl
     {
         var mapNamesToId = await CreateMapNamesToIdMapAsync();
 
-        // MapListView是你的ListView控件的名字
+        // MapListView是ListView控件的名字
         var selectedMaps = MapListView.Items.Cast<MapItem>().Where(item => item.IsSelected).ToList();
 
         if (!selectedMaps.Any())

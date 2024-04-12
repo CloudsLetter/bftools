@@ -6,6 +6,7 @@ using BF1ServerTools.SDK.Data;
 using Newtonsoft.Json;
 using System.Text;
 using static BF1ServerTools.API.Requ.UpdateServer;
+using System.Net.Http;
 
 public class CloudRespError
 {
@@ -1020,7 +1021,6 @@ public static class CloudApi
 
         try
         {
-
             var reqBody = new
             {
                 Token = "chaoshilisaohuo",
@@ -1039,20 +1039,35 @@ public static class CloudApi
             }
             else
             {
-                var respError = JsonHelper.JsonDese<RespError>(response.Content);
-                respContent.Content = $"{respError.error.code} {respError.error.message}";
+                try
+                {
+                    var respError = JsonHelper.JsonDese<RespError>(response.Content);
+                    respContent.Content = $"{respError.error.code} {respError.error.message}";
+                }
+                catch (Exception jsonEx)
+                {
+                    // JSON解析失败的异常处理
+                    respContent.Content = $"Failed to parse error response: {jsonEx.Message}";
+                }
             }
+        }
+        catch (HttpRequestException httpEx)
+        {
+            // 处理可能的网络请求相关异常
+            respContent.Content = $"HTTP Request failed: {httpEx.Message}";
         }
         catch (Exception ex)
         {
-            respContent.Content = ex.Message;
+            // 其他异常的通用处理
+            respContent.Content = $"An error occurred: {ex.Message}";
+        }
+        finally
+        {
+            sw.Stop();
+            respContent.ExecTime = sw.Elapsed.TotalSeconds;
         }
 
-        sw.Stop();
-        respContent.ExecTime = sw.Elapsed.TotalSeconds;
-
         return respContent;
-
     }
 
 
