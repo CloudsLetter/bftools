@@ -64,92 +64,60 @@ public partial class LoadWindow
                 Directory.CreateDirectory(FileUtil.D_Robot_Path);
 
                 LoadModel.LoadState = "正在检测战地1是否运行...";
-                // 检测战地1是否运行，测试离线运行
-                if (false)
+                //检测战地1是否运行
+                if (!true)
                 {
-                    if (!ProcessUtil.IsBf1Run())
-                    {
-                        LoadModel.LoadState = "未发现《战地1》游戏进程！程序即将关闭";
-                        LoggerHelper.Error("未发现战地1进程");
+                    LoadModel.LoadState = "未发现《战地1》游戏进程！程序即将关闭";
+                    LoggerHelper.Error("未发现战地1进程");
 
-                        Task.Delay(2000).Wait();
-                        this.Dispatcher.Invoke(() =>
-                        {
-                            Application.Current.Shutdown();
-                        });
-                        return;
-                    }
-
-                    LoadModel.LoadState = "正在初始化战地1内存模块...";
-                    // 初始化战地1内存模块
-                    if (!Memory.Initialize())
-                    {
-                        LoadModel.LoadState = $"战地1内存模块初始化失败！程序即将关闭";
-                        LoggerHelper.Error("战地1内存模块初始化失败");
-
-                        Task.Delay(2000).Wait();
-                        this.Dispatcher.Invoke(() =>
-                        {
-                            Application.Current.Shutdown();
-                        });
-                        return;
-                    }
-
-                    LoadModel.LoadState = "正在初始化SQLite数据库...";
-                    // 初始化SQLite数据库
-                    if (!SQLiteHelper.Initialize())
-                    {
-                        LoadModel.LoadState = "SQLite数据库初始化失败！程序即将关闭";
-                        LoggerHelper.Error("SQLite数据库初始化失败");
-
-                        Task.Delay(2000).Wait();
-                        this.Dispatcher.Invoke(() =>
-                        {
-                            Application.Current.Shutdown();
-                        });
-                        return;
-                    }
-
-                    /////////////////////////////////////////////////////////////////////
-
-                    LoadModel.LoadState = "正在准备最后工作...";
-
-                    // 释放必要文件
-                    if (!File.Exists(FileUtil.D_Robot_Path + "\\config.yml"))
-                        FileUtil.ExtractResFile(FileUtil.Resource_Path + "config.yml", FileUtil.D_Robot_Path + "\\config.yml");
-
-                    if (!File.Exists(FileUtil.D_Robot_Path + "\\go-cqhttp.exe"))
-                        FileUtil.ExtractResFile(FileUtil.Resource_Path + "go-cqhttp.exe", FileUtil.D_Robot_Path + "\\go-cqhttp.exe");
-
-                    Chat.AllocateMemory();
-                    LoggerHelper.Info($"中文聊天指针分配成功 0x{Chat.AllocateMemAddress:x}");
-
-                    ChineseConverter.ToTraditional("免费，跨平台，开源！");
-                    LoggerHelper.Info("简繁翻译库初始化成功");
-
-                    /////////////////////////////////////////////////////////////////////
-
+                    Task.Delay(2000).Wait();
                     this.Dispatcher.Invoke(() =>
                     {
-                        var mainWindow = new MainWindow();
-                        // 显示主窗口
-                        mainWindow.Show();
-                        // 转移主程序控制权
-                        Application.Current.MainWindow = mainWindow;
-                        // 关闭初始化窗口
-                        this.Close();
+                        Application.Current.Shutdown();
                     });
+                    return;
                 }
-                Memory.Initialize();
-                SQLiteHelper.Initialize();
+
+                LoadModel.LoadState = "正在初始化战地1内存模块...";
+                //初始化战地1内存模块
+                if (!Memory.Initialize())
+                {
+                    LoadModel.LoadState = $"战地1内存模块初始化失败！";
+                    LoggerHelper.Error("战地1内存模块初始化失败");
+
+                    //Task.Delay(2000).Wait();
+                    //this.Dispatcher.Invoke(() =>
+                    //{
+                    //    Application.Current.Shutdown();
+                   // });
+                    //return;
+                }
+               
+                LoadModel.LoadState = "正在初始化SQLite数据库...";
+                // 初始化SQLite数据库
+                if (!SQLiteHelper.Initialize())
+                {
+                    LoadModel.LoadState = "SQLite数据库初始化失败！程序即将关闭";
+                    LoggerHelper.Error("SQLite数据库初始化失败");
+
+                    Task.Delay(2000).Wait();
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        Application.Current.Shutdown();
+                    });
+                    return;
+                }
+
+                /////////////////////////////////////////////////////////////////////
+
                 LoadModel.LoadState = "正在准备最后工作...";
 
-                // 释放必要文件
-                if (!File.Exists(FileUtil.D_Robot_Path + "\\config.yml"))
-                    FileUtil.ExtractResFile(FileUtil.Resource_Path + "config.yml", FileUtil.D_Robot_Path + "\\config.yml");
+                   // 释放必要文件
+//               if (!File.Exists(FileUtil.D_Robot_Path + "\\appsettings.json"))
+//                    FileUtil.ExtractResFile(FileUtil.Resource_Path + "appsettings.json", FileUtil.D_Robot_Path + "\\appsettings.json");
 
-                if (!File.Exists(FileUtil.D_Robot_Path + "\\go-cqhttp.exe"))
-                    FileUtil.ExtractResFile(FileUtil.Resource_Path + "go-cqhttp.exe", FileUtil.D_Robot_Path + "\\go-cqhttp.exe");
+//                if (!File.Exists(FileUtil.D_Robot_Path + "\\lagrange.exe"))
+//                  FileUtil.ExtractResFile(FileUtil.Resource_Path + "lagrange.exe", FileUtil.D_Robot_Path + "\\lagrange.exe");
 
                 Chat.AllocateMemory();
                 LoggerHelper.Info($"中文聊天指针分配成功 0x{Chat.AllocateMemAddress:x}");
@@ -158,7 +126,6 @@ public partial class LoadWindow
                 LoggerHelper.Info("简繁翻译库初始化成功");
 
                 /////////////////////////////////////////////////////////////////////
-
 
                 this.Dispatcher.Invoke(() =>
                 {

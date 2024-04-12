@@ -70,26 +70,26 @@ public static class FileUtil
     {
         BufferedStream inStream = null;
         FileStream outStream = null;
+       
+            try
+            {
+                // 读取嵌入式资源
+                Assembly asm = Assembly.GetExecutingAssembly();
+                inStream = new BufferedStream(asm.GetManifestResourceStream(resFileName));
+                outStream = new FileStream(outputFile, FileMode.Create, FileAccess.Write);
 
-        try
-        {
-            // 读取嵌入式资源
-            Assembly asm = Assembly.GetExecutingAssembly();
-            inStream = new BufferedStream(asm.GetManifestResourceStream(resFileName));
-            outStream = new FileStream(outputFile, FileMode.Create, FileAccess.Write);
+                byte[] buffer = new byte[1024];
+                int length;
 
-            byte[] buffer = new byte[1024];
-            int length;
+                while ((length = inStream.Read(buffer, 0, buffer.Length)) > 0)
+                    outStream.Write(buffer, 0, length);
 
-            while ((length = inStream.Read(buffer, 0, buffer.Length)) > 0)
-                outStream.Write(buffer, 0, length);
-
-            outStream.Flush();
-        }
-        finally
-        {
-            outStream?.Close();
-            inStream?.Close();
-        }
+                outStream.Flush();
+            }
+            finally
+            {
+                outStream?.Close();
+                inStream?.Close();
+            }
     }
 }
