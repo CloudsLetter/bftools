@@ -129,7 +129,10 @@ public partial class MonitView : UserControl
             e.Handled = true; // 阻止非数字字符的输入
         }
     }
-
+    public static string Mapnameget()
+    {
+        return Server.GetMapName();
+    }
     /// <summary>
     /// 缓存玩家生涯数据
     /// </summary>

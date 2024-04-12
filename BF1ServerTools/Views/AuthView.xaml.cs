@@ -218,7 +218,28 @@ public partial class AuthView : UserControl
 
         SaveConfig();
     }
+    //用gameid更新api链接
+    private void TextBox_MessageContent_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        TextBox textBox = sender as TextBox;
+        SaveInput(textBox.Text);
+    }
+    private string lastInput = "";
+    public static long gameid233 = 0;
+    public static string URL = "";
+    private void SaveInput(string input)
+    {
+        if (lastInput != input)
+        {
+            lastInput = input;
+            string url = $"https://api.gametools.network/bf1/players/?gameid={Uri.EscapeDataString(input)}";
 
+            long.TryParse(lastInput, out gameid233);
+
+            URL = url;
+
+        }
+    }
     /// <summary>
     /// 保存配置文件
     /// </summary>

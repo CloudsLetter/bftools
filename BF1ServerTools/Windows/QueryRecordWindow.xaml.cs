@@ -84,6 +84,26 @@ public partial class QueryRecordWindow
         GetWeapons(personaId);
         GetVehicles(personaId);
     }
+    /// <summary>
+    /// 获取总游戏场数
+    /// </summary>
+    /// <param name="personaId"></param>
+    /// <returns></returns>
+    public static async Task<int> GetGameCount(long personaId)
+    {
+        var result = await BF1API.DetailedStatsByPersonaId(Globals.SessionId, personaId);
+        if (result.IsSuccess)
+        {
+            var detailedStats = JsonHelper.JsonDese<DetailedStats>(result.Content);
+            int gameCount = detailedStats.result.roundsPlayed;
+            return gameCount; // 返回游戏场数
+        }
+        else
+        {
+            // 处理错误情况
+            return 0;
+        }
+    }
 
     /// <summary>
     /// 获取玩家信息

@@ -1,0 +1,150 @@
+﻿<UserControl
+    x:Class="BF1ServerTools.Views.Robot"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://battlefield.vip/ui/2022/xaml"
+    d:DesignHeight="720"
+    d:DesignWidth="1280"
+    mc:Ignorable="d">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="400" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="400" />
+            </Grid.ColumnDefinitions>
+
+            <!-- 左侧控制台日志区域 -->
+            
+
+            <!-- 中间功能区域 -->
+            <StackPanel Grid.Column="1" Margin="5">
+                <ui:UiLabelIcon Content="功能开关" />
+
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,10">
+                    <Button
+                        x:Name="Button_RunGoCqHttpServer"
+                        Click="Button_RunGoCqHttpServer_Click"
+                        Content="启动自动平衡"
+                        Width="191" />
+                    <Button
+                        x:Name="Button_Balance"
+                        Click="Button_Balance_Click"
+                        Content="立刻启动平衡"
+                        Width="190" />
+                </StackPanel>
+
+                <Slider
+                    x:Name="slider"
+                    Minimum="1"
+                    Maximum="60"
+                    ValueChanged="Slider_ValueChanged"
+                    TickFrequency="1"
+                    IsSnapToTickEnabled="True" />
+                <Label
+                    x:Name="labelCurrentMinutes"
+                    Content="当前自动平衡间隔为0分钟"
+                    Margin="5" />
+
+                <UniformGrid Columns="2" Margin="0,10,0,10">
+                    <Button
+                        x:Name="Button_RunWebsocketServer"
+                        Margin="5,0,2,5"
+                        Click="Button_RunWebsocketServer_Click"
+                        Content="启动投票选图" />
+                    <Button
+                        x:Name="Button_StopWebsocketServer"
+                        Margin="2,0,5,5"
+                        Click="Button_StopWebsocketServer_Click"
+                        Content="关闭自动平衡" />
+                </UniformGrid>
+
+                <TextBlock Style="{StaticResource TextBlockStyle_Hint}">
+                    提示：想关闭投票选图关闭程序即可
+                </TextBlock>
+                <ui:UiLabelIcon Content="平衡参数调整" />
+
+                <DockPanel MinWidth="300" Margin="0,10,0,10">
+                    <CheckBox x:Name="ExcludeAdminsAndVIPsCheckBox" Content="排除VIP和管理员" DockPanel.Dock="Top" />
+                    <Slider
+                        x:Name="sliderkdkpm"
+                        Minimum="-1"
+                        Maximum="1"
+                        ValueChanged="Slider_ValueChangedkdkpm"
+                        TickFrequency="0.01"
+                        IsSnapToTickEnabled="True"
+                        DockPanel.Dock="Top" />
+                    <TextBlock
+                        x:Name="labelCurrentkdkpm"
+                        Text="平衡目标为进攻(队伍1)lifekd、lifekp高于防守(队伍2){}(+-0.5)"
+                        Margin="5"
+                        DockPanel.Dock="Top"
+                        TextWrapping="Wrap" />
+                </DockPanel>
+
+                <CheckBox x:Name="skillbalance" Content="切换至技巧值平衡，这会在导致平衡时忽略lifekp和lifekpm" Margin="0,5,0,5" />
+                <Slider
+                    x:Name="sliderskill"
+                    Minimum="-300"
+                    Maximum="300"
+                    ValueChanged="Slider_ValueChangedskill"
+                    TickFrequency="10"
+                    IsSnapToTickEnabled="True" />
+                <TextBlock
+                    x:Name="labelCurrentdskill"
+                    Text="平衡目标为进攻(队伍1)技巧值高于防守(队伍2){}(+-30)"
+                    Margin="5"
+                    TextWrapping="Wrap" />
+                <Button Content="播报当前投票信息" Click="Reportmapinfo_Click" Margin="0,10,0,0" />
+                <Slider
+    x:Name="slidervote"
+    Minimum="0"
+    Maximum="15"
+    ValueChanged="Slider_ValueChangedvote"
+    TickFrequency="1"
+    IsSnapToTickEnabled="True" />
+                <TextBlock
+    x:Name="labelCurrentdvote"
+    Text="播报间隔为（） 0=永不自动播报"
+    Margin="5"
+    TextWrapping="Wrap" />
+            </StackPanel>
+
+            <!-- 右侧功能区域 -->
+            <StackPanel Grid.Column="2" Margin="5">
+                <ui:UiLabelIcon Content="自动换图" />
+                <UniformGrid Columns="2">
+                    <Button Content="获取地图列表" Click="shuafenfu" />
+                    <Button Content="启动换图" Click="changemap" />
+
+                    <TextBlock Style="{StaticResource TextBlockStyle_Hint}">
+提示：地图列表可以拖动排序，如地图列表显示不全请尝试上下滚动，如需关闭切图机关闭工具即可
+                    </TextBlock>
+                    <TextBlock Style="{StaticResource TextBlockStyle_Hint}">
+提示：换图机启动时会自动确定当前地图在列表中的位置，如需从头开始换图，请手动切换当前地图为您选中的第一张图,再启动切图
+                    </TextBlock>
+                </UniformGrid>
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <ListView x:Name="MapListView" AllowDrop="True" PreviewMouseLeftButtonDown="MapListView_PreviewMouseLeftButtonDown" Drop="MapListView_Drop">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="选择">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="地图名称" DisplayMemberBinding="{Binding MapName}" />
+                                <GridViewColumn Header="游戏模式" DisplayMemberBinding="{Binding MapMode}" />
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </ScrollViewer>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</UserControl>

@@ -24,6 +24,25 @@ public static class PlayerUtil
 
         return ts.TotalHours.ToString("0") + " 小时";
     }
+    /// <summary>
+    /// 获取玩家技巧值
+    /// </summary>
+    /// <param name="personaId"></param>
+    /// <returns></returns>
+    public static float GetSkill(long personaId)
+    {
+        lock (Obj)
+        {
+            if (Globals.LifePlayerCacheDatas != null)
+            {
+                var index = Globals.LifePlayerCacheDatas.FindIndex(item => item.PersonaId == personaId);
+                if (index != -1)
+                    return Globals.LifePlayerCacheDatas[index].Skill;
+            }
+
+            return 0;
+        }
+    }
 
     /// <summary>
     /// 获取游玩小时数

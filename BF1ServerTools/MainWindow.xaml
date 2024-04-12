@@ -201,6 +201,11 @@
                     Content="机器人"
                     Icon="&#xe63b;" />
                 <ui:UiRadioButtonIcon
+    Command="{Binding NavigateCommand}"
+    CommandParameter="Robot"
+    Content="自动化"
+    Icon="&#xe63b;" />
+                <ui:UiRadioButtonIcon
                     Command="{Binding NavigateCommand}"
                     CommandParameter="MoreView"
                     Content="更多"
