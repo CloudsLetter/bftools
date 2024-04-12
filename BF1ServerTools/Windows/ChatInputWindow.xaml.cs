@@ -109,7 +109,18 @@ public partial class ChatInputWindow : Window
     {
         IsAppRunning = false;
     }
+    public static void SendChsToBF1Chat(string message)
+    {
+        ChsUtil.SetInputLanguageENUS();
+        Memory.SetBF1WindowForeground();
 
+        //////////////////////////////////////////////////////
+        Thread.Sleep(500);
+        Memory.KeyPress(WinVK.J, 50);
+        Thread.Sleep(500);
+
+        Chat.SendChsToBF1Chat(ChsUtil.ToTraditional(message));
+    }
     private void UpdateInputStateThread()
     {
         bool isShow = false;

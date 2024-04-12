@@ -479,7 +479,7 @@ private void ToggleButton_EnabledChatInputWindow_Click(object sender, RoutedEven
         }
 
     }
-
+   
 
 
 

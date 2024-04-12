@@ -11,6 +11,7 @@ public class LifePlayerData
     public int Time { get; set; }
     public int Wins { get; set; }
     public int Losses { get; set; }
+    public float Skill { get; set; }
     public int roundsPlayed { get; set; }
     public float LifeMaxAccuracyRatio { get; set; }
     public float LifeMaxHeadShotRatio { get; set; }

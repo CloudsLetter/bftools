@@ -45,6 +45,7 @@ public partial class MainWindow
     private LogView LogView { get; set; } = new();
     private ChatView ChatView { get; set; } = new();
     private RobotView RobotView { get; set; } = new();
+    private Robot Robot { get; set; } = new();
     private MoreView MoreView { get; set; } = new();
 
     ///////////////////////////////////////////////////////
@@ -233,6 +234,10 @@ public partial class MainWindow
             case "RobotView":
                 if (ContentControl_Main.Content != RobotView)
                     ContentControl_Main.Content = RobotView;
+                break;
+            case "Robot":
+                if (ContentControl_Main.Content != Robot)
+                    ContentControl_Main.Content = Robot;
                 break;
             case "MoreView":
                 if (ContentControl_Main.Content != MoreView)
