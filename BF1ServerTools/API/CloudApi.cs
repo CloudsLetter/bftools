@@ -34,8 +34,8 @@ public static class CloudApi
 
     private const string playgamingdatad = "https://bf1.cloudyun.xyz/api/bf1/playergamingdata/add";
 
-    private const string ruleqr = "https://bf1.cloudyun.xyz/api/bf1/rule/query";
-    private const string rulead = "https://bf1.cloudyun.xyz/api/bf1/rule/push";
+    private const string ruleqr = "http://127.0.0.1:8080/api/bf1/rule/query";
+    private const string rulead = "http://127.0.0.1:8080/api/bf1/rule/push";
 
     private const string hostbkad = "https://bf1.cloudyun.xyz/api/bf1/toggleteambeforekick/add";
     private const string hostbkqr = "https://bf1.cloudyun.xyz/api/bf1/toggleteambeforekick/query";
@@ -254,7 +254,7 @@ public static class CloudApi
                 MaxTimeout = 5000,
                 ThrowOnAnyError = true
             };
-            clientcv = new RestClient(optionssss);
+            clientcb = new RestClient(optionssss);
         }
     }
 

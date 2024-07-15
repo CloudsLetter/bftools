@@ -345,7 +345,7 @@ public static class Globals
 
     public static bool IsBoot = false;
 
-    public static string Version = "3.0.2.7";
+    public static string Version = "3.0.2.8";
 
     public static string ServerName = string.Empty;
 
@@ -399,6 +399,9 @@ public static class Globals
     public static bool TranslateKeyRulePresets_Whitespace = true;
     public static bool TranslateKeyRulePresets_Multiline = true;
     public static bool TranslateKeyRulePresets_FakeEnglish = true;
+
+    public static List<string> ListTranslateKeys = new List<string>();
+    public static List<string> ListTranslateKeyRules = new List<string>();
 
 }
 

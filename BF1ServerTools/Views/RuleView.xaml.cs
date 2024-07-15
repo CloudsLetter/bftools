@@ -211,6 +211,8 @@ public partial class RuleView : UserControl {
                     RuleTeam2Model.MaxKDPro = 0.00f;
                     RuleTeam2Model.FlagKPMPro = 0;
                     RuleTeam2Model.MaxKPMPro = 0.00f;
+
+                    TranslateKeyRules_LoadFromList(new List<string>());
                     for (int i = 0; i < DataGrid_RuleWeaponModels.Count; i++) {
                         var item = DataGrid_RuleWeaponModels[i];
                         item.Team1 = false;
@@ -221,7 +223,7 @@ public partial class RuleView : UserControl {
         );
     }
 
-    private async Task<bool> SetRuleFromCloud() {
+    private async Task<bool> SetRuleFromCloud(bool refresh) {
         Globals.IsRefreshRule = true;
         var result = await BF1API.RefreshWhiteList(ServerId: Globals.ServerId.ToString());
         if (result.IsSuccess) {
@@ -243,7 +245,14 @@ public partial class RuleView : UserControl {
             }
 
             Globals.IsRefreshRule = false;
-            NotifierHelper.Show(NotifierType.Success, "获取数据成功");
+            if (refresh)
+            {
+
+            }else
+            {
+                NotifierHelper.Show(NotifierType.Success, "获取数据成功");
+
+            }
         } else {
             Globals.IsRefreshRule = false;
             NotifierHelper.Show(NotifierType.Success, "获取数据失败,请检查网络问题");
@@ -275,7 +284,7 @@ public partial class RuleView : UserControl {
         }
 
         var result3 = await CloudApi.QueryRule(ServerId: Globals.ServerId);
-
+        
         if (result3.IsSuccess) {
             var tmp = result3.Content.Replace("\r", "");
             CloudRule data = JsonConvert.DeserializeObject<CloudRule>(tmp);
@@ -299,11 +308,11 @@ public partial class RuleView : UserControl {
                         CheckBox_WhiteScore.IsChecked = data.WhiteScore;
                         CheckBox_WhiteTranslateKeyRuleList.IsChecked = data.WhiteTranslateKeyRuleList;
 
-                        CheckBox_TranslateKeyRulePresets_TooLong.IsChecked = data.TranslateKeyRulePresets_TooLong;
-                        CheckBox_TranslateKeyRulePresets_Offensive.IsChecked = data.TranslateKeyRulePresets_Offensive;
-                        CheckBox_TranslateKeyRulePresets_Whitespace.IsChecked = data.TranslateKeyRulePresets_Whitespace;
-                        CheckBox_TranslateKeyRulePresets_Multiline.IsChecked = data.TranslateKeyRulePresets_Multiline;
-                        CheckBox_TranslateKeyRulePresets_FakeEnglish.IsChecked = data.TranslateKeyRulePresets_FakeEnglish;
+                        CheckBox_TranslateKeyRulePresets_TooLong.IsChecked = data.TranslateKeyRulePresetsTooLong;
+                        CheckBox_TranslateKeyRulePresets_Offensive.IsChecked = data.TranslateKeyRulePresetsOffensive;
+                        CheckBox_TranslateKeyRulePresets_Whitespace.IsChecked = data.TranslateKeyRulePresetsWhitespace;
+                        CheckBox_TranslateKeyRulePresets_Multiline.IsChecked = data.TranslateKeyRulePresetsMultiline;
+                        CheckBox_TranslateKeyRulePresets_FakeEnglish.IsChecked = data.TranslateKeyRulePresetsFakeEnglish;
                         // 应用队伍1规则
                         RuleTeam1Model.ScoreLimt = data.Team1ScoreLimit;
                         RuleTeam1Model.ScoreGap = data.Team1ScoreGap;
@@ -356,6 +365,15 @@ public partial class RuleView : UserControl {
                         List<string> list = new List<string>(data.Team1WeaponLimit.Split(','));
                         List<string> list2 = new List<string>(data.Team2WeaponLimit.Split(','));
 
+                        if(!string.IsNullOrEmpty(data.TranslateKeyRules))
+                        {
+                            TranslateKeyRules_LoadFromList(new List<string>(data.TranslateKeyRules.Split('^')));
+                        }
+                        else
+                        {
+                            TranslateKeyRules_LoadFromList(new List<string>());
+
+                        }
                         for (int i = 0; i < DataGrid_RuleWeaponModels.Count; i++) {
                             var item = DataGrid_RuleWeaponModels[i];
 
@@ -524,7 +542,7 @@ public partial class RuleView : UserControl {
                         }
 
                         if (!Globals.ISetRule) {
-                            bool ok = await SetRuleFromCloud();
+                            bool ok = await SetRuleFromCloud(false);
                             if (ok) {
                                 Globals.CloudModeSet = true;
                                 Globals.ISetRule = true;
@@ -673,7 +691,7 @@ public partial class RuleView : UserControl {
                 }
 
                 rule.TranslateKeyRuleList.Clear();
-                foreach (string translateKey in ListTranslateKeyRules) {
+                foreach (string translateKey in Globals.ListTranslateKeyRules) {
                     rule.TranslateKeyRuleList.Add(translateKey);
                 }
 
@@ -1057,7 +1075,12 @@ public partial class RuleView : UserControl {
     private async void PushRule2Cloud() {
         string team1weapon = string.Join(",", Globals.CustomWeapons_Team1);
         string team2weapon = string.Join(",", Globals.CustomWeapons_Team2);
-        string tmpTranslateKeyRules = string.Join(",", Globals.TranslateKeyRules);
+        List<string> tmpList = new List<string>();
+        foreach (string translateKey in Globals.ListTranslateKeyRules)
+        {
+            tmpList.Add(translateKey);
+        }
+        string tmpTranslateKeyRules = string.Join("^", tmpList);
         var result = await CloudApi.PushRule(
             whiteLifeKD: Globals.WhiteLifeKD,
             whiteLifeKPM: Globals.WhiteLifeKPM,
@@ -1154,11 +1177,11 @@ public partial class RuleView : UserControl {
         if (Globals.IsCloudMode) {
             if (Globals.ServerId != 0) {
                 if (Globals.LoginPlayerIsAdmin) {
-                    bool ok = await SetRuleFromCloud();
+                    bool ok = await SetRuleFromCloud(true);
                     if (ok) {
-                        NotifierHelper.Show(NotifierType.Success, "刷新成功");
+                        NotifierHelper.Show(NotifierType.Success, "刷新当前规则成功");
                     } else {
-                        NotifierHelper.Show(NotifierType.Error, "刷新失败，请检查服务端或客户端网络问题");
+                        NotifierHelper.Show(NotifierType.Error, "刷新当前规则失败，请检查服务端或客户端网络问题");
                     }
                 } else {
                     NotifierHelper.Show(NotifierType.Error, $"您不是当前服务器管理员");
@@ -1314,7 +1337,7 @@ public partial class RuleView : UserControl {
 
         // 加载中文ID规则
         Globals.TranslateKeyRules.Clear();
-        ListTranslateKeyRules.Cast<string>() // "Key DisplayText"
+        Globals.ListTranslateKeyRules.Cast<string>() // "Key DisplayText"
             .Select(key => key.Split(" ")[0]) // Key
             .Each(key => Globals.TranslateKeyRules.Add(key));
 
@@ -2003,8 +2026,7 @@ public partial class RuleView : UserControl {
         }
     }
 
-    private List<string> ListTranslateKeys = new List<string>();
-    private List<string> ListTranslateKeyRules = new List<string>();
+
 
     private void TranslateKeyRules_Unimplemented(object sender, RoutedEventArgs e) {
         NotifierHelper.Show(NotifierType.Error, "咕咕咕, 这个功能还没写, 但是先把菜单搁这免得咱忘了\n --SakuraKooi");
@@ -2018,8 +2040,8 @@ public partial class RuleView : UserControl {
 
         var copiedList = new List<string>(ListBox_TranslateKeyList.SelectedItems.Cast<string>());
         foreach (var selectedItem in copiedList) {
-            ListTranslateKeyRules.Add(selectedItem);
-            ListTranslateKeys.Remove(selectedItem);
+            Globals.ListTranslateKeyRules.Add(selectedItem);
+            Globals.ListTranslateKeys.Remove(selectedItem);
         }
 
         TranslateKeyRules_Helper_ReorderList();
@@ -2033,8 +2055,8 @@ public partial class RuleView : UserControl {
 
         var copiedList = new List<string>(ListBox_TranslateKeyRules.SelectedItems.Cast<string>());
         foreach (var selectedItem in copiedList) {
-            ListTranslateKeys.Add(selectedItem);
-            ListTranslateKeyRules.Remove(selectedItem);
+            Globals.ListTranslateKeys.Add(selectedItem);
+            Globals.ListTranslateKeyRules.Remove(selectedItem);
         }
 
         TranslateKeyRules_Helper_ReorderList();
@@ -2050,10 +2072,10 @@ public partial class RuleView : UserControl {
             return;
         }
 
-        ListTranslateKeyRules.Add(TextBox_NewTranslateKeyRule.Text + " 自定义词条");
-        foreach (string key in ListTranslateKeys) {
+        Globals.ListTranslateKeyRules.Add(TextBox_NewTranslateKeyRule.Text + " 自定义词条");
+        foreach (string key in Globals.ListTranslateKeys) {
             if (key.Split(' ')[0].Equals(TextBox_NewTranslateKeyRule.Text)) {
-                ListTranslateKeys.Remove(key);
+                Globals.ListTranslateKeys.Remove(key);
                 break;
             }
         }
@@ -2084,24 +2106,24 @@ public partial class RuleView : UserControl {
     }
 
     private void TranslateKeyRules_Initialize() {
-        ListTranslateKeys.Clear();
-        ListTranslateKeyRules.Clear();
+        Globals.ListTranslateKeys.Clear();
+        Globals.ListTranslateKeyRules.Clear();
 
-        ListTranslateKeys.AddRange(TranslateKeyData.TranslateKeys.Select(key => key.ToRule()));
+        Globals.ListTranslateKeys.AddRange(TranslateKeyData.TranslateKeys.Select(key => key.ToRule()));
         ListBox_TranslateKeyList.ItemsSource = new List<string>();
         ListBox_TranslateKeyRules.ItemsSource = new List<string>();
-        ListBox_TranslateKeyList.ItemsSource = ListTranslateKeys;
-        ListBox_TranslateKeyRules.ItemsSource = ListTranslateKeyRules;
+        ListBox_TranslateKeyList.ItemsSource = Globals.ListTranslateKeys;
+        ListBox_TranslateKeyRules.ItemsSource = Globals.ListTranslateKeyRules;
     }
 
     private void TranslateKeyRules_LoadFromList(List<string> ruleTranslateKeyRuleList) {
-        if (ListTranslateKeyRules.Count > 0) {
+        if (Globals.ListTranslateKeyRules.Count > 0) {
             TranslateKeyRules_Initialize();
         }
 
         if (ruleTranslateKeyRuleList.Count > 0) {
-            ListTranslateKeyRules.AddRange(ruleTranslateKeyRuleList);
-            ListTranslateKeys.RemoveAll(ruleTranslateKeyRuleList.Contains);
+            Globals.ListTranslateKeyRules.AddRange(ruleTranslateKeyRuleList);
+            Globals.ListTranslateKeys.RemoveAll(ruleTranslateKeyRuleList.Contains);
 
             TranslateKeyRules_Helper_ReorderList();
         }
@@ -2112,23 +2134,23 @@ public partial class RuleView : UserControl {
             .SkipWhile(key => key.Flag != flag)
             .Select(key => key.ToRule()).ToList();
         if (addOrRemove) {
-            ListTranslateKeyRules.AddRange(presetList);
-            ListTranslateKeys.RemoveAll( presetList.Contains);
+            Globals.ListTranslateKeyRules.AddRange(presetList);
+            Globals.ListTranslateKeys.RemoveAll( presetList.Contains);
         } else {
-            ListTranslateKeys.AddRange(presetList);
-            ListTranslateKeyRules.RemoveAll(presetList.Contains);
+            Globals.ListTranslateKeys.AddRange(presetList);
+            Globals.ListTranslateKeyRules.RemoveAll(presetList.Contains);
         }
 
         TranslateKeyRules_Helper_ReorderList();
     }
 
     private void TranslateKeyRules_Helper_ReorderList() {
-        var sortedList1 = ListTranslateKeyRules.Distinct().OrderBy(t => t).ToList();
-        ListTranslateKeyRules.Clear();
-        ListTranslateKeyRules.AddRange(sortedList1);
-        var sortedList2 = ListTranslateKeys.Distinct().OrderBy(t => t).ToList();
-        ListTranslateKeys.Clear();
-        ListTranslateKeys.AddRange(sortedList2);
+        var sortedList1 = Globals.ListTranslateKeyRules.Distinct().OrderBy(t => t).ToList();
+        Globals.ListTranslateKeyRules.Clear();
+        Globals.ListTranslateKeyRules.AddRange(sortedList1);
+        var sortedList2 = Globals.ListTranslateKeys.Distinct().OrderBy(t => t).ToList();
+        Globals.ListTranslateKeys.Clear();
+        Globals.ListTranslateKeys.AddRange(sortedList2);
 
         ListBox_TranslateKeyList.Items.Refresh();
         ListBox_TranslateKeyRules.Items.Refresh();

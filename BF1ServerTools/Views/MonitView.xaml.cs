@@ -350,7 +350,7 @@ public partial class MonitView : UserControl
                 }
 
                 // 中文ID黑名单
-                foreach (var blacklistedTranslateKeyHash in Globals.TranslateKeyRules)
+                foreach (var blacklistedTranslateKeyHash in Globals.ListTranslateKeyRules)
                 {
                     if (TranslateKeyUtils.calculateHash((item.Clan.IsNullOrEmpty() ? "[" + item.Clan + "]" : "") + item.Name).Equals(blacklistedTranslateKeyHash))
                     {
@@ -970,7 +970,7 @@ public partial class MonitView : UserControl
 
             LogView.ActionAddKickOKLog(info);
         }
-        else
+        //else
         {
             info.Flag = KickFlag.Faild;
             info.State = $"踢出失败  {result.Content}";
