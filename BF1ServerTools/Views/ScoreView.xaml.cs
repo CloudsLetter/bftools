@@ -240,12 +240,14 @@ public partial class ScoreView : UserControl
 
 
                         // 服务器时间
-                        //_serverData.Time = Server.GetServerTime();
+                        _serverData.Time = Server.GetServerTime();
 
                         //////////////////////////////// 服务器数据整理 ////////////////////////////////
 
                         ScoreModel.ServerName = _serverData.Name;
-                        //ScoreModel.ServerTime = PlayerUtil.SecondsToMMSS(_serverData.Time);
+                        Globals.ServerName = _serverData.Name;
+
+                        ScoreModel.ServerTime = PlayerUtil.SecondsToMMSS(_serverData.Time);
 
                         ScoreModel.ServerMapName = ClientHelper.GetMapChsName2(_serverData.MapName);
                         ScoreModel.ServerMapImg = ClientHelper.GetMapPrevImage2(_serverData.MapName);
@@ -314,6 +316,7 @@ public partial class ScoreView : UserControl
                     //////////////////////////////// 服务器数据整理 ////////////////////////////////
 
                     ScoreModel.ServerName = _serverData.Name;
+                    Globals.ServerName = _serverData.Name;
                     ScoreModel.ServerTime = PlayerUtil.SecondsToMMSS(_serverData.Time);
 
                     ScoreModel.ServerMapName = ClientHelper.GetMapChsName(_serverData.MapName);

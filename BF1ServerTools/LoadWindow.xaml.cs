@@ -85,12 +85,12 @@ public partial class LoadWindow
                     LoadModel.LoadState = $"战地1内存模块初始化失败！";
                     LoggerHelper.Error("战地1内存模块初始化失败");
 
-                    //Task.Delay(2000).Wait();
-                    //this.Dispatcher.Invoke(() =>
-                    //{
-                    //    Application.Current.Shutdown();
-                   // });
-                    //return;
+                    Task.Delay(2000).Wait();
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        Application.Current.Shutdown();
+                    });
+                    return;
                 }
                
                 LoadModel.LoadState = "正在初始化SQLite数据库...";

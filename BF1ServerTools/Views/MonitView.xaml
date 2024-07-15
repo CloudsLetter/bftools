@@ -145,6 +145,7 @@
                 </CheckBox>
 
 
+                <ui:UiLabelIcon Content="谨慎使用" />
 
                 <CheckBox
                     x:Name="CheckBox_IsEnableKickNoWhites"
