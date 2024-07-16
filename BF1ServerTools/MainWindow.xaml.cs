@@ -97,29 +97,33 @@ public partial class MainWindow
             IsBackground = true
         }.Start();
     }
-
+    
     private void Window_Main_Closing(object sender, CancelEventArgs e)
     {
-        // 终止线程内循环
-        IsAppRunning = false;
+        
+        
+            // 终止线程内循环
+            IsAppRunning = false;
 
-        WindowClosingEvent();
-        LoggerHelper.Info("调用主窗口关闭事件成功");
+            WindowClosingEvent();
+            LoggerHelper.Info("调用主窗口关闭事件成功");
 
-        ProcessUtil.CloseThirdProcess();
-        LoggerHelper.Info("关闭第三方进程成功");
+            ProcessUtil.CloseThirdProcess();
+            LoggerHelper.Info("关闭第三方进程成功");
 
-        Chat.FreeMemory();
-        LoggerHelper.Info("释放中文聊天指针内存成功");
+            Chat.FreeMemory();
+            LoggerHelper.Info("释放中文聊天指针内存成功");
 
-        Memory.UnInitialize();
-        LoggerHelper.Info("释放内存模块进程句柄成功");
+            Memory.UnInitialize();
+            LoggerHelper.Info("释放内存模块进程句柄成功");
 
-        SQLiteHelper.UnInitialize();
-        LoggerHelper.Info("关闭数据库链接成功");
+            SQLiteHelper.UnInitialize();
+            LoggerHelper.Info("关闭数据库链接成功");
 
-        Application.Current.Shutdown();
-        LoggerHelper.Info("程序关闭\n\n");
+            Application.Current.Shutdown();
+            LoggerHelper.Info("程序关闭\n\n");
+        
+      
     }
 
     /// <summary>
@@ -145,11 +149,11 @@ public partial class MainWindow
             MainModel.DisplayName2 = Globals.DisplayName2;
             MainModel.PersonaId2 = Globals.PersonaId2;
 
-            if (!ProcessUtil.IsBf1Run())
-            {
-                this.Dispatcher.Invoke(this.Close);
-                return;
-            }
+            //if (!ProcessUtil.IsBf1Run())
+            //{
+              //  this.Dispatcher.Invoke(this.Close);
+               // return;
+          //  }
 
             if (Globals.IsCloudMode)
             {
@@ -165,33 +169,36 @@ public partial class MainWindow
         }
     }
 
-    private async void CheckVersion (){
-        
-        var result = await CloudApi.CheckVersion(Version: Globals.Version);
-        if (!result.IsSuccess)
+    private async void CheckVersion()
+    {
+        try
         {
-            Globals.NeedUpdate = false;
-        }
-        else
-        {
-            if (result.Content == "true")
-            {
-                Globals.NeedUpdate = true;
-            }
-            else
+            var result = await CloudApi.CheckVersion(Version: Globals.Version);
+            if (!result.IsSuccess)
             {
                 Globals.NeedUpdate = false;
             }
+            else
+            {
+                Globals.NeedUpdate = result.Content == "true";
+            }
+
+            MainModel.IfNeedUpdateChi = Globals.NeedUpdate ? "需要更新" : "无需更新";
+            MainModel.IfNeedUpdateEng = Globals.NeedUpdate ? "true" : "false";
         }
-        if (Globals.NeedUpdate)
+        catch (Exception ex)
         {
-            MainModel.IfNeedUpdateChi = "需要更新";
-            MainModel.IfNeedUpdateEng = "true";
-        }
-        else
-        {
-            MainModel.IfNeedUpdateChi = "无需更新";
-            MainModel.IfNeedUpdateEng = "false";
+            // 处理异常情况
+            LoggerHelper.Error($"检查版本失败: {ex.Message}");
+
+            // 更新UI以反映错误状态
+            Dispatcher.Invoke(() =>
+            {
+                MainModel.IfNeedUpdateChi = "检查更新失败";
+                MainModel.IfNeedUpdateEng = "false";
+            });
+
+            
         }
     }
     /// <summary>
