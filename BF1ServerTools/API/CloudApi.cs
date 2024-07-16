@@ -879,7 +879,7 @@ public static class CloudApi
                Team2LifeMaxKD = team2LifeMaxKD,
                Team2LifeMaxKPM = team2LifeMaxKPM,
                Team2LifeMaxAccuracyRatioLevel = team2LifeMaxAccuracyRatioLevel,
-               Team2LifeMaxAccuracyRatioat = team2LifeMaxAccuracyRatio,
+               Team2LifeMaxAccuracyRatio = team2LifeMaxAccuracyRatio,
                Team2LifeMaxHeadShotRatioLevel = team2LifeMaxHeadShotRatioLevel,
                Team2LifeMaxHeadShotRatio = team2LifeMaxHeadShotRatio,
                Team2LifeMaxWRLevel = team2LifeMaxWRLevel,
