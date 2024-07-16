@@ -149,11 +149,11 @@ public partial class MainWindow
             MainModel.DisplayName2 = Globals.DisplayName2;
             MainModel.PersonaId2 = Globals.PersonaId2;
 
-            //if (!ProcessUtil.IsBf1Run())
-            //{
-              //  this.Dispatcher.Invoke(this.Close);
-               // return;
-          //  }
+            if (!ProcessUtil.IsBf1Run())
+            {
+                this.Dispatcher.Invoke(this.Close);
+               return;
+            }
 
             if (Globals.IsCloudMode)
             {

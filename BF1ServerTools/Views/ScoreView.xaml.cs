@@ -235,9 +235,9 @@ public partial class ScoreView : UserControl
 
                         _serverData.MapName = serverInfo.ServerInfo.Level;
                         _serverData.MapName = string.IsNullOrEmpty(_serverData.MapName) ? "未知" : _serverData.MapName;
-
+                       
                         _serverData.GameMode = serverInfo.ServerInfo.Mode;
-
+                        
 
                         // 服务器时间
                         _serverData.Time = Server.GetServerTime();
@@ -250,10 +250,12 @@ public partial class ScoreView : UserControl
                         ScoreModel.ServerTime = PlayerUtil.SecondsToMMSS(_serverData.Time);
 
                         ScoreModel.ServerMapName = ClientHelper.GetMapChsName2(_serverData.MapName);
+                        Globals.CurrentMapName = ScoreModel.ServerMapName;
                         ScoreModel.ServerMapImg = ClientHelper.GetMapPrevImage2(_serverData.MapName);
-
+                       
 
                         ScoreModel.ServerGameMode = ClientHelper.GetGameMode2(_serverData.GameMode);
+                        Globals.CurrentMapMode = ScoreModel.ServerGameMode;
 
                         ScoreModel.Team1Img = ClientHelper.GetTeam1Image2(_serverData.MapName);
                         ScoreModel.Team2Img = ClientHelper.GetTeam2Image2(_serverData.MapName);
@@ -320,14 +322,15 @@ public partial class ScoreView : UserControl
                     ScoreModel.ServerTime = PlayerUtil.SecondsToMMSS(_serverData.Time);
 
                     ScoreModel.ServerMapName = ClientHelper.GetMapChsName(_serverData.MapName);
+                    Globals.CurrentMapName = ScoreModel.ServerMapName;
                     ScoreModel.ServerMapImg = ClientHelper.GetMapPrevImage(_serverData.MapName);
 
                     if (_serverData.MapName == "未知" || ScoreModel.ServerMapName == "大厅菜单")
                         ScoreModel.ServerGameMode = "未知";
                     else
                         ScoreModel.ServerGameMode = ClientHelper.GetGameMode(_serverData.GameMode);
-
-                    ScoreModel.Team1Img = ClientHelper.GetTeam1Image(_serverData.MapName);
+                    Globals.CurrentMapMode = ScoreModel.ServerGameMode;
+                   ScoreModel.Team1Img = ClientHelper.GetTeam1Image(_serverData.MapName);
                     ScoreModel.Team2Img = ClientHelper.GetTeam2Image(_serverData.MapName);
 
                     ScoreModel.Team1Name = ClientHelper.GetTeamChsName(_serverData.MapName, 1);

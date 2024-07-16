@@ -17,8 +17,10 @@
                 <ColumnDefinition Width="400" />
             </Grid.ColumnDefinitions>
 
-            <!-- 左侧控制台日志区域 -->
-            
+            <!-- 左侧区域 -->
+            <StackPanel Grid.Column="0" Margin="5">
+                <ui:UiLabelIcon Grid.Row="0" Content="排除名单" Margin="0,10" />
+            </StackPanel>
 
             <!-- 中间功能区域 -->
             <StackPanel Grid.Column="1" Margin="5">
@@ -36,10 +38,10 @@
                         Content="立刻启动平衡"
                         Width="190" />
                 </StackPanel>
-
+              
                 <Slider
                     x:Name="slider"
-                    Minimum="1"
+                    Minimum="0"
                     Maximum="60"
                     ValueChanged="Slider_ValueChanged"
                     TickFrequency="1"
@@ -48,7 +50,17 @@
                     x:Name="labelCurrentMinutes"
                     Content="当前自动平衡间隔为0分钟"
                     Margin="5" />
-
+                <Slider
+x:Name="sliderscore"
+Minimum="0"
+Maximum="800"
+ValueChanged="Slider_ScoreValueChanged"
+TickFrequency="10"
+IsSnapToTickEnabled="True" />
+                <Label
+x:Name="labelCurrentScore"
+Content="当前启动自动平衡所需分差为0（0代表忽略该条件）"
+Margin="5" />
                 <UniformGrid Columns="2" Margin="0,10,0,10">
                     <Button
                         x:Name="Button_RunWebsocketServer"
@@ -68,54 +80,76 @@
                 <ui:UiLabelIcon Content="平衡参数调整" />
 
                 <DockPanel MinWidth="300" Margin="0,10,0,10">
-                    <CheckBox x:Name="ExcludeAdminsAndVIPsCheckBox" Content="排除VIP和管理员" DockPanel.Dock="Top" />
+
+                    <CheckBox x:Name="Excludesuperman" Content="自动平衡排除载具和精英兵" DockPanel.Dock="Top" />
                     <Slider
-                        x:Name="sliderkdkpm"
-                        Minimum="-1"
-                        Maximum="1"
-                        ValueChanged="Slider_ValueChangedkdkpm"
-                        TickFrequency="0.01"
-                        IsSnapToTickEnabled="True"
-                        DockPanel.Dock="Top" />
+                    x:Name="sliderkdkpm"
+                    Minimum="-0.5"
+                    Maximum="0.5"
+                    ValueChanged="Slider_ValueChangedkdkpm"
+                    TickFrequency="0.01"
+                    IsSnapToTickEnabled="True"
+                    DockPanel.Dock="Top" />
                     <TextBlock
-                        x:Name="labelCurrentkdkpm"
-                        Text="平衡目标为进攻(队伍1)lifekd、lifekp高于防守(队伍2){}(+-0.5)"
-                        Margin="5"
-                        DockPanel.Dock="Top"
-                        TextWrapping="Wrap" />
+                    x:Name="labelCurrentkdkpm"
+                    Text="平衡目标为进攻(队伍1)lifekd、lifekp高于防守(队伍2){}(+-0.05)"
+                    Margin="5"
+                    DockPanel.Dock="Top"
+                    TextWrapping="Wrap" />
                 </DockPanel>
 
                 <CheckBox x:Name="skillbalance" Content="切换至技巧值平衡，这会在导致平衡时忽略lifekp和lifekpm" Margin="0,5,0,5" />
-                <Slider
-                    x:Name="sliderskill"
-                    Minimum="-300"
-                    Maximum="300"
-                    ValueChanged="Slider_ValueChangedskill"
-                    TickFrequency="10"
-                    IsSnapToTickEnabled="True" />
                 <TextBlock
-                    x:Name="labelCurrentdskill"
-                    Text="平衡目标为进攻(队伍1)技巧值高于防守(队伍2){}(+-30)"
-                    Margin="5"
-                    TextWrapping="Wrap" />
-                <Button Content="播报当前投票信息" Click="Reportmapinfo_Click" Margin="0,10,0,0" />
+x:Name="labelCurrentdskill"
+Text="平衡目标为进攻(队伍1)技巧值高于防守(队伍2){}(+-30)"
+Margin="5"
+TextWrapping="Wrap" />
                 <Slider
-    x:Name="slidervote"
-    Minimum="0"
-    Maximum="15"
-    ValueChanged="Slider_ValueChangedvote"
-    TickFrequency="1"
-    IsSnapToTickEnabled="True" />
+                x:Name="sliderskill"
+                Minimum="-300"
+                Maximum="300"
+                ValueChanged="Slider_ValueChangedskill"
+                TickFrequency="10"
+                IsSnapToTickEnabled="True" />
+                <CheckBox x:Name="scorebalance" Content="切换至移动得分靠前的玩家到弱势方（征服且分差大于上方定时平衡设定的值）" Margin="0,5,0,5"/>
+                <Slider
+x:Name="sliderscorebalance"
+Minimum="1"
+Maximum="6"
+ValueChanged="Slider_ValueChangedscore"
+TickFrequency="1"
+IsSnapToTickEnabled="True" />
                 <TextBlock
-    x:Name="labelCurrentdvote"
-    Text="播报间隔为（） 0=永不自动播报"
-    Margin="5"
-    TextWrapping="Wrap" />
+                x:Name="labelCurrentdscore"
+                Text="平衡目标为移动优势前1名"
+                Margin="5"
+                TextWrapping="Wrap" />
+
+                <CheckBox x:Name="ExcludeAdminsCheckBox" Content="自动平衡排除管理员" />
+                <CheckBox x:Name="ExcludeVIPsCheckBox" Content="自动平衡排除VIP" />
+                <CheckBox x:Name="ExcludeWhitelistCheckBox" Content="自动平衡排除白名单" />
+                <CheckBox x:Name="Autobalanceshow" Content="自动平衡移动播报" />
+                <Slider
+x:Name="slidervote"
+Minimum="0"
+Maximum="15"
+ValueChanged="Slider_ValueChangedvote"
+TickFrequency="1"
+IsSnapToTickEnabled="True" />
+                <TextBlock
+x:Name="labelCurrentdvote"
+Text="播报间隔为（） 0=永不自动播报"
+Margin="5"
+TextWrapping="Wrap" />
             </StackPanel>
 
+
             <!-- 右侧功能区域 -->
+          
             <StackPanel Grid.Column="2" Margin="5">
+               
                 <ui:UiLabelIcon Content="自动换图" />
+                <CheckBox x:Name="onlyscore" Content="自动换图仅检测分数(分数>993）"/>
                 <UniformGrid Columns="2">
                     <Button Content="获取地图列表" Click="shuafenfu" />
                     <Button Content="启动换图" Click="changemap" />
