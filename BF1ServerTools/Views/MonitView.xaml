@@ -145,8 +145,8 @@
                 </CheckBox>
 
 
-                <ui:UiLabelIcon Content="谨慎使用" />
-
+                <ui:UiLabelIcon Content="谨慎使用" DockPanel.Dock="Top" BackgroundColor="#FFFFCDD2"
+                                            BorderColor="#FFF44336" />
                 <CheckBox
                     x:Name="CheckBox_IsEnableKickNoWhites"
                     Click="CheckBox_IsEnableKickNoWhites_Click"

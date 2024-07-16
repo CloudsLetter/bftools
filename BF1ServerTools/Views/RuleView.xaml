@@ -678,7 +678,6 @@
                                 </Style>
                             </Button.Style>
                         </Button>
-                        <Label Content="Ready to merge after test&#xD;&#xA;    -- SakuraKooi"/>
                     </StackPanel>
                 </Grid>
             </ui:UiTabItemIcon>

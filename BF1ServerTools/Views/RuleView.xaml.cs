@@ -283,6 +283,7 @@ public partial class RuleView : UserControl {
             return false;
         }
 
+
         var result3 = await CloudApi.QueryRule(ServerId: Globals.ServerId);
         
         if (result3.IsSuccess) {

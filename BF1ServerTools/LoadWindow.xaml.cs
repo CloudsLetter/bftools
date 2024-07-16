@@ -65,7 +65,7 @@ public partial class LoadWindow
 
                 LoadModel.LoadState = "正在检测战地1是否运行...";
                 //检测战地1是否运行
-                if (!true)
+                if (!Memory.Initialize())
                 {
                     LoadModel.LoadState = "未发现《战地1》游戏进程！程序即将关闭";
                     LoggerHelper.Error("未发现战地1进程");
